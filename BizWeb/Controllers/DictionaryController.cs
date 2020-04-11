@@ -89,7 +89,7 @@ namespace UniNote.WebClient.Controllers
             var recode = m_codeService.GetSimpleCode<SystemDictionary>(new { KeyName = key }).FirstOrDefault();
             if (recode != null)
             {
-                result = m_codeService.DeleteSimpleCode(recode);
+                result = m_codeService.DeleteSimpleCode<SystemDictionary>(recode);
             }
             return new JsonResult(new { isok = result });
         }

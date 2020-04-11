@@ -59,7 +59,7 @@ namespace UniNote.WebClient.Controllers
             {
                 return false;
             }
-            var allpos = m_codeService.DeleteSimpleCode(oldobj);
+            var allpos = m_codeService.DeleteSimpleCode<AConFlowStep>(oldobj);
             return allpos;
         }
         [HttpDelete]
@@ -70,7 +70,7 @@ namespace UniNote.WebClient.Controllers
             {
                 return false;
             }
-            var allpos = m_codeService.DeleteSimpleCode(oldobj);
+            var allpos = m_codeService.DeleteSimpleCode<TrigerRuleInfo>(oldobj);
             return allpos;
         }
 

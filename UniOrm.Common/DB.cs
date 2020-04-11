@@ -67,9 +67,8 @@ namespace UniOrm.Common
                 {
                     EntityService = (property, column) =>
                     {
-
                         var attributes = property.GetCustomAttributes(true);//get all attributes     
-                        if (attributes.Any(it => it is KeyAttribute))//根据自定义属性    
+                        if (string.Compare(property.Name, "id", true) == 0 || attributes.Any(it => it is KeyAttribute))//根据自定义属性    
                         {
                             column.IsPrimarykey = true;
                         }

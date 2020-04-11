@@ -143,10 +143,14 @@ namespace UniOrm.Model.DataService
                 }
             }
             int totalnum = 0;
+            if(pagesize==0)
+            {
+                pagesize = 30;
+            }
             var oneobject = basequery.ToPageList(pageindex, pagesize, ref totalnum);
             if (oneobject != null)
             {
-                return new QueryResult() { currentIndex = 1, DataList = new List<dynamic>() };
+                return new QueryResult() { currentIndex = pageindex, DataList = oneobject, PageSize= pagesize , TotalPage = totalnum };
             }
             return new QueryResult();
         }
@@ -173,9 +177,9 @@ namespace UniOrm.Model.DataService
             return oneobject;
         }
 
-        public bool DeleteSimpleCode(object simplequery)
+        public bool DeleteSimpleCode<T>(object simplequery) where T : class, new()
         { 
-            var reint = Db.Deleteable(simplequery).ExecuteCommand();
+            var reint = Db.Deleteable<T>(simplequery).ExecuteCommand();
             return reint > 0;
         }
         public List<T> GetSimpleCodeTyped<T>(object simplequery) where T : class, new()
@@ -208,11 +212,14 @@ namespace UniOrm.Model.DataService
             return Db.Queryable<T>().Where(predicate).ToList();
         }
 
-        public int UpdateSimpleCode(object obj)
+        public int UpdateSimpleCode<T>(T obj) where T : class, new()
         { 
-            return Db.Updateable(obj).ExecuteCommand();
+            return Db.Updateable<T>(obj).ExecuteCommand();
         }
-
+        public int UpdateSimpleCode (object obj) 
+        {
+            return Db.Updateable (obj).ExecuteCommand();
+        }
         public void Dispose()
         {
              
