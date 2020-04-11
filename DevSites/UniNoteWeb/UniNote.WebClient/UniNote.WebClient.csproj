@@ -1,0 +1,718 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+     <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\sd23nj\Data\**" />
+    <Compile Remove="Areas\sd23nj\Models\**" />
+    <Compile Remove="wwwroot\others\**" />
+    <Compile Remove="wwwroot\Other\**" />
+    <Content Remove="Areas\sd23nj\Data\**" />
+    <Content Remove="Areas\sd23nj\Models\**" />
+    <Content Remove="wwwroot\others\**" />
+    <Content Remove="wwwroot\Other\**" />
+    <EmbeddedResource Remove="Areas\sd23nj\Data\**" />
+    <EmbeddedResource Remove="Areas\sd23nj\Models\**" />
+    <EmbeddedResource Remove="wwwroot\others\**" />
+    <EmbeddedResource Remove="wwwroot\Other\**" />
+    <None Remove="Areas\sd23nj\Data\**" />
+    <None Remove="Areas\sd23nj\Models\**" />
+    <None Remove="wwwroot\others\**" />
+    <None Remove="wwwroot\Other\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\User\welcome.cshtml" />
+    <Content Remove="wwwroot\js\oidc-client.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\User\welcome.cshtml" />
+    <None Include="wwwroot\content\img\technology.png" />
+    <None Include="wwwroot\font\fontawesome-webfont.svg" />
+    <None Include="wwwroot\js\oidc-client.min.js" />
+    <None Include="wwwroot\layuiadmin\layui\font\iconfont.svg縱=240.svg" />
+    <None Include="wwwroot\layuiadmin\layui\layui.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\formbuilder\js\app.991db057.js" />
+    <None Include="wwwroot\lib\formbuilder\js\avue.min.js" />
+    <None Include="wwwroot\lib\formbuilder\js\axios.min.js" />
+    <None Include="wwwroot\lib\formbuilder\js\chunk-vendors.38d53685.js" />
+    <None Include="wwwroot\lib\formbuilder\js\index.js" />
+    <None Include="wwwroot\lib\formbuilder\js\main-1.0.11.js" />
+    <None Include="wwwroot\lib\formbuilder\js\maps-1.4.11_a40c6d547150ac9c43cc.js" />
+    <None Include="wwwroot\lib\formbuilder\js\vue.min.js" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\cupertino\images\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\flick\images\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\hot-sneaks\images\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\redmond\images\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\start\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Entries" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Entries.Extra" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Entries.Extra.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Entries.Old" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Repository" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\Root" />
+    <None Include="wwwroot\lib\jqGrid\css\css\ui-lightness\images\CVS\TortoiseCVS.Status" />
+    <None Include="wwwroot\lib\jqGrid\js\addons\ui.multiselect.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.aria.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.base.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.celledit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.common.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.export.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.filter.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.formedit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.grouping.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.import.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.inlinedit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.jqueryui.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.pivot.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.subgrid.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.treegrid.js" />
+    <None Include="wwwroot\lib\jqGrid\js\grid.utils.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-ar.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-bg.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-ca.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-cn.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-cs.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-de.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-dk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-el.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-en.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-es.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-fa.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-fi.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-fr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-gl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-he.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-hr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-hu.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-id.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-is.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-it.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-ja.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-kr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-lt.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-me.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-nl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-no.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-pl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-pt-br.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-pt.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-ro.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-ru.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-sk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-sq.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-sr-latin.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-sr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-sv.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-th.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-tr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-tw.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-uk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\i18n\grid.locale-vi.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jqDnR.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jqModal.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jquery.fmatter.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jquery.jqGrid.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jquery.jqGrid.min.js" />
+    <None Include="wwwroot\lib\jqGrid\js\jquery.jqGrid.min.js.map" />
+    <None Include="wwwroot\lib\jqGrid\js\jquery.sortable.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.aria.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.base.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.celledit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.common.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.export.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.filter.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.formedit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.grouping.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.import.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.inlinedit.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.jqueryui.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.pivot.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.subgrid.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.treegrid.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\grid.utils.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ar.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-bg.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ca.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-cn.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-cs.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-de.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-dk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-el.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-en.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-es.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-fa.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-fi.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-fr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-gl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-he.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-hr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-hu.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-id.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-is.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-it.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ja.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-kr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-lt.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-me.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-nl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-no.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-pl.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-pt-br.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-pt.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ro.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ru.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-sk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-sq.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-sr-latin.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-sr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-sv.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-th.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-tr.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-tw.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-ua.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-uk.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\i18n\grid.locale-vi.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\jqDnR.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\jqModal.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\jquery.fmatter.js" />
+    <None Include="wwwroot\lib\jqGrid\js\minified\jquery.sortable.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ar.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-bg.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ca.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-cn.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-cs.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-de.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-dk.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-el.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-en.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-es.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-fa.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-fi.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-fr.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-gl.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-he.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-hr.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-hu.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-id.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-is.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-it.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ja.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-kr.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-lt.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-me.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-nl.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-no.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-pl.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-pt-br.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-pt.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ro.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ru.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-sk.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-sr-latin.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-sr.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-sv.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-th.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-tr.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-tw.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-ua.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-uk.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\i18n\grid.locale-vi.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\jquery-1.11.0.min.js" />
+    <None Include="wwwroot\lib\jqGrid\old\js\jquery.jqGrid.min.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\grid.addons.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\grid.postext.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\grid.setcolumns.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\jquery.contextmenu.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\jquery.searchFilter.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\jquery.tablednd.js" />
+    <None Include="wwwroot\lib\jqGrid\old\plugins\ui.multiselect.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\grid.addons.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\grid.postext.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\grid.setcolumns.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\grid.tbltogrid.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\jquery.contextmenu.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\jquery.searchFilter.js" />
+    <None Include="wwwroot\lib\jqGrid\plugins\jquery.tablednd.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\external\jquery\jquery.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\jquery-ui.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\jquery-ui.min.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\layer\layer.js" />
+    <None Include="wwwroot\lib\layer\mobile\layer.js" />
+    <None Include="wwwroot\lib\layui\dist\font\iconfont.svg" />
+    <None Include="wwwroot\lib\layui\dist\font\iconfont.woff2" />
+    <None Include="wwwroot\lib\layui\dist\layui.all.js" />
+    <None Include="wwwroot\lib\layui\dist\layui.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\carousel.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\code.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\colorpicker.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\element.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\flow.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\form.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\jquery.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\laydate.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\layedit.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\layer.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\laypage.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\laytpl.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\mobile.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\rate.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\slider.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\table.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\transfer.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\tree.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\upload.js" />
+    <None Include="wwwroot\lib\layui\dist\lay\modules\util.js" />
+    <None Include="wwwroot\lib\layui\src\font\iconfont.svg" />
+    <None Include="wwwroot\lib\layui\src\font\iconfont.woff2" />
+    <None Include="wwwroot\lib\layui\src\layui.js" />
+    <None Include="wwwroot\lib\layui\src\lay\all-mobile.js" />
+    <None Include="wwwroot\lib\layui\src\lay\all.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\carousel.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\code.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\colorpicker.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\element.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\flow.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\form.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\jquery.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\laydate.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\layedit.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\layer.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\laypage.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\laytpl.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\mobile.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\mobile\layer-mobile.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\mobile\layim-mobile-open.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\mobile\zepto.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\rate.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\slider.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\table.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\transfer.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\tree.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\upload.js" />
+    <None Include="wwwroot\lib\layui\src\lay\modules\util.js" />
+    <None Include="wwwroot\lib\My97DatePicker\calendar.js" />
+    <None Include="wwwroot\lib\My97DatePicker\lang\en.js" />
+    <None Include="wwwroot\lib\My97DatePicker\lang\zh-cn.js" />
+    <None Include="wwwroot\lib\My97DatePicker\lang\zh-tw.js" />
+    <None Include="wwwroot\lib\My97DatePicker\WdatePicker.js" />
+    <None Include="wwwroot\lib\My97DatePicker\开发包\lang\en.js" />
+    <None Include="wwwroot\lib\My97DatePicker\开发包\lang\zh-cn.js" />
+    <None Include="wwwroot\lib\My97DatePicker\开发包\lang\zh-tw.js" />
+    <None Include="wwwroot\static\font\f4vc5oy4z8flayvi3.svg" />
+    <None Include="wwwroot\static\font\font_24081_qs69ykjbea-15353871012.svg" />
+    <None Include="wwwroot\static\font\iconfont-2401.svg" />
+    <None Include="wwwroot\static\font\iconfont-2501.woff2" />
+    <None Include="wwwroot\static\font\iconfont-2504.svg" />
+    <None Include="wwwroot\static\font\webfont_eovt4pxxy53.svg" />
+    <None Include="wwwroot\static\js\adsbygoogle.js" />
+    <None Include="wwwroot\static\js\demo-20190816.js" />
+    <None Include="wwwroot\static\js\homepage-20190820-1.js" />
+    <None Include="wwwroot\static\js\html5.min.js" />
+    <None Include="wwwroot\static\js\layui-1.js" />
+    <None Include="wwwroot\static\js\layui-1568076536616.js" />
+    <None Include="wwwroot\static\js\layui-1571893704377.js" />
+    <None Include="wwwroot\static\js\layui-1571893704380.js" />
+    <None Include="wwwroot\static\js\layui-20181101-1.js" />
+    <None Include="wwwroot\static\js\layui-20190816.js" />
+    <None Include="wwwroot\static\js\layui-20190820-1.js" />
+    <None Include="wwwroot\static\js\layui.js" />
+    <None Include="wwwroot\static\js\respond.min.js" />
+    <None Include="wwwroot\xadmin\css\font.css" />
+    <None Include="wwwroot\xadmin\css\login.css" />
+    <None Include="wwwroot\xadmin\css\theme1.css" />
+    <None Include="wwwroot\xadmin\css\theme2.css" />
+    <None Include="wwwroot\xadmin\css\theme3.css" />
+    <None Include="wwwroot\xadmin\css\theme4.css" />
+    <None Include="wwwroot\xadmin\css\theme5.css" />
+    <None Include="wwwroot\xadmin\css\xadmin.css" />
+    <None Include="wwwroot\xadmin\fonts\iconfont.eot" />
+    <None Include="wwwroot\xadmin\fonts\iconfont.svg" />
+    <None Include="wwwroot\xadmin\fonts\iconfont.ttf" />
+    <None Include="wwwroot\xadmin\fonts\iconfont.woff" />
+    <None Include="wwwroot\xadmin\images\aiwrap.png" />
+    <None Include="wwwroot\xadmin\images\bg.png" />
+    <None Include="wwwroot\xadmin\js\jquery.min.js" />
+    <None Include="wwwroot\xadmin\js\xadmin.js" />
+    <None Include="wwwroot\xadmin\js\xcity.js" />
+    <None Include="wwwroot\xadmin\lib\layui\css\layui.css" />
+    <None Include="wwwroot\xadmin\lib\layui\css\layui.mobile.css" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\code.css" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\laydate\default\laydate.css" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\icon-ext.png" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\icon.png" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\layer.css" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\loading-0.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\loading-1.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\css\modules\layer\default\loading-2.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\font\iconfont.eot" />
+    <None Include="wwwroot\xadmin\lib\layui\font\iconfont.svg" />
+    <None Include="wwwroot\xadmin\lib\layui\font\iconfont.ttf" />
+    <None Include="wwwroot\xadmin\lib\layui\font\iconfont.woff" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\0.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\1.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\10.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\11.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\12.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\13.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\14.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\15.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\16.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\17.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\18.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\19.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\2.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\20.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\21.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\22.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\23.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\24.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\25.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\26.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\27.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\28.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\29.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\3.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\30.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\31.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\32.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\33.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\34.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\35.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\36.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\37.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\38.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\39.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\4.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\40.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\41.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\42.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\43.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\44.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\45.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\46.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\47.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\48.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\49.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\5.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\50.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\51.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\52.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\53.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\54.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\55.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\56.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\57.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\58.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\59.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\6.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\60.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\61.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\62.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\63.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\64.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\65.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\66.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\67.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\68.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\69.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\7.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\70.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\71.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\8.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\images\face\9.gif" />
+    <None Include="wwwroot\xadmin\lib\layui\layui.all.js" />
+    <None Include="wwwroot\xadmin\lib\layui\layui.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\carousel.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\code.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\colorpicker.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\element.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\flow.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\form.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\jquery.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\laydate.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\layedit.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\layer.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\laypage.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\laytpl.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\mobile.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\rate.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\slider.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\table.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\tree.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\upload.js" />
+    <None Include="wwwroot\xadmin\lib\layui\lay\modules\util.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <Content Update="Areas\sd23nj\Views\Admin\adminfooter.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\AllCon.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\console.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\index2222.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\member-list1.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\memberlist.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\orderlist.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\User.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\Userlist.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\Userlist2.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\UserMng.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\VueGrid.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\VueGrid2.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\welcome.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="config\System.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\Index_layui.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\Signin.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\Admin\urlmng.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Areas\sd23nj\Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Account\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\Index2.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\odic_login.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\Privacy.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\UserWelcome.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\KindEditor\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\Error.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_CookieConsentPartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_KindEditorLayout.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_Layout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_UEditorLayout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Shared\_ValidationScriptsPartial.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Ueditor\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Userweb\index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\xadmin\lib\layui\layui.all.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\xadmin\lib\layui\layui.js">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="config\moduleConfig\" />
+    <Folder Include="Views\User\" />
+    <Folder Include="wwwroot\layuiadmin\lib\extend\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Plugins\BasicPlugin\BasicPlugin.csproj" />
+    <ProjectReference Include="..\..\..\Plugins\OauthMngPlugin\OauthMngPlugin.csproj" />
+    <ProjectReference Include="..\..\..\UniOrm.Startup.Web\UniOrm.Startup.Web.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Pages\Admin\csd3 - 复制.cshtml.cs">
+      <DependentUpon>csd3 - 复制.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

@@ -1,0 +1,313 @@
+﻿@page
+
+@{
+    Layout = "H5VueLayuiLayout";
+    ViewData["Title"] = "Howler.js Radio";
+}
+<div class="demoTable">
+    搜索Name：
+    <div class="layui-inline">
+        <input class="layui-input" name="radioName" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" id="btnsearch" data-type="reload">搜索</button>
+</div>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="play">播放</a>
+    <a class="layui-btn layui-btn-xs" lay-event="stop">停止</a>
+</script>
+<script type="text/html" id="radioIcon">
+    <!-- 这里的 checked 的状态只是演示 -->
+    <img src="{{d.favicon}}" style="width:30px" onerror="this.style.display='none'">
+    
+</script>
+
+@section CSS{
+}
+@section Scripts{
+    <script src="~/lib/howler/howler.js"></script>
+    <script src="~/lib/qone/linq.js"></script>
+    <script src="~/lib/qone/qone.js"></script>
+    <script>
+        //layui.use('table', function () {
+        //    var table = layui.table;
+
+        //    table.render({
+        //        elem: '#test'
+        //        , url: 'http://www.radio-browser.info/webservice/json/stations'
+        //        , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+        //        , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+        //            title: '提示'
+        //            , layEvent: 'LAYTABLE_TIPS'
+        //            , icon: 'layui-icon-tips'
+        //        }]
+        //        , title: '用户数据表'
+        //        , cols: [[
+        //            { type: 'checkbox', fixed: 'left' }
+        //            , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true }
+        //            , { field: 'username', title: '用户名', width: 120, edit: 'text' }
+        //            , {
+        //                field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
+        //                    return '<em>' + res.email + '</em>'
+        //                }
+        //            }
+        //            , { field: 'sex', title: '性别', width: 80, edit: 'text', sort: true }
+        //            , { field: 'city', title: '城市', width: 100 }
+        //            , { field: 'sign', title: '签名' }
+        //            , { field: 'experience', title: '积分', width: 80, sort: true }
+        //            , { field: 'ip', title: 'IP', width: 120 }
+        //            , { field: 'logins', title: '登入次数', width: 100, sort: true }
+        //            , { field: 'joinTime', title: '加入时间', width: 120 }
+        //            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+        //        ]]
+        //        , page: true
+        //        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+        //            return {
+        //                "code": 0, //解析接口状态
+        //                "msg": "", //解析提示文本
+        //                "count": res.length, //解析数据长度
+        //                "data": res //解析数据列表
+        //            };
+        //        }
+        //    });
+
+        //    //头工具栏事件
+        //    table.on('toolbar(test)', function (obj) {
+        //        var checkStatus = table.checkStatus(obj.config.id);
+        //        switch (obj.event) {
+        //            case 'getCheckData':
+        //                var data = checkStatus.data;
+        //                layer.alert(JSON.stringify(data));
+        //                break;
+        //            case 'getCheckLength':
+        //                var data = checkStatus.data;
+        //                layer.msg('选中了：' + data.length + ' 个');
+        //                break;
+        //            case 'isAll':
+        //                layer.msg(checkStatus.isAll ? '全选' : '未全选');
+        //                break;
+
+        //            //自定义头工具栏右侧图标 - 提示
+        //            case 'LAYTABLE_TIPS':
+        //                layer.alert('这是工具栏右侧自定义的一个图标按钮');
+        //                break;
+        //        };
+        //    });
+
+        //    //监听行工具事件
+        //    table.on('tool(test)', function (obj) {
+        //        var data = obj.data;
+        //        //console.log(obj)
+        //        if (obj.event === 'del') {
+        //            layer.confirm('真的删除行么', function (index) {
+        //                obj.del();
+        //                layer.close(index);
+        //            });
+        //        } else if (obj.event === 'edit') {
+        //            layer.prompt({
+        //                formType: 2
+        //                , value: data.email
+        //            }, function (value, index) {
+        //                obj.update({
+        //                    email: value
+        //                });
+        //                layer.close(index);
+        //            });
+        //        }
+        //    });
+        //});
+    </script>
+    <script type="text/javascript">
+        var table;
+        var sound;
+
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: "http://www.radio-browser.info/webservice/json/stations",
+                dataType: "json",
+                //data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    table = layui.table;
+                    table.render({
+                        id: 'test'
+                        , elem: '#test'
+                        , data: jsonResult
+                        , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                        , page: true //开启分页
+                        , cols: [[
+                            { field: 'id', width: 50, title: 'ID', sort: true }
+                            //, { field: 'changeuuid', width: 80,  title: '频道id' }
+                            //, { field: 'stationuuid', width: 120, title: '站点id', sort: true }
+                            , { field: 'name', width: 160, title: '流派名称' }
+                            , { field: 'url', title: '网址', width: 190   }
+                            , { field: 'country', width: 100, title: '国家', sort: true }
+                            , { field: 'state', width: 100, title: '州/省' }
+                            , { field: 'codec', width: 120, title: '格式', sort: true }
+                            , { field: 'favicon', width: 100, title: '图标', templet: '#radioIcon', }
+                            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 190 }
+                        ]]
+                    });
+
+                    //监听行工具事件
+                    table.on('tool(test)', function (obj) {
+                        var data = obj.data;
+                        //console.log(obj)
+                        if (obj.event === 'del') {
+                            layer.confirm('真的删除行么', function (index) {
+                                obj.del();
+                                layer.close(index);
+                            });
+                        }
+                        else if (obj.event === "play") {
+                          sound = new Howl({
+                                src: data.url,
+                                html5: true, // A live stream can only be played through HTML5 Audio.
+                                format: [data.codec]
+                            });
+                            sound.play();
+                        }
+                        else if (obj.event === "stop") {
+                            if (sound) {
+                                sound.stop();
+                            } 
+                        }
+                    });
+                    $("#btnsearch").click(function () {
+                        var serobj = $("#demoReload").val();
+                        //执行重载
+
+                        var re = Enumerable.from(jsonResult)
+                            .where(row =>
+                                row.name.indexOf(serobj) >= 0
+                            ).select(row => row)
+                            .toArray();
+                        //            var ss = qone({ jsonResult }).query(`
+                        //    from n in jsonResult
+                        //    where n.name > 18
+                        //    select n
+                        //`)
+                        //                  var result = qone({ jsonResult }).query(`
+                        //    from n in jsonResult
+                        //    where  n.name.indexOf(serobj) >= 0
+                        //`)
+
+                        //这里以搜索为例
+                        table.reload("test",
+                            {
+                                data: re,
+
+                            });
+                    })
+
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        })
+
+                                       //layui.use('table', function () {
+                                            //    var table = layui.table;
+
+                                            //    table.render({
+                                            //        elem: '#test'
+                                            //        , url: 'http://www.radio-browser.info/webservice/json/stations'
+                                            //        ,request: {
+                                            //            pageName: 'curr' //页码的参数名称，默认：page
+                                            //            ,limitName: 'nums' //每页数据量的参数名，默认：limit
+                                            //          }
+                                            //        , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                                            //        , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                                            //            title: '提示'
+                                            //            , layEvent: 'LAYTABLE_TIPS'
+                                            //            , icon: 'layui-icon-tips'
+                                            //        }]
+                                            //        , title: '用户数据表'
+                                            //        , cols: [[
+                                            //            { field: 'id', width: 50, title: 'ID', sort: true }
+                                            //            , { field: 'changeuuid', width: 80, title: '频道id' }
+                                            //            , { field: 'stationuuid', width: 120, title: '站点id', sort: true }
+                                            //            , { field: 'name', width: 100, title: '流派名称' }
+                                            //            , { field: 'url', title: '网址' ,edit: 'text' }
+                                            //            , { field: 'country', width: 50, title: '国家', sort: true }
+                                            //            , { field: 'state', width: 80, title: '州/省' }
+                                            //            , { field: 'codec', width: 120, title: '格式', sort: true }
+                                            //            , { field: 'favicon', width: 100, title: '图标' }
+                                            //            , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                                            //        ]]
+                                            //        , page: true
+                                            //        //, response: {
+                                            //        //    statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
+                                            //        //}
+                                            //        , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                                            //            return {
+                                            //                "code": 0, //解析接口状态
+                                            //                "msg": "", //解析提示文本
+                                            //                "count": res.length, //解析数据长度
+                                            //                "data": res //解析数据列表
+                                            //            };
+                                            //        }
+                                            //    });
+
+                                            //    //头工具栏事件
+                                            //    table.on('toolbar(test)', function (obj) {
+                                            //        var checkStatus = table.checkStatus(obj.config.id);
+                                            //        switch (obj.event) {
+                                            //            case 'getCheckData':
+                                            //                var data = checkStatus.data;
+                                            //                layer.alert(JSON.stringify(data));
+                                            //                break;
+                                            //            case 'getCheckLength':
+                                            //                var data = checkStatus.data;
+                                            //                layer.msg('选中了：' + data.length + ' 个');
+                                            //                break;
+                                            //            case 'isAll':
+                                            //                layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                                            //                break;
+
+                                            //            //自定义头工具栏右侧图标 - 提示
+                                            //            case 'LAYTABLE_TIPS':
+                                            //                layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                                            //                break;
+                                            //        };
+                                            //    });
+
+                                            //    //监听行工具事件
+                                            //    table.on('tool(test)', function (obj) {
+                                            //        var data = obj.data;
+                                            //        //console.log(obj)
+                                            //        if (obj.event === 'del') {
+                                            //            layer.confirm('真的删除行么', function (index) {
+                                            //                obj.del();
+                                            //                layer.close(index);
+                                            //            });
+                                            //        } else if (obj.event === 'edit') {
+                                            //            layer.prompt({
+                                            //                formType: 2
+                                            //                , value: data.email
+                                            //            }, function (value, index) {
+                                            //                obj.update({
+                                            //                    email: value
+                                            //                });
+                                            //                layer.close(index);
+                                            //            });
+                                            //        }
+                                            //    });
+                                            //});
+
+    </script>
+
+}

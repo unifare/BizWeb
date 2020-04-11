@@ -1,0 +1,913 @@
+﻿@{
+    Layout = "../Shared/_VueLayout.cshtml";
+    ViewData["Title"] = "数据库管理";
+}
+
+    <div class="container-fluid" id="app">
+        <div class="=row">
+            <div style="overflow:hidden">
+                选择数据库
+                <select id="dblist" v-model="selecteddb">
+                    @{
+                        var dbused = "";
+                        var i = 0;
+                        foreach (var con in ViewBag.Connections)
+                        {
+                            var dbtypename = "sqlite";
+                            if (con.DBType == SqlSugar.DbType.SqlServer)
+                            {
+                                dbtypename = "sqlserver";
+                            }
+                            else if (con.DBType == SqlSugar.DbType.MySql)
+                            {
+                                dbtypename = "mysql";
+                            }
+                            else if (con.DBType == SqlSugar.DbType.PostgreSQL)
+                            {
+                                dbtypename = "postgresql";
+                            }
+                            else if (con.DBType == SqlSugar.DbType.Sqlite)
+                            {
+                                dbtypename = "sqlite";
+                            }
+                            if (i == 0)
+                            {
+                                dbused = dbtypename + "-" + con.Connectionstring;
+                            }
+                            <option> @dbtypename-@con.Connectionstring</option>
+                            i++;
+                        }
+
+                    }
+
+                </select>  <input type="button" @@click="AddnetDB" value="新建数据库">
+            </div>
+            <div>
+
+            </div>
+        </div>
+        <div>当前数据库:  <input type="text" class="w-100" v-model="selecteddb"></div>
+        <div class="row">
+            <div class="col-12">
+                命令操作
+                <div class="row" style="border-top:1px solid #808080">
+                    <div class="col-4" style="max-height:500px; overflow-y:auto; border-right:1px solid #808080">
+                        <div>tables <a @@click="addtable">添加表</a></div>
+                        <ul>
+                            <li v-bind:class="{ selectrow: item.Name==selecttablename }" v-for="(item, index) in returntablelist"
+                                @@click="selecttable(item)"
+                                v-on:dblclick="gettabledata(item.Name)" >
+                         <a @@click="ediOldTable(item)">E</a><a @@click="delOldtable(item)">D</a>--{{item.Name}}
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-2" style="max-height:500px; overflow-y:auto;">
+                        <div>{{selecttablename}} columns</div>
+                        <ul>
+                            <li v-for="(item, index) in returncolumnlist" class="column_k">
+                                {{item.DbColumnName}} ({{item.DataType}},{{item.Length}})
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-6">
+
+                        <textarea style="width:100%; height:150px" rows="150" v-model="excutecmdtext"></textarea>
+                        <div>
+                            <input type="button" value="执行" @@click="excutecmd" /><input type="button" value="添加" @@click="adddbrow" />
+                        </div>
+                        <div style="width:100%;overflow:auto;">
+                            <div style=" height:300px; overflow:auto;">
+                                <table id="datatb" v-if="returndata!=null&&returndata.length>0"
+                                       class="table table-bordered"
+                                       style="white-space: nowrap; ">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th v-for="(value, key, index) in returndata[0]">{{key}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style=" height:280px; overflow:auto;">
+                                        <tr v-for="row in returndata">
+
+                                            <td><a v-on:click="editrow( row)">修改</a><a v-on:click="delrow(row)">删除</a>  </td>
+                                            <td v-for="(value, key, index) in row">
+                                                {{value}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div style="border-top:1px solid #808080">
+                    执行反馈   <span v-bind:class='[dbcmdokstring ]'>{{sqloperateresult}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="overlay" v-bind:class="{show:isshowDlg}">   
+            <div class="con">
+                <div>
+                    <h2 class="title">新增 | 修改</h2>
+                    <div>
+                        当前表 :     {{selecttablename}}
+                    </div>
+                    <div class="content" style="max-height:500px; overflow:auto;">
+                        <table class="tb_table table table-bordered">
+                            <tr>
+                                <td>列名</td>
+                                <td>类型</td>
+                                <td>长度</td>
+                                <td>设置null</td>
+                                <td>值</td>
+
+
+                            </tr>
+                            <tr v-for="(displayobj, index) in displayeditobjs">
+                                <td> <span v-bind:class="{red:!displayobj.IsNullable}">{{displayobj.title}}</span>  </td>
+                                <td>
+                                    {{displayobj.dbtype}}
+                                </td>
+                                <td>
+                                    {{displayobj.leng}}
+                                </td>
+                                <td>
+                                    空<input type="radio" v-bind:name="'runoob-' + index" value="null" v-model="displayobj.isSetNull">
+                                    不为空<input type="radio" v-bind:name="'runoob-' + index" value="notnull" v-model="displayobj.isSetNull">
+                                </td>
+                                <td>
+                                    <div v-if="dbtype.toLowerCase()=='mysql'  ">
+                                        <div v-if="displayobj.dbtype.toLowerCase() =='tinyint' ">
+                                            <select v-model="displayobj.value">
+                                                <option>true</option>
+                                                <option>false</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div v-if="dbtype.toLowerCase()=='sqlite'  ">
+                                        <div v-if="displayobj.dbtype.toLowerCase() =='integer' && displayobj.leng==1">
+                                            <select v-model="displayobj.value">
+                                                <option>true</option>
+                                                <option>false</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <div v-if="displayobj.dbtype.toLowerCase() =='bool' || displayobj.dbtype.toLowerCase() =='bit'">
+
+                                            <select v-model="displayobj.value">
+                                                <option>true</option>
+                                                <option>false</option>
+                                            </select>
+
+                                            <textarea v-model="displayobj.value" style="width:800px; height:60px;"></textarea>
+                                        </div>
+                                        <div v-else-if="displayobj.dbtype.toLowerCase() =='datetime' || displayobj.dbtype.toLowerCase() =='datetime2'">
+                                            <input type="text" :id="index+'wdate'" class="Wdate" v-model="displayobj.value"
+                                                   v-on:blur="setvuedate(index,$event)"
+                                                   onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' ,alwaysUseStartDate:true})" />
+                                        </div>
+                                        <div v-else>
+
+                                            <textarea v-model="displayobj.value" style="width:600px; height:60px;"></textarea>
+                                        </div>
+                                    </div>
+
+
+                                </td>
+
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+                <p>
+                    <input type="button" class="btn btn-default" @@click="cancldlg" value="取消">
+                    <input type="button" class="btn btn-primary" @@click="savedlg" value="保存">
+                </p>
+            </div>
+
+        </div>
+
+        <div class="overlay" v-bind:class="{tbshow:isshowtbDlg}">
+            <div class="con">
+                <div>
+                    <h2 class="title">新增 | 修改</h2>
+                    <div>
+                        当前表 :  <input type="text"  v-model="editbname" />   说明<input type="text"  v-model ="tableDescription" />
+                    </div>
+                    <div class="content" style="max-height:500px; overflow:auto;">
+                        <table class="tb_table table table-bordered">
+                            <tr>
+                                <td></td>
+                                <td>列名</td>
+                                <td>类型</td>
+                                <td>长度</td>
+                                <td>null</td>
+                                
+                                @*<td>说明</td>*@
+                                <td>值</td>
+                            </tr>
+                            <tr v-for="(columndef, index) in edittbcolmnDefinits">
+                                <td><a @@click="deltbrow(index)" v-if="!(columndef.DbColumnName=='id'||columndef.DbColumnName=='Id'||columndef.DbColumnName=='ID')">删除</a></td>
+                                <td> <input type="text" v-model="columndef.DbColumnName" />   </td>
+                                <td>
+                                    <input type="text" v-model="columndef.DataType" />
+                                </td>
+                                <td>
+                                    <input type="text" style="width:60px;" v-model="columndef.Length" />
+                                    金位<input type="text" style="width:60px;" v-model="columndef.DecimalDigits" />
+                                </td>
+                                <td>
+                                    空<input type="radio" v-bind:name="'runoob2-' + index" value="true" v-model="columndef.IsNullable">
+                                    不为空<input type="radio" v-bind:name="'runoob2-' + index" value="false" v-model="columndef.IsNullable">
+                                </td>
+                                @*<td>
+                                    <textarea v-model="columndef.ColumnDescription" style="width:300px; height:60px;"></textarea>
+                                </td>*@
+
+                                <td>
+                                    <textarea v-model="columndef.DefaultValue" style="width:300px; height:60px;"></textarea>
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+                <p >
+                    <div style="display:inline;float:left;">
+                        <input type="button" value="添加字段" @@click="addtbcolumn" />
+                    </div>
+                    <div style="display:inline;float:right;">
+                        <input type="button" class="btn btn-default" @@click="cancltbdlg" value="取消">
+                        <input type="button" class="btn btn-primary" @@click="savetbdlg" value="保存">
+                    </div>
+                 
+                </p>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+@section css{
+    <link href="/lib/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" />
+    <style>
+        .red {
+            color: red;
+        }
+
+        .selectrow {
+            background-color: #f4ecec;
+        }
+
+        table tr td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+        }
+
+        #datatb td {
+            max-width: 100px;
+        }
+
+        .column_k {
+            border-bottom: 1px solid #eeebeb !important;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 6;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+            .overlay td:first-child {
+                width: 66px;
+            }
+
+            .overlay .con {
+                position: absolute;
+                width: 1200px;
+                min-height: 300px;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+                /*margin-top: -150px;*/
+                padding: 20px;
+            }
+
+                .overlay .con textarea {
+                    max-height: 60px;
+                    overflow: auto;
+                }
+
+        .show {
+            display: block;
+        }
+        .tbshow {
+            display: block;
+        }
+    </style>
+}
+@section Scripts{
+    <script src="/lib/My97DatePicker/WdatePicker.js" charset="utf-8"></script>
+    <script>
+
+        function getdatatablelist() {
+            var data = { cmd: "", sqlconnestring: app.selecteddb }
+            $.get("GetDbTableList", data).done(function (jsonResult) {
+                if (jsonResult.isok == true) {
+                    if (jsonResult.data.length > 0) {
+                        app.returntablelist = jsonResult.data;
+                    }
+                    //app.dbcmdokstring = true;
+                    app.sqloperateresult = "执行成功"
+                }
+
+            }).fail(function (e) {
+                console.log(e);
+            }).always(function (e) {
+            });
+        }
+        var app = new Vue({
+            el: '#app',
+            data: {
+                selecteddb: '@dbused',
+                editbname:'',
+                sqloperateresult: '',
+                excutecmdtext: "",
+                selecttablename: '',
+                dbcmdokstring: "text-success",
+                selectDataRow: {},
+                returntablelist: [],
+                returncolumnlist: [],
+                returndata: [],
+                tableDescription:'',
+                edittbcolmnDefinits: [],
+                displayeditobjs: [],
+
+                currentaction: "add",
+
+                isshowDlg: false,
+                isshowtbDlg: false,
+            },
+            created() {
+
+            },
+            computed: {
+                dbtype() {
+                    return this.selecteddb.split('-')[0];
+                }
+            },
+            mounted() {
+            },
+            watch: {
+                selecteddb(newstr, oldstr) {
+                    if (newstr != '') {
+                        if (newstr != oldstr) {
+
+
+                        }
+                    }
+                },
+                selectDataRow(newvalue, old) {
+
+                    this.watchcolumn(newvalue);
+                },
+                returncolumnlist(newvalue, old) {
+                    if (newvalue.length > 0) {
+                        this.displayeditobjs = [];
+
+                        for (let i = 0; i < newvalue.length; i++) {
+                            var column = newvalue[i];
+                            var reobj = { title: '', value: '', dbtype: '', leng:0, isSetNull: "null", IsNullable: true };
+                            reobj.title = column.DbColumnName
+                            reobj.value = null;
+                            reobj.dbtype = column.DataType
+                            reobj.leng = column.Length;
+                            if (!column.IsNullable)
+                            {
+                                reobj.isSetNull = "notnull";
+                            }
+                            reobj.IsNullable = column.IsNullable;
+                            this.displayeditobjs.push(reobj);
+                        }
+                    }
+                }
+             },
+            methods: {
+                ediOldTable(item) {
+
+                    var data = {  sqlconnestring: app.selecteddb, tname: item.Name }
+                    $.get("GetColumnList", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+                            if (jsonResult.data.length > 0) {
+                                app.returncolumnlist = jsonResult.data;
+                                app.editbname = item.Name;
+                                app.edittbcolmnDefinits = app.returncolumnlist;
+                                app.isshowtbDlg = true;
+                                app.currentaction = "editoldtb";
+                            }
+                            //app.isdbcmdok = true;
+                            app.sqloperateresult = "执行成功"
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                    });
+                    
+                },
+                delOldtable(item) {
+                    if (!confirm("是否确定删除表")) {
+                        return false;
+                    }
+                    var data = { sqlconnestring: app.selecteddb, tname: item.Name }
+                    $.post("DelTable", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+
+                            //app.isdbcmdok = true;
+                            app.sqloperateresult = "执行成功"
+
+                        }
+                        else {
+                            app.dbcmdokstring = "text-danger";
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                        getdatatablelist();
+                    });
+                },
+                addtbcolumn()
+                {
+                    var reobj = { TableName: '', IsPrimarykey: false, DbColumnName: '', ColumnDescription:'',DataType: '', Length: 0, DefaultValue: null, IsNullable: true, DecimalDigits: null };
+                   
+                    this.edittbcolmnDefinits.push(reobj)
+                },
+                cancltbdlg() {
+                    this.isshowtbDlg = false;
+                },
+                savetbdlg() {
+                    if (this.editbname == "") {
+                        alert("请输入表名");
+                        return false;
+                    }
+                    for (var i = 0; i < this.edittbcolmnDefinits.length; i++) {
+                        if (this.edittbcolmnDefinits[i].DbColumnName == "" || this.edittbcolmnDefinits[i].DataType == "") {
+                            alert(this.editbname + ": 请输入列名或数据类型 ");
+
+                            return false;
+                        }
+                        if ((this.edittbcolmnDefinits[i].DataType == "varchar"
+                            || this.edittbcolmnDefinits[i].DataType == "nvarchar") && (this.edittbcolmnDefinits[i].length == ""
+                                || this.edittbcolmnDefinits[i].length == 0)
+                        ) {
+                            this.Length = 100;
+                        }
+                        if (this.edittbcolmnDefinits[i].DataType == "int" && (this.edittbcolmnDefinits[i].length == ""
+                            || this.edittbcolmnDefinits[i].length == 0)) {
+                            this.Length = 4;
+                        }
+                        if ((this.edittbcolmnDefinits[i].DataType == "tinyint" || this.edittbcolmnDefinits[i].DataType == "bit"
+                            || this.edittbcolmnDefinits[i].DataType == "bool")
+
+                            && (this.edittbcolmnDefinits[i].length == ""
+                                || this.edittbcolmnDefinits[i].length == 0)
+                        ) {
+                            this.Length = 1;
+                        }
+                        if (this.edittbcolmnDefinits.ColumnDescription == '') {
+                            this.edittbcolmnDefinits.ColumnDescription = null;
+                        }
+                        this.edittbcolmnDefinits[i].TableName = this.editbname;
+                    }
+                    if (this.currentaction == "addtb") {
+
+                  
+                        var data = {
+                            tablename: this.editbname,
+                            keyvalue: this.edittbcolmnDefinits,
+                            sqlconnestring: this.selecteddb
+                        }
+                        $.post("AddTableRowDef", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                app.sqloperateresult = "执行成功"
+
+                            }
+                            else {
+                                app.dbcmdokstring = "text-danger";
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.isshowtbDlg = false;
+                            getdatatablelist();
+                        });
+                    }
+                    else if (this.currentaction == "editoldtb"){
+                        var data = {
+                            tablename: this.selecttablename,
+                            keyvalue: this.edittbcolmnDefinits,
+                            sqlconnestring: this.selecteddb
+                        }
+                        $.post("EditTableRowDef", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) { 
+
+                                var data = { sqlconnestring: app.selecteddb, tname: app.selecttablename }
+                                $.get("GetColumnList", data).done(function (jsonResult) {
+                                    if (jsonResult.isok == true) {
+                                        if (jsonResult.data.length > 0) {
+                                            app.returncolumnlist = jsonResult.data;
+                                        }
+                                        //app.isdbcmdok = true;
+                                        app.sqloperateresult = "执行成功"
+                                    }
+
+                                }).fail(function (e) {
+                                    console.log(e);
+                                }).always(function (e) {
+                                });
+                                app.sqloperateresult = "执行成功" 
+                            }
+                            else {
+                                app.dbcmdokstring = "text-danger";
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.isshowtbDlg = false;
+                            getdatatablelist();
+                        });
+                    }
+                },
+                addtable() {
+                    var reobj = { TableName: '', IsPrimarykey: true, ColumnDescription: '', DbColumnName: 'Id', DataType: 'int', Length: 4, DefaultValue: null, IsNullable: false, DecimalDigits: null };
+                    this.edittbcolmnDefinits.push(reobj)
+                    this.isshowtbDlg = true;
+                    this.currentaction = "addtb";
+                },
+                deltbrow(index) {
+                    this.edittbcolmnDefinits.splice(index, 1);
+                },
+                savedlg() {
+                    var id = 0;
+                    var keynaem=''
+                    var newvalue = {};
+                    for (let i = 0; i < this.displayeditobjs.length; i++) {
+                        var column = this.displayeditobjs[i];
+                        if (column.title.toLowerCase() == "id") {
+                            //if (this.currentaction == "edit") {
+                            //    newvalue = column.value;
+                            //}
+                            keynaem = column.title;
+                            id = column.value;
+                        }
+                        else if (column.IsNullable) {
+                            var dbtypestring = column.dbtype.toLowerCase();
+                            if (column.isSetNull == "notnull") {
+
+                                if (column.value != null) {
+
+                                    if (column.value == '') {
+
+                                        if (dbtypestring == "int" || dbtypestring == "bigint" || dbtypestring == "decimal" || dbtypestring == "float" || dbtypestring == "double") {
+                                            newvalue[column.title] = null;
+                                        }
+                                        else if (dbtypestring == "tinyint") {
+                                            if (app.dbtype == "mysql") {
+                                                newvalue[column.title] = false;
+                                            }
+                                        }
+                                        else if (dbtypestring == "boolean") {
+                                            newvalue[column.title] = false;
+                                        }
+                                        else if (dbtypestring == "bit") {
+                                            newvalue[column.title] = false;
+                                        }
+                                        else {
+                                            newvalue[column.title] = column.value;
+                                        }
+                                    }
+                                    else {
+
+                                        //if (dbtypestring == "tinyint") {
+                                        //    if (app.dbtype == "mysql") {
+                                        //        newvalue[column.title] = true;
+                                        //    }
+                                        //}
+                                        //else if (dbtypestring == "bit") {
+                                        //    if( clo)
+                                        //    newvalue[column.title] = true;
+                                        //}
+                                        //else {
+                                            newvalue[column.title] = column.value
+                                       // }
+
+                                    }
+
+                                }
+                                else {  //值为空 并且不是必须的
+
+
+
+                                    if (column.dbtype == "int" || column.dbtype == "bigint" || column.dbtype == "decimal" || column.dbtype == "float" || column.dbtype == "double") {
+                                        newvalue[column.title] = null;
+                                    }
+                                    else if (dbtypestring == "tinyint") {
+                                        if (app.dbtype == "mysql") {
+                                            newvalue[column.title] = false;
+                                        }
+                                        else {
+                                            newvalue[column.title] = null;
+                                        }
+
+                                    }
+                                    else if (dbtypestring == "boolean") {
+                                        newvalue[column.title] = false;
+                                    }
+                                    else if (dbtypestring == "bit") {
+                                        newvalue[column.title] = false;
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if (column.value == null) {
+                                alert(column.title + "值不能为空");
+                                return false;
+                            }
+                            else {
+                                newvalue[column.title] = column.value
+                            }
+                        }
+
+                    }
+                    if (this.currentaction == "add") {
+
+                        var data = {
+                            tablename: this.selecttablename,
+                            keyvalue: JSON.stringify(newvalue),
+                            keyValues: newvalue,
+                            sqlconnestring: this.selecteddb
+                        }
+                        $.post("AddDBRow", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+
+                                //app.isdbcmdok = true;
+                                app.sqloperateresult = "执行成功"
+
+                            }
+                            else {
+                                app.dbcmdokstring = "text-danger";
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.gettabledata(app.selecttablename)
+                        });
+                    }
+                    else if (this.currentaction == "editrow") {
+
+
+
+                        var newvalue = {};
+                        for (let i = 0; i < this.displayeditobjs.length; i++) {
+                            var column = this.displayeditobjs[i];
+                            this.selectDataRow[column.title] = column.value
+                            newvalue[column.title] = column.value
+
+                        }
+                        var data = {
+                            tablename: this.selecttablename,
+                            key: keynaem,
+                            id: id,
+                            keyvalue: JSON.stringify(newvalue),
+                            sqlconnestring: this.selecteddb
+                        }
+                        $.post("UpdateDBRow", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+
+                                //app.isdbcmdok = true;
+                                app.sqloperateresult = "执行成功"
+
+                            }
+                            else {
+                                app.dbcmdokstring = "text-danger";
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.gettabledata(app.selecttablename)
+                        });
+                    }
+
+                    this.isshowDlg = false;
+                },
+                cancldlg() {
+                    this.isshowDlg = false;
+                },
+                adddbrow() {
+                    this.currentaction = "add"
+                    this.selectDataRow = null;
+                    this.isshowDlg = true;
+                },
+                AddnetDB() {
+
+                },
+                delrow(row) {
+                    if (!confirm("是否确定删除")) {
+                        return false;
+                    }
+                    var id = 0;
+                    for (let key in row) {
+                        if (key.toLowerCase() == "id" )
+                        {
+                            id = row[key];
+                        }
+                    }
+                    if (id == 0) {
+                        alert("没有id，无法删除")
+                        return false;
+                    }
+
+                    var data = { tablename: this.selecttablename, id: row.Id, sqlconnestring: this.selecteddb }
+                    $.post("DelDBRow", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+                            if (jsonResult.data.length > 0) {
+
+                                app.sqloperateresult = "执行成功"
+                            }
+                            else {
+                                app.sqloperateresult = "执行失败"
+                            }
+                            //app.isdbcmdok = true;
+
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                        app.gettabledata(app.selecttablename)
+                    });
+                },
+                edittableinfo() {
+                    this.currentaction = "editable"
+                    this.selectDataRow = row;
+                    this.isshowtbDlg = true;
+                },
+                editrow(row) {
+                    this.currentaction="editrow"
+                    this.selectDataRow = row;
+                    this.isshowDlg = true;
+                },
+             
+                gettabledata(tbname) {
+                    app.returndata = [];
+                    var data = { cmd: "select  * from " + tbname, sqlconnestring: this.selecteddb }
+                    $.post("ExcuteCmd", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+
+                            if (jsonResult.data.length > 0) {
+                                app.returndata = jsonResult.data;
+                            }
+
+                            //app.isdbcmdok = true;
+                            app.sqloperateresult = "执行成功"
+                        }
+                        else {
+                            app.dbcmdokstring = "text-danger";
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                    });
+                },
+                setvuedate(index, event) {
+                    this.displayeditobjs[index].value = $(event.target).val();
+                },
+                selecttable(tableinfo) {
+                    this.selecttablename = tableinfo.Name;
+                    var data = {   sqlconnestring: app.selecteddb, tname: tableinfo.Name  }
+                    $.get("GetColumnList", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+                            if (jsonResult.data.length > 0) {
+                                app.returncolumnlist  = jsonResult.data;
+                            }
+                            //app.isdbcmdok = true;
+                            app.sqloperateresult = "执行成功"
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                    });
+                },
+                excutecmd( ) {
+                    var excutecmdtext = this.excutecmdtext;
+                    if ($.trim(excutecmdtext.toLowerCase()).indexOf("delete") == 0) {
+                        if(!confirm("是否要执行删除操作"))
+                        {
+                            return false;
+                        }
+                    }
+                    var data = { cmd: excutecmdtext, sqlconnestring: this.selecteddb }
+                    $.post("ExcuteCmd", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+                            if (jsonResult.data.length > 0) {
+                                app.returndata = jsonResult.data;
+                            }
+                            //app.isdbcmdok = true;
+                            app.sqloperateresult="执行成功"
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                    });
+
+                },
+                watchcolumn(newvalue) {
+                    if (this.returncolumnlist.length > 0) {
+                        this.displayeditobjs = [];
+
+                        for (let i = 0; i < this.returncolumnlist.length; i++) {
+                            var column = this.returncolumnlist[i];
+                            if (newvalue != null) {
+                                for (let key in newvalue) {
+                                    if (column.DbColumnName == key) {
+                                        var reobj = { title: '', value: '', dbtype: '', isSetNull: "null", IsNullable: true };
+                                        reobj.title = key
+
+                                        reobj.value = newvalue[key]
+                                        reobj.leng = column.Length;
+                                        reobj.dbtype = column.DataType
+                                        reobj.IsNullable = column.IsNullable;
+                                        if (newvalue[key] == null) {
+                                            if (!reobj.IsNullable) {
+                                                reobj.isSetNull = "notnull"
+                                            }
+                                        }
+                                        else{
+                                            reobj.isSetNull = "notnull"
+                                        }
+                                        this.displayeditobjs.push(reobj);
+                                        break;
+                                    }
+                                }
+                            }
+                            else {
+                                var reobj = { title: '', value: '', dbtype: '', isSetNull: "null", IsNullable: true };
+                                reobj.title = column.DbColumnName
+                                reobj.leng = column.Length;
+                                reobj.dbtype = column.DataType;
+                                reobj.IsNullable = column.IsNullable;
+                                if (!column.IsNullable) {
+                                    reobj.isSetNull = "notnull"
+                                }
+                                this.displayeditobjs.push(reobj);
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        $(function () {
+
+            getdatatablelist();
+        })
+
+    </script>
+
+}

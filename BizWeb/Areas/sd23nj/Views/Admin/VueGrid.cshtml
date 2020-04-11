@@ -1,0 +1,280 @@
+﻿@{
+    Layout = "../Shared/_VueLayout.cshtml";
+    ViewData["Title"] = "usermng";
+}
+
+<div class="row" id="app">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>天气管理<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                    <!-- 			<div class="row">
+                                    <a href="/platform/SortAdd" class="btn btn-success" style="margin-left:10px;">添加</a>
+                                </div> -->
+                    <form method="post" action="javascript:void(0)">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="dataTables_length" id="datatable_length">
+                                    <label>
+                                        显示
+                                        <select v-model="page_size" class="form-control input-sm" v-on:change="update(page=1)">
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select> 条记录
+                                    </label>
+                                    <button type="button" class="btn btn-success" v-on:click="changeAdd()">添加</button></label>
+                                </div>
+                            </div>
+
+
+                            <!-- 				<div class="col-sm-6">
+                                                <div id="datatable_filter" class="dataTables_filter">
+                                                <label>
+
+                                                </div>
+                                            </div> -->
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                        </div>
+                    </form>
+
+                    <div style=" margin-left: 500px; width: 200px; float: left">
+                        <div class="col-xs-12" style=" width: 600px">
+                            <div style="font-size: 20px;margin-bottom: 20px;text-align: center;">天气 @@{edit}</div>
+                            <div class="input-group">
+                                <input name="class_id" class="form-control" name="platform_id" v-model="url" @@keyup.enter="insert()">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" v-on:click="insert()">@@{edit}</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <table id="datatable" class="table table-striped content-text">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>天气</th>
+                                <th>排序</th>
+
+                                <th>是否失效</th>
+
+                                <th width="10%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text" v-for="(lists,key) in list">
+                                <td>@@{lists.id}</td>
+                                <td>@@{lists.title}</td>
+                                <td><input type="number" v-model="list[key].sort" v-on:blur="changeSort(lists)" style="width: 50px;height: 20px;"></td>
+                                <td>@@{lists.status == 0 ? '是' : '否'}</td>
+                                <td>
+                                    <a href="javascript:;" v-on:click="del(lists)" class="btn btn-danger btn-xs del"><i class="fa fa-trash-o"></i> 删除 </a>
+                                    <a href="javascript:;" v-on:click="change(lists,key)" class="btn btn-info btn-xs del"><i class="fa fa-trash-o"></i> 编辑 </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <nav aria-label="Page navigation" v-if="total_page>1">
+                                    <ul class="pagination">
+                                        <li v-on:click="up()" :class="page==1?'disabled':''" :disabled="page==1?'disabled':''">
+                                            <a href="javascript:void(0)" aria-label="上一页">
+                                                <span aria-hidden="true">上一页</span>
+                                            </a>
+                                        </li>
+
+                                        <li v-if="total_page>1" v-for="index in total_page" v-on:click="current(index)" :class="page == index?'disabled':''" :disabled="page == index?'disabled':''"><a href="javascript:void(0)">@@{index}</a></li>
+                                        <li @@click="down()" :class="page==total_page?'disabled':''" :disabled="page==total_page?'disabled':''">
+                                            <a href="javascript:void(0)" aria-label="下一页">
+                                                <span aria-hidden="true">下一页</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script>
+	new Vue({
+        el: '#app',//必须给定节点，只对节点内的内容有效
+        delimiters:['@@{', '}'],//修改vue的语法标记
+        data: {
+            list:[],
+            id:'',
+            page_size:15,
+	    page:1,
+	    total_page:'',
+            type:'',
+            url:'',
+            status:'',
+            edit:'添加',
+            sort:0,
+            key:0
+
+
+        },
+        mounted:function () {
+            this.update();
+
+        },
+       methods: {
+
+           // 上一页
+           up:function () {
+               this.page--;
+
+               if(this.page>1){
+                   this.update();
+               }else{
+                   this.page=1;
+               }
+           },
+           //下一页
+           down:function () {
+               this.page++;
+               if(this.page<this.total_page){
+                   this.update();
+               }else{
+                   this.page = this.total_page ;
+               }
+           },
+           // 当前页
+           current:function (page) {
+               if(this.page !== page){
+                   this.page = page;
+                   this.update();
+               }
+
+           },//加载 数据
+   	        update:function () {
+
+		       var that = this;
+		       var page_size = this.page_size;
+		       $.post('/weather/{{$appid}}?page='+this.page,{'_token':'{{csrf_token()}}',page_size:page_size}, function (res) {
+	         	that.list = res.data.data;
+	         	that.total_page = res.total_page;
+
+	           }, 'json');
+	       	},
+
+           insert:function () {
+               var that = this;
+
+
+               $.post('/move/add',{'_token': '{{csrf_token()}}',url:that.url,id:that.id,'appid':'{{$appid}}'}, function (res) {
+                   if(res!==0){
+                       alert("操作成功");
+
+                       if(that.key==0){
+                           that.list.push({
+                               title:that.url,
+				id:res,
+				sort:0,
+				status:0
+						   })
+
+					   }if(that.key!=0){
+                    //替换数组指定键  的 内容
+                           that.list.splice(that.key,1,{
+                               title:that.url,
+                               id:that.id,
+                               sort:that.url,
+                               status:that.status
+                           })
+
+
+					   }
+                       // console.log( that.list[that.key]);
+
+
+                   }else{
+                       alert("操作失败");
+                   }
+
+               })
+
+           },
+           change:function (index,key) {
+               console.dir(index);
+               var that = this;
+               that.url = index.title
+               that.edit = '修改';
+               that.key = key;
+               that.status = index.status;
+               that.id = index.id;
+               that.sort = index.sort;
+
+
+           },
+           changeAdd:function () {
+               var that = this;
+               that.url = '';
+               that.edit = '添加';
+           },
+		   // 排序
+		   changeSort:function (index) {
+               var sort = index.sort
+               var id = index.id
+               $.post('/move/sUpdate', {'_token':'{{csrf_token()}}', 'id' : id,'sort':sort}, function(res) {
+                   if (res == 1) {
+                       alert("修改成功");
+                       location.reload();
+
+                   } else {
+                       alert("修改失败");
+                       // window.location.href
+
+                   }
+               })
+
+           },
+		    del:function(lists){
+		    var that = this;
+		    var id = lists.id;
+				bootbox.confirm({
+					title: "系统提示",
+					message: "确定删除吗?",
+					callback: function (result) {
+						if (result) {
+							$.post('/move/del', {'_token':'{{csrf_token()}}', 'id' : id}, function(res){
+								if(res == 1){
+									alert("删除成功");
+                                    const todosIndex = that.list.indexOf(lists)
+                                    //删除数据的方法
+                                    that.list.splice(todosIndex, 1)
+
+
+								}else{
+									alert("删除失败");
+									// window.location.href
+
+								}
+							});
+						}
+					},
+					buttons: {
+						"cancel": {"label": "取消"},
+						"confirm": {
+							"label": "确定",
+							"className": "btn-danger"
+						}
+					}
+				});
+		    }
+        }
+
+	})
+    </script> 
+}

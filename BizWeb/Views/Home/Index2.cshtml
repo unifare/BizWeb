@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+    <div class="text-center">
+        <div>
+            直接跳到 <a href="/home/odic_login">private</a>页面是mvc授权登录，用于访问这个域名内系统内的action，api
+        </div>
+        <div>
+            <a href="/home/odic_login">odic-js插件登录</a>，这个只能用于访问第三方域名系统内的api
+        </div>
+        <div>
+            //纯js登录获取token ， 可以自定义登录界面， 这个也是只能用于访问第三方域名系统内的api,而且没法强制作废，就是无法注销
+            <div>login</div>
+            <div>user  <input type="text" id="username" /></div>
+            <div>password <input type="password" id="password" /></div>
+            <div>
+                <input type="button" value="Login" onclick="login()" />
+            </div>
+        </div>
+
+    </div>
+
+@section Scripts{
+    <script>
+        function login() {
+
+            var accessToken = localStorage.getItem("accessToken");
+            var refreshToken = localStorage.getItem("refreshToken");
+            if (typeof (refreshToken) == "undefined") {
+                refreshToken = null;
+            }
+            var urlData = {
+                userName: $("#username").val(), password: $("#password").val(), refreshToken: refreshToken
+            };
+            $.ajax({
+                type: "post",
+                url: "/ApiAcount/login",
+
+                dataType: "json",
+                data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    if (jsonResult.response.AccessToken != "") {
+                        localStorage.setItem("accessToken", jsonResult.response.AccessToken);
+                        localStorage.setItem("refreshToken", jsonResult.response.RefreshToken);
+                        location.href = "/home/UserWelcome"
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+    </script>
+}

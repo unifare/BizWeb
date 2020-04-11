@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    <div>login</div>
+    <div>username <input type="text" id="username" /></div>
+    <div>password <input type="password" id="password" /></div>
+    <div>
+        <input type="button" value="Login" onclick="login()" />
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function login() {
+
+            var accessToken = localStorage.getItem("accessToken");
+            var refreshToken = localStorage.getItem("refreshToken");
+            if (typeof (refreshToken) == "undefined") {
+                refreshToken = null;
+            }
+            var urlData = {
+                userName: $("#username").val(), password: $("#password").val(), refreshToken: refreshToken
+            };
+            $.ajax({
+                type: "post",
+                url: "/api/Account",
+
+                dataType: "json",
+                data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    if (jsonResult.accessToken != "") {
+                        localStorage.setItem("accessToken", jsonResult.Json.access_token);
+                        localStorage.setItem("refreshToken", jsonResult.Json.refresh_token);
+                        location.href = "/home/test"
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+    </script>
+}

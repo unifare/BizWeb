@@ -1,0 +1,96 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AlipayPlugin.json" />
+    <None Remove="AlipayPlugin.mig" />
+    <None Remove="tmpl\alipaysetting.html" />
+    <None Remove="wwwroot\ali.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AlipayPlugin.mig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="AlipayPlugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="tmpl\alipaysetting.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\ali.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UniOrm.Application\UniOrm.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>libs\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.Alipay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.Alipay.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.JDPay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.JDPay.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.LianLianPay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.LianLianPay.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.QPay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.QPay.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.Security">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.UnionPay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.UnionPay.dll</HintPath>
+    </Reference>
+    <Reference Include="Essensoft.AspNetCore.Payment.WeChatPay">
+      <HintPath>libs\Essensoft.AspNetCore.Payment.WeChatPay.dll</HintPath>
+    </Reference>
+    <Reference Include="QRCoder">
+      <HintPath>libs\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel">
+      <HintPath>libs\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention">
+      <HintPath>libs\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting">
+      <HintPath>libs\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime">
+      <HintPath>libs\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>libs\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common">
+      <HintPath>libs\System.Drawing.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+</Project>

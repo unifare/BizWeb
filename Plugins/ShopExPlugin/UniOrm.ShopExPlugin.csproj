@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>UniOrm.ShopExPlugin</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ShopExPlugin.json" />
+    <None Remove="ShopExPlugin.mig" />
+    <None Remove="ShopExStaticWeb\index.cshtml" />
+    <None Remove="ShopExStatic\index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ShopExPlugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShopExPlugin.mig">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="ShopExStaticWeb\index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ShopExStatic\index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\DTO\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UniOrm.Common\UniOrm.Common.csproj" />
+  </ItemGroup>
+
+</Project>

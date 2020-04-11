@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "../Shared/_AdminBaseLayout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+@section css{
+
+} <div class="layui-row">
+    <div class="layui-col-xs12 layui-col-md4">
+        <table class="layui-hide" id="test"></table> 
+    </div>
+    <div class="layui-col-xs12 layui-col-md4">
+        <div class="grid-demo">移动：6/12、桌面：4/12</div>
+    </div>
+     
+</div>
+
+
+@section Scripts{
+
+    <script>
+        var table;
+        ; !function () {
+            var layer = layui.layer
+                , form = layui.form;
+
+            table = layui.table;
+
+            //table.render({
+            //  elem: '#test'
+            //  ,url:'/api/Fact/GetAllTrigers'
+            //  ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            //  ,cols: [[
+            //    {field:'Id', width:80, title: 'ID', sort: true}
+            //    ,{field:'RuleName', width:80, title: '规则名称'}
+            //    ,{field:'Rule', width:80, title: '规则', sort: true}
+            //    ,{field:'HttpMethod', width:80, title: '获取方式'}
+
+            //    ,{field:'AddTime', title: '添加时间'}
+            //  ]]
+            //});
+        }();
+    </script>
+
+    <script>
+        function GetAllTrigers() {
+            $.ajax({
+                type: "get",
+                url: "/api/Fact/GetAllTrigers",
+                dataType: "json",
+                //data: urlData,
+                async: true,
+                success: function (jsonResult) {
+                    table.render({
+                        elem: '#test'
+                        , data: jsonResult
+                        , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                        , cols: [[
+                            { field: 'Id', width: 50, title: 'ID', sort: true }
+                            , { field: 'RuleName', width: 80, title: '规则名称' }
+                            , { field: 'Rule', width: 120, title: '规则', sort: true }
+                            , { field: 'HttpMethod', width: 100, title: '获取方式' }
+
+                            , { field: 'AddTime', title: '添加时间' }
+                        ]]
+                    });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+        $(function () {
+            GetAllTrigers();
+        })
+    </script>
+}

@@ -1,0 +1,1702 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ueditor.gqc.json" />
+    <None Remove="ueditor.json" />
+    <None Remove="upload\TextFile1.txt" />
+    <None Remove="Views\KindEditor\Index.cshtml" />
+    <None Remove="Views\Shared\_KindEditorLayout.cshtml" />
+    <None Remove="Views\Shared\_UEditorLayout.cshtml" />
+    <None Remove="Views\Ueditor\Index.cshtml" />
+    <None Remove="WebEditorPlugins.json" />
+    <None Remove="wwwroot\lib\kindeditor\attached\image\20150411\20150411200740_9205.jpg" />
+    <None Remove="wwwroot\lib\kindeditor\kindeditor-all-min.js" />
+    <None Remove="wwwroot\lib\kindeditor\kindeditor-all.js" />
+    <None Remove="wwwroot\lib\kindeditor\kindeditor-min.js" />
+    <None Remove="wwwroot\lib\kindeditor\kindeditor.js" />
+    <None Remove="wwwroot\lib\kindeditor\lang\ar.js" />
+    <None Remove="wwwroot\lib\kindeditor\lang\en.js" />
+    <None Remove="wwwroot\lib\kindeditor\lang\ko.js" />
+    <None Remove="wwwroot\lib\kindeditor\lang\zh_CN.js" />
+    <None Remove="wwwroot\lib\kindeditor\lang\zh_TW.js" />
+    <None Remove="wwwroot\lib\kindeditor\license.txt" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\anchor\anchor.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\autoheight\autoheight.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\baidumap\baidumap.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\baidumap\index.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\baidumap\map.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\clearhtml\clearhtml.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\code\code.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\code\prettify.css" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\code\prettify.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\emoticons.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\0.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\1.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\10.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\100.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\101.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\102.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\103.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\104.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\105.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\106.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\107.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\108.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\109.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\11.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\110.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\111.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\112.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\113.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\114.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\115.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\116.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\117.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\118.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\119.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\12.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\120.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\121.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\122.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\123.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\124.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\125.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\126.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\127.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\128.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\129.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\13.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\130.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\131.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\132.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\133.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\134.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\14.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\15.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\16.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\17.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\18.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\19.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\2.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\20.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\21.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\22.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\23.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\24.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\25.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\26.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\27.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\28.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\29.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\3.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\30.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\31.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\32.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\33.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\34.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\35.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\36.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\37.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\38.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\39.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\4.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\40.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\41.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\42.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\43.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\44.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\45.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\46.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\47.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\48.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\49.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\5.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\50.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\51.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\52.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\53.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\54.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\55.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\56.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\57.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\58.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\59.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\6.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\60.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\61.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\62.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\63.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\64.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\65.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\66.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\67.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\68.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\69.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\7.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\70.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\71.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\72.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\73.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\74.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\75.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\76.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\77.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\78.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\79.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\8.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\80.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\81.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\82.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\83.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\84.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\85.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\86.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\87.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\88.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\89.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\9.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\90.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\91.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\92.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\93.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\94.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\95.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\96.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\97.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\98.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\99.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\emoticons\images\static.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\filemanager.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\images\file-16.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\images\file-64.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\images\folder-16.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\images\folder-64.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\filemanager\images\go-up.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\flash\flash.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\image\image.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\image\images\align_left.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\image\images\align_right.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\image\images\align_top.gif" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\image\images\refresh.png" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\insertfile\insertfile.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\lineheight\lineheight.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\link\link.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\map\map.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\map\map.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\media\media.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\multiimage\images\image.png" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\multiimage\images\select-files-en.png" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\multiimage\images\select-files-zh_CN.png" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\multiimage\images\swfupload.swf" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\multiimage\multiimage.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\pagebreak\pagebreak.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\plainpaste\plainpaste.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\preview\preview.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\quickformat\quickformat.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\table\table.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\template\html\1.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\template\html\2.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\template\html\3.html" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\template\template.js" />
+    <None Remove="wwwroot\lib\kindeditor\plugins\wordpaste\wordpaste.js" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\anchor.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\blank.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\flash.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\loading.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\media.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\common\rm.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\default\background.png" />
+    <None Remove="wwwroot\lib\kindeditor\themes\default\default.css" />
+    <None Remove="wwwroot\lib\kindeditor\themes\default\default.png" />
+    <None Remove="wwwroot\lib\kindeditor\themes\qq\editor.gif" />
+    <None Remove="wwwroot\lib\kindeditor\themes\qq\qq.css" />
+    <None Remove="wwwroot\lib\kindeditor\themes\simple\simple.css" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\index.html" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\ueditor.all.js" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\ueditor.all.min.js" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\ueditor.config.js" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\ueditor.parse.js" />
+    <None Remove="wwwroot\lib\ueditor-1.4.3.3\ueditor.parse.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ueditor.gqc.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\kindeditor-all-min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\kindeditor-all.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\kindeditor-min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\kindeditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\license.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\qq\editor.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\qq\qq.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\kindeditor\plugins\wordpaste\wordpaste.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\anchor.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\blank.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\flash.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\media.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\common\rm.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\default\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\default\default.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\default\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\themes\simple\simple.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UniOrm.Common\UniOrm.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\KindEditor\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\Shared\_KindEditorLayout.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\Shared\_UEditorLayout.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Ueditor\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebEditorPlugins.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="upload\TextFile1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ueditor.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\lang\ar.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\lang\en.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\lang\ko.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\lang\zh_CN.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\lang\zh_TW.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\anchor\anchor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\autoheight\autoheight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\baidumap\baidumap.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\baidumap\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\baidumap\map.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\clearhtml\clearhtml.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\code\code.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\code\prettify.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\code\prettify.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\emoticons.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\0.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\1.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\10.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\100.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\101.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\102.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\103.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\104.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\105.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\106.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\107.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\108.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\109.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\11.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\110.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\111.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\112.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\113.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\114.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\115.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\116.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\117.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\118.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\119.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\12.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\120.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\121.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\122.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\123.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\124.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\125.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\126.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\127.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\128.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\129.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\13.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\130.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\131.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\132.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\133.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\134.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\14.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\15.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\16.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\17.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\18.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\19.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\2.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\20.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\21.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\22.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\23.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\24.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\25.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\26.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\27.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\28.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\29.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\3.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\30.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\31.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\32.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\33.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\34.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\35.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\36.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\37.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\38.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\39.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\4.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\40.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\41.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\42.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\43.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\44.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\45.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\46.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\47.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\48.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\49.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\5.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\50.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\51.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\52.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\53.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\54.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\55.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\56.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\57.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\58.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\59.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\6.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\60.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\61.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\62.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\63.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\64.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\65.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\66.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\67.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\68.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\69.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\7.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\70.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\71.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\72.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\73.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\74.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\75.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\76.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\77.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\78.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\79.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\8.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\80.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\81.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\82.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\83.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\84.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\85.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\86.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\87.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\88.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\89.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\9.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\90.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\91.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\92.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\93.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\94.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\95.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\96.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\97.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\98.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\99.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\emoticons\images\static.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\filemanager.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\images\file-16.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\images\file-64.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\images\folder-16.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\images\folder-64.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\filemanager\images\go-up.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\flash\flash.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\image\image.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\image\images\align_left.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\image\images\align_right.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\image\images\align_top.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\image\images\refresh.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\insertfile\insertfile.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\lineheight\lineheight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\link\link.js" />
+    <Content Include="wwwroot\lib\kindeditor\plugins\map\map.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\map\map.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\media\media.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\multiimage\images\image.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\multiimage\images\select-files-en.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\multiimage\images\select-files-zh_CN.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\multiimage\images\swfupload.swf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\multiimage\multiimage.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\pagebreak\pagebreak.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\plainpaste\plainpaste.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\preview\preview.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\quickformat\quickformat.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\table\table.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\template\html\1.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\template\html\2.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\template\html\3.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\kindeditor\plugins\template\template.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\attachment.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\attachment.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\attachment.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_chm.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_default.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_doc.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_exe.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_jpg.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_mp3.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_mv.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_pdf.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_ppt.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_psd.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_rar.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_txt.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\fileTypeImages\icon_xls.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\alignicon.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\alignicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\file-icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\file-icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\progress.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\success.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\attachment\images\success.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\background\background.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\background\background.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\background\background.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\background\images\bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\background\images\success.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\chart.config.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\charts.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\charts.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\charts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\charts\images\charts5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\emotion.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\emotion.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\emotion.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\0.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\bface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\cface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\fface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\jxface2.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\neweditor-tab-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\tface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\wface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\emotion\images\yface.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\help\help.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\help\help.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\help\help.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\image.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\image.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\image.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\alignicon.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\progress.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\success.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\image\images\success.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\insertframe\insertframe.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\map\map.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\map\show.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\music\music.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\music\music.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\music\music.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\preview\preview.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\addimg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\brush.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\delimg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\delimgH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\empty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\emptyH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\eraser.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\redo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\redoH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\scale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\scaleH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\size.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\undo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\images\undoH.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\scrawl.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\scrawl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\scrawl\scrawl.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\searchreplace\searchreplace.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\searchreplace\searchreplace.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\snapscreen\snapscreen.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\spechars\spechars.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\spechars\spechars.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\config.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\bg.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\pre0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\pre1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\pre2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\pre3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\images\pre4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\template.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\template.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\template\template.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\center_focus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\file-icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\file-icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\left_focus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\none_focus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\progress.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\right_focus.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\success.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\images\success.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\video.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\video.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\video\video.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\webapp\webapp.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\wordimage\fClipboard_ueditor.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\wordimage\imageUploader.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\wordimage\tangram.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\wordimage\wordimage.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\wordimage\wordimage.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\en.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\addimage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\alldeletebtnhoverskin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\alldeletebtnupskin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\button.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\copy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\deletedisable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\deleteenable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\listbackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\localimage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\music.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\rotateleftdisable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\rotateleftenable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\rotaterightdisable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\rotaterightenable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\en\images\upload.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\zh-cn\images\copy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\zh-cn\images\localimage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\zh-cn\images\music.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\zh-cn\images\upload.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\lang\zh-cn\zh-cn.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\css\ueditor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\css\ueditor.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\dialogbase.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\anchor.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\arrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\arrow_down.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\arrow_up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\button-bg.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\cancelbutton.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\charts.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\cursor_h.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\cursor_h.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\cursor_v.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\cursor_v.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\dialog-title-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\filescan.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\highlighted.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\icons-all.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\icons.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\icons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\loaderror.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\loading.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\lock.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\neweditor-tab-bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\pagebreak.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\scale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\sortable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\spacer.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\sparator_v.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\table-cell-align.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\tangram-colorpicker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\toolbar_bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\unhighlighted.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\upload.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\videologo.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\word.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\default\images\wordpaste.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\themes\iframe.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\codemirror\codemirror.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\codemirror\codemirror.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\mootools-adapter.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\mootools-adapter.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\prototype-adapter.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\prototype-adapter.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\standalone-framework.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\adapters\standalone-framework.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\highcharts-more.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\highcharts-more.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\highcharts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\highcharts.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\annotations.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\annotations.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\canvas-tools.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\canvas-tools.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\data.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\data.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\drilldown.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\drilldown.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\exporting.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\exporting.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\funnel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\funnel.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\heatmap.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\heatmap.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\map.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\map.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\no-data-to-display.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\modules\no-data-to-display.src.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\themes\dark-blue.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\themes\dark-green.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\themes\gray.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\themes\grid.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\highcharts\themes\skies.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\jquery-1.10.2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\jquery-1.10.2.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\jquery-1.10.2.min.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\snapscreen\UEditorSnapscreen.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\SyntaxHighlighter\shCore.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\SyntaxHighlighter\shCoreDefault.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\font\vjs.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\font\vjs.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\font\vjs.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\font\vjs.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\video-js.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\video-js.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\video-js.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\video.dev.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\video-js\video.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\Uploader.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.custom.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.custom.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.flashonly.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.flashonly.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.html5only.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.html5only.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.withoutimage.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\webuploader\webuploader.withoutimage.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\xss.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\zeroclipboard\ZeroClipboard.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\zeroclipboard\ZeroClipboard.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\third-party\zeroclipboard\ZeroClipboard.swf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\ueditor.all.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\ueditor.all.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\ueditor.config.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\ueditor.parse.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\ueditor.parse.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\internal.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\dragicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\edittable.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\edittable.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\edittable.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\edittd.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\table\edittip.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\link\link.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\kindeditor\attached\image\20150411\20150411200740_9205.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="wwwroot\lib\ueditor-1.4.3.3\dialogs\gmap\gmap.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

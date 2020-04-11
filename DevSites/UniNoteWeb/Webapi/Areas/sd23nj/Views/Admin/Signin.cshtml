@@ -1,0 +1,38 @@
+﻿@{
+  
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <div>login</div>
+    <div>username <input type="text" id="username" /></div>
+    <div>password <input type="text" id="password" /></div>
+    <div >
+       <input type="button"  value="Login" onclick="login()" /> 
+    </div>
+</div>
+
+@section script{
+     <script>
+         function login() {
+             var urlData = {
+                 userName: $("#username").val(), password: $("#password").val(), ReturnUrl:"index"}
+             $.ajax({
+                 type: "post",
+                 url: "Login",
+                 dataType: "json",
+                 data: urlData,
+                 async: true,
+                 success: function (jsonResult) {
+
+                     if (jsonResult.isok == true) {
+                         location.href = "index";
+                     }
+                 },
+                 error: function () {
+
+                 }
+             });
+         }
+     </script>
+}

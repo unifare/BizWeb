@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+ login ok
+
+<button onclick="requestapi()">test</button>
+<textarea type="text" id="testr" cols="50" rows=10>
+</textarea>
+
+<button onclick="logout()">logout</button>
+<textarea type="text" id="loguouttr" cols="50" rows=10>
+</textarea>
+
+
+<button id="api" onclick="localApi()">Call API</button>
+<button id="apis" onclick="localApi2()">Call API2</button>
+@section Scripts{
+    <script src="~/js/oidc-client.js"></script>
+    <script src="~/js/oidcsetting.js"></script>
+    <script>
+        function localApi() {
+            var headers = {};
+            headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+
+            var url = "/api/values";
+            $.ajax({
+                type: "get",
+                url: url,
+                dataType: "json",
+                data: { test: 3333 },
+                headers: headers,
+                async: true,
+                success: function (jsonResult) {
+                    alert(JSON.stringify(jsonResult));
+                },
+                error: function (res) {
+
+                }
+            });
+
+
+        }
+
+        function localApi2() {
+
+            var headers = {};
+            headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+            var url = "http://localhost:6001/api/values";
+            $.ajax({
+                type: "get",
+                url: url,
+                dataType: "json",
+                data: { test: 3333 },
+                headers: headers,
+                async: true,
+                success: function (jsonResult) {
+                    alert(JSON.stringify(jsonResult));
+                },
+                error: function (res) {
+
+                }
+            });
+
+
+        }
+        mgr.getUser().then(function (user) {
+            if (user) {
+                $("#results").text("User logged in" + JSON.stringify(user.profile));
+            }
+            else {
+                $("#results").text("User not logged in");
+            }
+        });
+
+        function logout() {
+            var headers = {};
+            headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+            var data = { Token: localStorage.getItem('accessToken') };
+            $.ajax({
+                type: "get",
+                url: "/ApiAcount/SignOut",
+                //  headers: headers,
+                dataType: "json",
+                data: data,
+                async: true,
+                success: function (jsonResult) {
+
+                    $("#loguouttr").val(JSON.stringify(jsonResult))
+                    //if (jsonResult.accessToken != "") {
+                    //    localStorage.setItem("accessToken", jsonResult.response.AccessToken);
+                    //    localStorage.setItem("refreshToken", jsonResult.response.RefreshToken);
+                    //    location.href = "home/UserWelcome"
+                    //}
+                },
+                error: function () {
+
+                }
+            });
+        }
+        function requestapi() {
+            var headers = {};
+            headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+
+            $.ajax({
+                type: "get",
+                url: "http://uninote.66wave.com/api/values",
+                headers: headers,
+                dataType: "json",
+                //data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    $("#testr").val(JSON.stringify(jsonResult))
+                    //if (jsonResult.accessToken != "") {
+                    //    localStorage.setItem("accessToken", jsonResult.response.AccessToken);
+                    //    localStorage.setItem("refreshToken", jsonResult.response.RefreshToken);
+                    //    location.href = "home/UserWelcome"
+                    //}
+                },
+                error: function () {
+
+                }
+            });
+        }
+        console.log(localStorage.getItem("accessToken"));
+        console.log(localStorage.getItem("refreshToken"));
+    </script>
+
+}

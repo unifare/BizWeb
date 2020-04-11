@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@section css{
+    <link href="~/lib/easyui/themes/bootstrap/easyui.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+}
+<div id="cc" class="easyui-layout" data-options="fit:true">
+    <div id="content" region="north" split="false" border="false" minHeight="60px;" style="padding:5px;">
+        <div style="display:inline-block; "><div>logo</div> <div>后台管理系统</div></div> <div style="display:inline-block;float:right;"><a href="SignOut">注销</a></div>
+    </div>
+    <div region="west" split="true" title="Navigator" style="width:120px;">
+        <div id="sm" class="easyui-sidemenu"  ></div>
+    </div>
+    <div id="content" region="center" title="Language" style="padding:5px;">
+        <iframe src="urlmng" style="width:100%; height:100%; "  frameborder="0"></iframe>
+    </div>
+</div>
+@section script{
+    <script src="~/lib/easyui/jquery.easyui.min.js"></script>
+    <script>
+        var smdata = [{
+            text: '内容管理',
+            iconCls: 'fa fa-wpforms',
+            state: 'open',
+            children: [{
+                text: '栏目管理'
+            }, {
+                text: 'Wizard'
+            }, {
+                text: 'File Upload'
+            }]
+        }, {
+            text: 'Mail',
+            iconCls: 'fa fa-at',
+            selected: true,
+            children: [{
+                text: 'Inbox'
+            }, {
+                text: 'Sent'
+            }, {
+                text: 'Trash',
+                children: [{
+                    text: 'Item1'
+                }, {
+                    text: 'Item2'
+                }]
+            }]
+        }, {
+            text: '系统设置',
+            iconCls: 'fa fa-table',
+            children: [{
+                text: '路由设置'
+            }, {
+                text: '工作流设置'
+            }, {
+                text: 'Tabs'
+            }]
+        }];
+
+        var layout;
+        var pCenter;
+        $(function () {
+            layout = $('#cc').layout();
+            pCenter = $('#cc').layout('panel', 'center');
+            $('#sm').sidemenu({
+                data:smdata,
+                width: 120,
+                onSelect: function (e) {
+                    var text = e.text;
+                    var p = layout.layout('panel', 'center');
+                    switch (text) {
+                        case "栏目管理":
+                            break;
+                        case "路由设置":
+                            pCenter.panel('refresh', "urlmng"); 
+                            break;
+                    }
+                }
+            });
+        })
+    </script>
+}

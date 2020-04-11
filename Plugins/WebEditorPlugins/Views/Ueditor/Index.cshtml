@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "../Shared/_UEditorLayout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+@section css{
+
+}
+
+<h3>传统多页应用中使用Ueditor.Core</h3>
+<div class="row">
+    <div class="col-md-12">
+        <script id="container" name="content" type="text/plain">
+            欢迎使用Ueditor.Core
+        </script>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        var ue = UE.getEditor('container', {
+            initialFrameHeight: 500
+        });
+    </script>
+}

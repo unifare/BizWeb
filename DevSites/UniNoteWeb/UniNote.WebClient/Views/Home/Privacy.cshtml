@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+<form asp-action="test">
+    <input type="text" id="test" />
+    <input type="submit" value="form提交" />
+
+    <input type="button" onclick="eeeeeeee()" value="普通按钮" />
+
+    <textarea type="text" id="loguouttr" cols="50" rows=10>
+       
+</textarea>
+    <input type="button" onclick="requestapi()" value="普通按钮" />
+</form>
+<p></p>
+
+@section Scripts{ 
+    <script>
+        function requestapi() {
+            var headers = {};
+            headers.Authorization = 'Bearer ' + localStorage.getItem('accessToken');
+
+            $.ajax({
+                type: "get",
+                url: "http://oauth2.66wave.com/api/users",
+                headers: headers,
+                dataType: "json",
+                //data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    $("#testr").val(JSON.stringify(jsonResult))
+                    //if (jsonResult.accessToken != "") {
+                    //    localStorage.setItem("accessToken", jsonResult.response.AccessToken);
+                    //    localStorage.setItem("refreshToken", jsonResult.response.RefreshToken);
+                    //    location.href = "home/UserWelcome"
+                    //}
+                },
+                error: function () {
+
+                }
+            });
+        }
+        function eeeeeeee(){
+
+            $.ajax({
+                type: "post",
+                url: "/home/test",
+
+                dataType: "json",
+                data: {test:$("#test").val() },
+                async: true,
+                success: function (jsonResult) {
+                        alert("ok")
+                },
+                error: function (e) {
+                     alert("error")
+                }
+            });
+        }
+    </script>
+
+}

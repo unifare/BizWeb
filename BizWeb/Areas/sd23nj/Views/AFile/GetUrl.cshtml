@@ -1,0 +1,502 @@
+﻿@{
+    Layout = "../Shared/_KindEditorVueLayout.cshtml";
+    ViewData["Title"] = "文件管理";
+}
+
+@section css{
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+
+        table.tb_table {
+            border: 1px solid #ccc;
+            padding: 0;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+            table.tb_table td,
+            table.tb_table th {
+                height: 30px;
+                border: 1px solid #ccc;
+                background: #fff;
+                font-size: 15px;
+                padding: 3px 3px 3px 8px;
+            }
+
+        table th:first-child {
+            width: 30px;
+        }
+
+        .tb_container,
+        .st {
+            width: 1000px;
+            margin: 10px auto 0;
+            font-size: 13px;
+            font-family: 'Microsoft YaHei'
+        }
+
+            .tb_container .search {
+                font-size: 15px;
+                padding: 4px;
+                width:700px;
+            }
+
+            .tb_container .add {
+                padding: 5px 15px;
+            }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 6;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+            .overlay td:first-child {
+                width: 66px;
+            }
+
+            .overlay .con {
+                position: absolute;
+                width: 1200px;
+                min-height: 300px;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+                /*margin-top: -150px;*/
+                padding: 20px;
+            }
+    </style>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .vue-defualtpager {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+            .vue-defualtpager li {
+                list-style: none;
+            }
+
+            .vue-defualtpager a {
+                border: 1px solid #ddd;
+                text-decoration: none;
+                float: left;
+                padding: 6px 12px;
+                color: #337ab7;
+                cursor: pointer
+            }
+
+                .vue-defualtpager a:hover {
+                    background-color: #eee;
+                }
+
+                .vue-defualtpager a .banclick {
+                    cursor: not-allowed;
+                }
+
+            .vue-defualtpager .active a {
+                color: #fff;
+                cursor: default;
+                background-color: #337ab7;
+                border-color: #337ab7;
+            }
+
+            .vue-defualtpager i {
+                font-style: normal;
+                color: #d44950;
+                margin: 0px 4px;
+                font-size: 12px;
+            }
+
+            .vue-defualtpager .jumpbox .jumppage {
+                border: 1px solid #ddd;
+                margin-left: 40px;
+                height: 33px;
+                width: 40px;
+                float: left;
+            }
+
+            .vue-defualtpager .jumpbox .jumpbtn {
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+                .vue-defualtpager .jumpbox .jumpbtn:active {
+                    color: #337ab7;
+                }
+    </style>
+}
+
+<div class="tb_container" id="app">
+    <h1>抓取网页  </h1>
+    <div>
+       
+        网址<input type="text" placeholder="search" v-model="targeturl"   class="search">
+       
+     
+    </div>
+    <div>
+        <div>
+            静态文件夹名
+            <input type="text" placeholder="search"   v-model="resdirname" >
+        </div>
+        <div>
+            网页名
+            <input type="text" placeholder="search"  v-model="webpagename"  >
+        </div>
+        <div>
+            <input type="button"   class="add" @@click="GetUrl" value="开始"> 
+        </div>
+    </div>
+    
+    @*<script id="container" name="content" type="text/plain" style="display:none;">
+        </script>*@
+    <!----//子组件调用父级方法  v-on:子组件自定义事件名（必须小写，我。。。。。）="父级的方法名（可以大小写）" 还要在子组件的scripts里的方法里写  cancelDlg() {
+         v-on:subDlgSave="parentSave"这个不会成功。因为  subDlgSave 有大写。坑啊。。。
+                    this.$emit('subchange');  //发送 子组件自定义事件到上面绑定的 父级的方法  ，，，，，太绕了
+                },  麻烦啊 -->
+   
+
+</div>
+
+
+
+@section Scripts{
+
+   
+    <script type="text/javascript">
+      
+        var app = new Vue({
+            el: '#app',
+            data: {
+                targeturl:"",
+                resdirname: "test",
+                webpagename:"index1",
+                isShowUnzipdlg:false,
+                curentdirPath: "/",
+                selected: -1,
+                action: "file",
+                selectedlist: {},
+                slist: [],
+                searchlist: [],
+                pageCurrent: 1,
+                pageAll: 20,
+                totalBoxcChecked: false, //是否全选
+                checkedList: [], //双向数据绑定的数组，我是用的id
+                data: []
+            },
+            created() {
+                //this.getfiles("/");
+            },
+            mounted() { //mounted 是vue生命周期里 渲染完组件后的事件
+                $("#txt_contentid").append('  <textarea id="txtActiveInfo" style="height:300px; width:100%; display:none;"></textarea>');
+                   KindEditor.ready(function (K) {
+                            editor1 = K.create('#txtActiveInfo', {
+                                uploadJson: '@Url.Action("SaveFiles", "KindEditor")',
+                                fileManagerJson: '@Url.Action("FileManager", "KindEditor")',
+                                allowFileManager: true,
+                                autoHeightMode: false,
+                                newlineTag: 'br',
+                                autoWidthMode: true,
+                                afterCreate: function () {
+
+                                }
+                            });
+
+                    });
+            },
+            computed: {
+                indexs() {
+                    var left = 1;
+                    var right = this.pageAll;
+                    var arr = [];
+                    if (this.pageAll >= 7) {
+                        if (this.pageCurrent > 4 && this.pageCurrent < this.pageAll - 3) {
+                            left = this.pageCurrent - 3;
+                            right = this.pageCurrent + 3;
+                        } else if (this.pageCurrent <= 4) {
+                            left = 1;
+                            right = 7;
+                        } else {
+                            left = this.pageAll - 6;
+                            right = this.pageAll;
+                        }
+                    }
+                    while (left <= right) {
+                        arr.push(left);
+                        left++;
+                    }
+                    return arr;
+                }
+            },
+            methods: {
+
+                GetUrl(el) {
+                    var url = this.targeturl;
+                    if (url.length <= 0) {
+                        return;
+                    }
+                     $.get("GetUrlToLocal?indexname="+ encodeURIComponent(this.webpagename )+"&static_dirname="+ encodeURIComponent(this.resdirname )+"&url=" +encodeURIComponent(url)).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                Vue.set(app.data, app.selected, arr);
+                                app.selected = -1;
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+                },
+                checkAll() {
+                    if (this.totalBoxcChecked) {
+                        this.checkedList = [];
+                    } else {
+                        this.data.forEach((item) => {
+                            if (this.checkedList.indexOf(item.id) == -1) {
+                                this.checkedList.push(item.id)
+                            }
+                        })
+                    }
+                },
+                btnClick(num) {
+                    if (num != this.pageCurrent) {
+                        this.pageCurrent = num;
+                    }
+                },
+                pageClick() {
+                    console.log('现在是' + this.pageCurrent + '页')
+                },
+                pageSkip() {
+                    var maxPage = this.pageAll;
+                    var skipPage = Number(document.getElementsByClassName("jumppage")[0].value);
+                    console.log(typeof skipPage);
+                    if (!skipPage) {
+                        alert("请输入跳转页码");
+                        return;
+                    } else if (skipPage < 1 || skipPage > maxPage) {
+                        alert("您输入的页码超过页数范围了！");
+                        return;
+                    } else {
+                        //this.pageCurrent=skipPage;
+                        this.btnClick(skipPage);
+                        this.pageClick();
+                    }
+                },
+                EditFile(el,index) {
+                    this.selectedlist = el;
+                    this.action = "file"
+                    this.selected = index;
+                    app.changeOverlay();
+                    //$("#txtActiveInfo").show();
+
+                        $.get("GetFileContent?rePath=" + encodeURIComponent(el.RelatedPath)).done(function (jsonResult) {
+                            var con = jsonResult.content;
+
+                            editor1.html(con);
+                            //setTimeout(function () {
+                            //    ue.execCommand('insertHtml', con);
+                            //    //ue.setContent(con);
+                            //}, 1000);
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            // console.log(e);
+                        });
+
+
+
+                },
+                // 修改数据
+                openModifyDirDlg(index, el) {
+                    this.action= "dir",
+                    this.selected = index;
+                    this.selectedlist = this.data[index];
+
+                    this.changeOverlay();
+                },
+                // 点击保存按钮
+                parentSave(arr) {
+                    if (this.action == "add") {
+                        if (arr.IsTextFile == true) {
+                            arr.IsDirectry = false;
+
+                        }
+                        if (arr.IsDirectry == true) {
+
+                        }
+
+
+
+                    }
+                    else if (this.action == "file"){
+                        var fname = this.selectedlist.RelatedPath;
+
+                        var newtext = editor1.html( ); //editor1.html(con);
+                        var data = {
+                            path: fname,
+                            newfilename: this.selectedlist.Name,
+                            isdir: this.selectedlist.IsDirectry,
+                            istext:this. selectedlist.IsTextFile,
+                            context: newtext
+                        };
+                         
+                        $.post("SaveFile", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                Vue.set(app.data, app.selected, arr);
+                                app.selected = -1;
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+
+                    }
+                    else if (this.action == "dir") {
+                          var fname = this.selectedlist.RelatedPath;
+
+                          var data =   { path: fname, newfilename:this.selectedlist.Name };
+                          $.post("RenameDir", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                Vue.set(app.data, app.selected, arr);
+                                app.selected = -1;
+                                 app.setSlist(app.data);
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+                    }
+
+                    //} else {
+                    //    this.list.push(arr);
+                    //}
+
+                   // this.setSlist(this.data);
+                    this.changeOverlay();
+                },
+                add: function () {
+                    //this.selectedlist = {
+                    //    username: '',
+                    //    email: '',
+                    //    sex: '男',
+                    //    province: '北京市',
+                    //    hobby: []
+                    //};
+                    //this.curentdirPath = "/";
+                    this.action="add"
+                    this.isActive = true;
+                },
+                openZipDirDlg(el) {
+                    this.selectedlist = el;
+                    this.isShowUnzipdlg = true;
+                },
+                // delete list in index location
+                del(index) {
+                    var model =  app.data[index];
+
+                    var data = { path: model.RelatedPath ,isdir:model.IsDirectry };
+                    if (confirm("Is delete file or directory?")) {
+                        $.post("DelFileOrDir", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                app.data.splice(index, 1);
+                                app.setSlist(app.data);
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+
+                    }
+
+
+                },
+                changeOverlay() {
+                    if (this.action == "add") {
+                        this.selected = -1;
+                    }
+
+                    this.isActive = !this.isActive;
+                },
+                // 获取需要渲染到页面中的数据
+                setSlist(arr) {
+                    this.slist = JSON.parse(JSON.stringify(arr));
+                },
+                getfiles(dir) {
+
+                    $.get("GetAllFiles?dir=" + dir).done(function (jsonResult) {
+                        app.data = jsonResult.list;
+                        app.setSlist(app.data);
+                        app.pageAll = 1;
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                        console.log(e);
+                    });
+                },
+                // 搜索
+                search(e) {
+                    var v = e.target.value,
+                        self = this;
+                    self.searchlist = [];
+                    if (v) {
+                        var ss = [];
+                        // 过滤需要的数据
+                        this.data.forEach(function (item) {
+                            if (item.username.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.username) == -1) {
+                                    self.searchlist.push(item.username);
+                                }
+                                ss.push(item);
+                            } else if (item.email.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.email) == -1) {
+                                    self.searchlist.push(item.email);
+                                }
+                                ss.push(item);
+                            }
+                        });
+                        this.setSlist(ss); // 将过滤后的数据给了slist
+                    } else {
+                        // 没有搜索内容，则展示全部数据
+                        this.setSlist(this.data);
+                    }
+                }
+            },
+            watch: {
+                pageCurrent: function (newValue, oldValue) {
+                    console.log(arguments);
+                },
+                checkedList() {
+                    if (this.checkedList.length == this.data.length) {
+                        this.totalBoxcChecked = true;
+                    } else {
+                        this.totalBoxcChecked = false;
+                    }
+                }
+            }
+        })
+      
+
+    </script>
+}

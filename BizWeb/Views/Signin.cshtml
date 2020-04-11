@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "../Shared/xadminlayout.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+@section CSS{
+    <link rel="stylesheet" href="~/xadmin/css/login.css">
+}
+@*<div class="text-center">
+        <div>login</div>
+        <div>username <input type="text" id="username" /></div>
+        <div>password <input type="password" id="password" /></div>
+        <div>
+            <input type="button" value="Login" onclick="login()" />
+        </div>
+    </div>*@
+<div class="login layui-anim layui-anim-up">
+    <div class="message"> 管理登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form">
+        <input id="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+        <hr class="hr15">
+        <input id="password" name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+        <hr class="hr15">
+        <input value="登录" onclick="login()" lay-filter="login" style="width:100%;" type="button">
+        <hr class="hr20">
+    </form>
+</div>
+@section Scripts{
+    <script>
+        function login() {
+            var urlData = {
+                userName: $("#username").val(), password: $("#password").val(), ReturnUrl: "index"
+            }
+            $.ajax({
+                type: "post",
+                url: "Login",
+                dataType: "json",
+                data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    if (jsonResult.isok == true) {
+                        location.href = "index";
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+    </script>
+}
