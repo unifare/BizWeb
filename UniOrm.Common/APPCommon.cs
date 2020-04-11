@@ -17,6 +17,8 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace UniOrm
 {
@@ -71,6 +73,11 @@ namespace UniOrm
 
         }
 
+        public static string GetWTableName(string tableName)
+        {
+            return AppConfig.UsingDBConfig.DefaultDbPrefixName + tableName;
+        }
+
         public static AppConfig AppConfig
         {
             get
@@ -112,7 +119,16 @@ namespace UniOrm
             }
         }
 
+        public static void ResponseUnAuth(ActionExecutingContext action, string returnObject)
+        {
+            action.Result = new ContentResult()
+            {
+                Content = returnObject,
+                ContentType = "text/html",
+                StatusCode = 401
+            };
 
+        }
 
         public static MethodInfo GetMethodFromConfig(bool IsPlugin, string libname, string typename, string methodName)
         {

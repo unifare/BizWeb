@@ -8,6 +8,8 @@ using System.IO;
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace BasicPlugin
 {
@@ -96,6 +98,16 @@ namespace BasicPlugin
             };
 
         }
+
+        public static void ResponseJson(ActionExecutingContext action, object returnObject)
+        {
+            action.Result = new JsonResult(returnObject)
+            {
+                ContentType = "application/json",
+                StatusCode = 200
+            };
+        }
+
         public static void ResponseUnAuth(ActionExecutingContext action, string returnObject)
         {
             action.Result = new ContentResult()
@@ -106,12 +118,6 @@ namespace BasicPlugin
             };
 
         }
-        public static void ResponseAjaxt(ActionExecutingContext action, object returnObject )
-        { 
-            action.Result = new JsonResult(returnObject)
-            {  
-                StatusCode = 200
-            };
-        }
+     
     }
 }

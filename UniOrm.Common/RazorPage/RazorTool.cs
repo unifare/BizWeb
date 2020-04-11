@@ -9,13 +9,16 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using UniOrm.Model;
-using UniOrm.Common; 
+using UniOrm.Common;
+using SqlKata.Execution;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace UniOrm
 {
     
     public class RazorTool
     {
+        public ActionExecutingContext ActionContext { get; set; }
         public HttpContext HttpContext { get; set; }
         public RazorTool()
         {
@@ -42,6 +45,108 @@ namespace UniOrm
         public List<dynamic> GetData(string sql, object args)
         {
             return DB.UniClient.Ado.SqlQuery<dynamic>(sql, args);
+        }
+        public IFormCollection Form
+        {
+            get
+            {
+                return HttpContext.Request.Form;
+            } 
+        }
+
+        public IQueryCollection Query
+        {
+            get
+            {
+                return HttpContext.Request.Query;
+            }
+        }
+        public dynamic FormToOjbect(  ) 
+        { 
+            var tablename = Form["_tablename"];
+             var cols=   DB.UniClient.DbMaintenance.GetColumnInfosByTableName(tablename); 
+            dynamic result = new System.Dynamic.ExpandoObject();
+            foreach(var cinfo in cols)
+            {
+                if(Form.ContainsKey(cinfo.DbColumnName))
+                { 
+                (result as ICollection<KeyValuePair<string, object>>).Add(new KeyValuePair<string, object>(cinfo.DbColumnName,
+                  Form[cinfo.DbColumnName])); 
+                }
+            }
+            return result;
+        }
+        public Dictionary<string,object> FormToDic( string tablename)
+        { 
+            var cols = DB.UniClient.DbMaintenance.GetColumnInfosByTableName(APPCommon.GetWTableName(tablename));
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            foreach (var cinfo in cols)
+            {
+                if (Form.ContainsKey(cinfo.DbColumnName))
+                {
+                    dic.Add(cinfo.DbColumnName, Form[cinfo.DbColumnName]);
+                }
+            }
+            return dic;
+        }
+        public Dictionary<string, object> QueryToDic(string tableKey)
+        {
+            if(!Query.ContainsKey(tableKey))
+            {
+                return new Dictionary<string, object>();
+            }
+            var tablename = Query[tableKey];
+            var cols = DB.UniClient.DbMaintenance.GetColumnInfosByTableName(tablename);
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            foreach (var cinfo in cols)
+            {
+                if (Query.ContainsKey(cinfo.DbColumnName))
+                {
+                    dic.Add(cinfo.DbColumnName, Query[cinfo.DbColumnName]);
+                }
+            }
+            return dic;
+        }
+
+        public int InsertForm()
+        {
+            var tablename = Form["_tablename"];
+            var obj = FormToDic(tablename);
+            return DB.Kata.Query(APPCommon.GetWTableName(tablename)).Insert(obj);
+        }
+
+        public void  Auth()
+        {
+            if ( !HttpContext.User.Identity.IsAuthenticated)
+            {
+                APPCommon.ResponseUnAuth(ActionContext, null); 
+            } 
+        }
+
+        public bool IsAuth()
+        {
+            if ( HttpContext.User.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        public object ReTrueJson(object obj)
+        { 
+            return new { iok = true, data = obj};
+        }
+
+        public object ReFalseJson(object obj)
+        {
+            return new { iok = false, data = obj };
+        }
+
+        public int InsertQuery(string tableKey)
+        { 
+            var obj = QueryToDic(tableKey);
+            return DB.Kata.Query(tableKey).Insert(obj);
         }
 
         //public dynamic GetData(string sql, object[] args)

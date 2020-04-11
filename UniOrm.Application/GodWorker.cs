@@ -39,7 +39,7 @@ namespace UniOrm.Application
 
     public class GodWorker : IGodWorker
     {
-
+        public Dictionary<string, object> WorkerResouceInfos { get; set; }
         public string WorkerName { get; set; }
         readonly static object lockobj = new object();
         static string logName = "AConState.Application.GodMaker";
@@ -81,18 +81,20 @@ namespace UniOrm.Application
                     return;
                 }
 
-                var newrunmodel = new RuntimeModel(Config)
+                var newrunmodel = new RuntimeStepModel(Config)
                 {
                     ComposeEntity = cons,
                     HashCode = cons.GetHash()
                 };
-                RuntimeModel.StaticResouceInfos["__actioncontext"] = parameters[0];
-                RuntimeModel.StaticResouceInfos["__httpcontext"] = parameters[0].GetProp("HttpContext");
-                httpContext = RuntimeModel.StaticResouceInfos["__httpcontext"] as HttpContext;
-                RuntimeModel.StaticResouceInfos["__session"] = parameters[0].GetProp("HttpContext").GetProp("Session");
-                RuntimeModel.StaticResouceInfos["__db"] = DB.Kata;
-                RuntimeModel.StaticResouceInfos["__page"] = new RazorTool() ;
-                RuntimeModel.StaticResouceInfos["__config"] = appConfig;
+                newrunmodel.ResouceInfos["__actioncontext"] = parameters[0];
+                newrunmodel.ResouceInfos["__httpcontext"] = parameters[0].GetProp("HttpContext");
+                httpContext = newrunmodel.ResouceInfos["__httpcontext"] as HttpContext;
+                newrunmodel.ResouceInfos["__session"] = httpContext.Session;
+                newrunmodel.ResouceInfos["__db"] = DB.Kata;
+                var pagetool = new RazorTool();
+                pagetool.ActionContext = parameters[0] as ActionExecutingContext;
+                newrunmodel.ResouceInfos["__page"] = new RazorTool() ;
+                newrunmodel.ResouceInfos["__config"] = appConfig;
 
                 if (!string.IsNullOrEmpty(cons.Templateid))
                 {
@@ -117,25 +119,8 @@ namespace UniOrm.Application
         //{
         //    //actionExecutingContext.HttpContext.req
         //}
-        public static void ResponseUnAuth(ActionExecutingContext action, string returnObject)
-        {
-            action.Result = new ContentResult()
-            {
-                Content = returnObject,
-                ContentType = "text/html",
-                StatusCode = 401
-            };
 
-        }
-        private static Task HandleExceptionAsync(HttpContext context, int statusCode, string msg)
-        {
-            var data = new { code = statusCode.ToString(), is_success = false, msg = msg };
-            var result = JsonConvert.SerializeObject(new { data = data });
-            context.Response.ContentType = "application/json;charset=utf-8";
-            return context.Response.WriteAsync(result);
-        }
-
-        private async static Task RunComposity(int requsetHash, HttpContext httpContext, RuntimeModel newrunmodel, ISqlSugarClient dbFactory, ISysDatabaseService codeService, IConfiguration config)
+        private async static Task RunComposity(int requsetHash, HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, ISysDatabaseService codeService, IConfiguration config)
         {
             var cons = newrunmodel.ComposeEntity;
             if (cons.RunMode == RunMode.Coding)
@@ -152,27 +137,13 @@ namespace UniOrm.Application
                     foreach (var s in steps)
                     {
                         object rebject = null;
-                        object DynaObject = null;
-
-                        //ClaimsIdentity identity = new ClaimsIdentity("Forms");
-
-                        //identity.AddClaim(new Claim(ClaimTypes.Sid, "lksdflskdfj"));
-                        //identity.AddClaim(new Claim(ClaimTypes.Name, "admin"));
-
-                        //ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
-
-                        //httpContext.User.AddIdentity(identity);
-                        //await httpContext.SignInAsync(claimsPrincipal);
-
-                        ////if (context.HttpContext.User.Identity.IsAuthenticated)
-                        ////{
-                        ////}
-
+                        object DynaObject = null; 
+                     
                         if (s.IsUsingAuth.ToBool()   )
                         {
                             if (httpContext.User.Identity.Name != s.UserName|| !httpContext.User.Identity.IsAuthenticated)
                             { 
-                                ResponseUnAuth((ActionExecutingContext)RuntimeModel.StaticResouceInfos["__actioncontext"], null);
+                                APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.ResouceInfos["__actioncontext"], null);
                                  
                                 return;
                             }
@@ -253,10 +224,7 @@ namespace UniOrm.Application
                                                             so_default = so_default.WithReferences(Assembly.GetExecutingAssembly());
 
                                                             var state = CSharpScript.Create<object>(s.ProxyCode, so_default, typeof(Dictionary<string, object>));
-                                                            foreach (var ri in RuntimeModel.StaticResouceInfos)
-                                                            {
-                                                                newrunmodel.ResouceInfos.Add(ri.Key, ri.Value);
-                                                            }
+                                                          
                                                             runcode.Script = state;
                                                             APP.RuntimeCodes.Add(s.Guid, runcode);
                                                         }
@@ -316,7 +284,7 @@ namespace UniOrm.Application
                                                 break;
                                             case FlowStepType.Function:
                                                 {
-                                                    rebject = DealTheFunction(newrunmodel, s);
+                                                    DynaObject = DealTheFunction(newrunmodel, s);
                                                 }
                                                 break;
                                             case FlowStepType.RazorText:
@@ -367,7 +335,7 @@ namespace UniOrm.Application
             }
         }
 
-        private static object DealTheFunction(RuntimeModel newrunmodel, AConFlowStep s)
+        private static object DealTheFunction(RuntimeStepModel newrunmodel, AConFlowStep s)
         {
             object rebject;
             var defaultNamespace = @"using UniOrm;
@@ -437,15 +405,12 @@ using Microsoft.AspNetCore.Mvc;";
 
             var runobj = CSScript.Evaluator.ReferenceAssembly(Assembly.GetExecutingAssembly())
                  .CreateDelegate(allcode);
-            foreach (var ri in RuntimeModel.StaticResouceInfos)
-            {
-                newrunmodel.ResouceInfos.Add(ri.Key, ri.Value);
-            }
+         
             rebject = runobj(newrunmodel.ResouceInfos);
             return rebject;
         }
 
-        private static async Task<string> HandleRazorText(RuntimeModel newrunmodel, AConFlowStep s, string template)
+        private static async Task<string> HandleRazorText(RuntimeStepModel newrunmodel, AConFlowStep s, string template)
         {
             var engine = APP.Razorengine;
             //string template = s.ProxyCode;
@@ -569,7 +534,7 @@ using Microsoft.AspNetCore.Mvc;";
             return stepResult;
         }
 
-        private static object HandleGetData(HttpContext httpContext, RuntimeModel newrunmodel, ISqlSugarClient dbFactory, AConFlowStep s)
+        private static object HandleGetData(HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, AConFlowStep s)
         {
             object dynaObject; 
             var objParams2 = new List<object>();
@@ -599,7 +564,7 @@ using Microsoft.AspNetCore.Mvc;";
             return dynaObject;
         }
 
-        private static async Task CheckAndRunNextRuntimeComposity(int requsetHash, HttpContext httpContext, RuntimeModel newrunmodel, ISqlSugarClient dbFactory, ISysDatabaseService codeService, IConfiguration config)
+        private static async Task CheckAndRunNextRuntimeComposity(int requsetHash, HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, ISysDatabaseService codeService, IConfiguration config)
         {
             var resouce = newrunmodel.Resuce(newrunmodel.NextRunTimeKey);
             if (resouce != null)
@@ -623,14 +588,14 @@ using Microsoft.AspNetCore.Mvc;";
                 }
                 else
                 {
-                    var nextRnmodel = new RuntimeModel(config)
+                    var nextRnmodel = new RuntimeStepModel(config)
                     {
                         ParentRuntimeModel = newrunmodel,
-                        //ResouceInfos= newrunmodel.ResouceInfos,
+                        ResouceInfos= newrunmodel.ResouceInfos,
                         ComposeEntity = nextcon,
                         HashCode = nextcon.GetHash()
                     };
-                    //nextRnmodel.ResouceInfos.Remove(newrunmodel.NextRunTimeKey);
+                    nextRnmodel.ResouceInfos.Remove(newrunmodel.NextRunTimeKey);
                     await RunComposity(requsetHash, httpContext, nextRnmodel, dbFactory, codeService, config);
 
                 }

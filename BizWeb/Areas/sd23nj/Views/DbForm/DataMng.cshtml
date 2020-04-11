@@ -212,7 +212,8 @@
                                 <td>类型</td>
                                 <td>长度</td>
                                 <td>null</td>
-                                
+                                <td style="width:50px">主键</td>
+                                <td style="width:50px">自增</td>
                                 @*<td>说明</td>*@
                                 <td>值</td>
                             </tr>
@@ -230,9 +231,12 @@
                                     空<input type="radio" v-bind:name="'runoob2-' + index" value="true" v-model="columndef.IsNullable">
                                     不为空<input type="radio" v-bind:name="'runoob2-' + index" value="false" v-model="columndef.IsNullable">
                                 </td>
-                                @*<td>
-                                    <textarea v-model="columndef.ColumnDescription" style="width:300px; height:60px;"></textarea>
-                                </td>*@
+                                <td style="width:50px">
+                                    <input v-model="columndef.IsPrimarykey" value="true" type="radio"  v-bind:name="'primakey-' + index"  />
+                                </td>
+                                <td style="width:50px">
+                                    <input v-model="columndef.IsIdentity" value="true" type="radio"   v-bind:name="'indentiykey-' + index"   />
+                                </td>
 
                                 <td>
                                     <textarea v-model="columndef.DefaultValue" style="width:300px; height:60px;"></textarea>
@@ -569,7 +573,7 @@
                     }
                 },
                 addtable() {
-                    var reobj = { TableName: '', IsPrimarykey: true, ColumnDescription: '', DbColumnName: 'Id', DataType: 'int', Length: 4, DefaultValue: null, IsNullable: false, DecimalDigits: null };
+                    var reobj = { TableName: '', IsPrimarykey: true, ColumnDescription: '', IsPrimarykey: true, IsIdentity: true,  DbColumnName: 'Id', DataType: 'int', Length: 4, DefaultValue: null, IsNullable: false, DecimalDigits: null };
                     this.edittbcolmnDefinits.push(reobj)
                     this.isshowtbDlg = true;
                     this.currentaction = "addtb";
@@ -866,7 +870,7 @@
                             if (newvalue != null) {
                                 for (let key in newvalue) {
                                     if (column.DbColumnName == key) {
-                                        var reobj = { title: '', value: '', dbtype: '', isSetNull: "null", IsNullable: true };
+                                        var reobj = { title: '', value: '', dbtype: '', IsPrimarykey: false, IsIdentity:false, isSetNull: "null", IsNullable: true };
                                         reobj.title = key
 
                                         reobj.value = newvalue[key]
@@ -887,7 +891,7 @@
                                 }
                             }
                             else {
-                                var reobj = { title: '', value: '', dbtype: '', isSetNull: "null", IsNullable: true };
+                                var reobj = { title: '', value: '', dbtype: '', IsPrimarykey: false, IsIdentity: false,  isSetNull: "null", IsNullable: true };
                                 reobj.title = column.DbColumnName
                                 reobj.leng = column.Length;
                                 reobj.dbtype = column.DataType;

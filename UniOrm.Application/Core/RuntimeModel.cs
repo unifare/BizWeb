@@ -10,10 +10,10 @@ using UniOrm.Model;
 
 namespace UniOrm.Core
 {
-    public class RuntimeModel : IDisposable
+    public class RuntimeStepModel : IDisposable
     {
-        public static Dictionary<string, object> StaticResouceInfos = new Dictionary<string, object>();
-        public RuntimeModel ParentRuntimeModel { get; set; }
+      
+        public RuntimeStepModel ParentRuntimeModel { get; set; }
         static readonly string logName = "AConState.Application.TypeMaker";
         public string NextRunTimeKey = "_NextRunTimeKey";
         public Dictionary<string, object> ResouceInfos { get; set; } 
@@ -43,7 +43,7 @@ namespace UniOrm.Core
             }
         }
 
-        public RuntimeModel(IConfiguration config)
+        public RuntimeStepModel(IConfiguration config)
         {
             Config = config;
             ResouceInfos = new Dictionary<string, object>();
@@ -76,14 +76,7 @@ namespace UniOrm.Core
         {
             if (!ResouceInfos.ContainsKey(argNames))
             {
-                if (!StaticResouceInfos.ContainsKey(argNames))
-                {
-                    return null;
-                }
-                else
-                {
-                    return StaticResouceInfos[argNames];
-                }
+                return null;
             }
             else
             {

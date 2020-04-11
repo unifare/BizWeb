@@ -21,8 +21,7 @@ namespace UniOrm.Startup.Web.Controllers
 
             //var qlist = ss.From<pigcms_adma>();
             //var allist = qlist.ToList<pigcms_adma>();
-           // await TypeMaker.Run(ControllerContext);
-            
+           // await TypeMaker.Run(ControllerContext); 
             return new EmptyResult();
         }
     }
