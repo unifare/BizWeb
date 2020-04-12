@@ -12,6 +12,7 @@ using UniOrm.Model;
 using UniOrm.Common;
 using SqlKata.Execution;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.IO;
 
 namespace UniOrm
 {
@@ -28,15 +29,15 @@ namespace UniOrm
         }
 
         public AConFlowStep Step { get; set; }
-
-        public string v(string key)
+        public Dictionary<string, object> ResouceInfos { get; set; }
+        public string V(string key)
         {
             return APPCommon.AppConfig.GetDicstring(key);
         }
 
         public string Include(string RelativefilePath)
         {
-            RelativefilePath = ( "Pages/UploadPage/")+ RelativefilePath.UrlDecode();
+            RelativefilePath = Path.Join(  APPCommon.UserUploadBaseDir,  RelativefilePath.UrlDecode());
             var fullpath = RelativefilePath.ToServerFullPath();
             var content = fullpath.ReadAsTextFile();
             return content;
@@ -46,6 +47,23 @@ namespace UniOrm
         {
             return DB.UniClient.Ado.SqlQuery<dynamic>(sql, args);
         }
+
+        private QueryFactory kata;
+        public QueryFactory Kata
+        {
+            get
+            {
+                if (kata == null)
+                {
+                    return DB.Kata;
+                }
+                else
+                {
+                    return kata;
+                }
+            }
+        }
+
         public IFormCollection Form
         {
             get
@@ -61,6 +79,28 @@ namespace UniOrm
                 return HttpContext.Request.Query;
             }
         }
+
+        public object R(string key)
+        {
+            if( this.ResouceInfos==null)
+            {
+                return null;
+            }
+            else
+            {
+                if( this.ResouceInfos.ContainsKey(key))
+                {
+                    return ResouceInfos[key].AsDynamic() ;
+                }
+            }
+            return null;
+        }
+    
+        public object R2I(object DynaObject)
+        {
+            return MagicExtension.BackToInst(DynaObject); 
+        }
+
         public dynamic FormToOjbect(  ) 
         { 
             var tablename = Form["_tablename"];
@@ -135,12 +175,12 @@ namespace UniOrm
 
         public object ReTrueJson(object obj)
         { 
-            return new { iok = true, data = obj};
+            return new { isok = true, data = obj};
         }
 
         public object ReFalseJson(object obj)
         {
-            return new { iok = false, data = obj };
+            return new { isok = false, data = obj };
         }
 
         public int InsertQuery(string tableKey)

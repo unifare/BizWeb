@@ -25,6 +25,7 @@ namespace UniOrm
         public string AppTheme { get; set; } = "Aro";
         public string AppTmpl { get; set; } = "default";
         public string DefaultDbPrefixName { get; set; }
+        public bool IsUseGloableCahe { get; set; } = false;
         public DbConnectionConfig UsingDBConfig { get; set; }
         public List<DbConnectionConfig> Connectionstrings { get; set; }
         public List<RegestedModel> EFRegestedModels { get; set; }

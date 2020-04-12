@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="col-sm-5">
+            <div class="col-sm-4">
 
                 <div class="panel  panel-primary">
                     <div class="panel-heading">Composity List</div>
@@ -113,7 +113,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>guid</th>
+                                        <th style="width:70px" class=".text-truncate ">guid</th>
                                         <th>name</th>
 
                                     </tr>
@@ -125,7 +125,7 @@
                                             <a   v-on:click="ToEditCompose(el)"  >修改</a>
                                             <a  v-on:click="ToSetupCompose(el)"  >设置</a>
                                         </td>
-                                        <td style="width:70px">{{el.Guid}}</td>
+                                        <td style="width:70px" class=".text-truncate ">{{el.Guid}}</td>
                                         <td>{{el.Name}}</td>
 
                                     </tr>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
 
 
                 <div class="panel  panel-primary">
@@ -148,25 +148,28 @@
                             <input  type="button" value="新增"      class="btn btn-primary " v-on:click="ToAddFlow( )" />
                         </div>
                         <div style=" width:100%; overflow :auto;">
-                            <table>
+                            <table class="table-bordered table"  style="white-space: nowrap; ">
                                 <thead>
                                     <tr>
-                                        <th>StepOrder</th>
-                                        <th>FlowStepType</th>
-                                        <th>GetValueWayID</th>
                                         <th></th>
+                                        <th>StepOrder</th>
+                                        <th>input</th>
+                                        <th>output</th>
+                                        <th>Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr v-for="el in steps">
-                                        <td>{{el.StepOrder}}</td>
-                                        <td>{{el.FlowStepType|GetFlowStepType}}</td>
-                                        <td>{{el.GetValueWayID}}</td>
                                         <td>
-                                            <button type="button" v-on:click="ToDelStep(el)" class="btn ">删除</button>
-                                            <button type="button" v-on:click="ToEditStep(el)" class="btn ">修改</button>
+                                            <a  v-on:click="ToDelStep(el)"  >删除</a>
+                                            <a  v-on:click="ToEditStep(el)" >修改</a>
                                         </td>
+                                        <td>{{el.StepOrder}}</td>
+                                        <td>{{el.ArgNames}}</td>
+                                        <td>{{el.StorePoolKey}}</td>
+                                        <td>{{el.FlowStepType|GetFlowStepType}}</td>
+
                                     </tr>
 
 

@@ -93,7 +93,8 @@ namespace UniOrm.Application
                 newrunmodel.ResouceInfos["__db"] = DB.Kata;
                 var pagetool = new RazorTool();
                 pagetool.ActionContext = parameters[0] as ActionExecutingContext;
-                newrunmodel.ResouceInfos["__page"] = new RazorTool() ;
+                pagetool.ResouceInfos = newrunmodel.ResouceInfos;
+                newrunmodel.ResouceInfos["__page"] = pagetool;
                 newrunmodel.ResouceInfos["__config"] = appConfig;
 
                 if (!string.IsNullOrEmpty(cons.Templateid))
@@ -318,7 +319,10 @@ namespace UniOrm.Application
                                     rebject = MagicExtension.BackToInst(DynaObject);
 
                                 }
-                                APP.RuntimeCache.Set(cacheKey, rebject);
+                                if (s.IsUsingCache)
+                                {
+                                    APP.RuntimeCache.Set(cacheKey, rebject);
+                                }
                             }
                         }
                        
@@ -486,8 +490,10 @@ using Microsoft.AspNetCore.Mvc;";
                     }
                 }
                 stringbuilder.AppendLine("\r\n@{ DisableEncoding = true;  ");
-                stringbuilder.AppendLine("\r\n var Page = new RazorTool(); }");
-                //stringbuilder.AppendLine("\r\n var page.Step=");
+                stringbuilder.AppendLine("\r\n var Page = new RazorTool();  ");
+                stringbuilder.AppendLine("\r\n Page.Step=Model.Step; ");
+                stringbuilder.AppendLine("\r\n Page.ResouceInfos=Model.Item as Dictionary<string, object>; ");
+                stringbuilder.AppendLine("\r\n  }");
                 var objParams = new List<object>();
                 if (!string.IsNullOrEmpty(s.ArgNames))
                 {
@@ -497,28 +503,18 @@ using Microsoft.AspNetCore.Mvc;";
                 var module = APPCommon.ModuleManager.GetModule(null, s.ModuleName);
                 if (module == null)
                 {
-                    if (objParams != null && objParams.Count > 0)
-                    {
-                        modelArg = new { Step = s, Module = new { }, Item = objParams[0] };
-                    }
-                    else
-                    {
-                        modelArg = new { Step = s, Module = new { }, Item = new { } };
-                    }
+
+                    modelArg = new { Step = s, Module = new { }, Item = newrunmodel.ResouceInfos };
+
                 }
                 else
                 {
-                    if (objParams != null && objParams.Count > 0)
-                    {
-                        modelArg = new { Step = s, Module = module, Item = objParams[0] };
-                    }
-                    else
-                    {
-                        modelArg = new { Step = s, Module = module, Item = new { } };
-                    }
+
+                    modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.ResouceInfos };
+
                 }
-                var tempcahekey = Guid.NewGuid().ToString();
-                var cacheResult = engine.Handler.Cache.RetrieveTemplate(tempcahekey);
+                var cachekey2 = template.ToMD5() ;
+                var cacheResult = engine.Handler.Cache.RetrieveTemplate(cachekey2);
                 template = stringbuilder.AppendLine("\r\n").Append(template).ToString();
                 if (cacheResult.Success)
                 {
@@ -526,7 +522,7 @@ using Microsoft.AspNetCore.Mvc;";
                 }
                 else
                 {
-                    stepResult = await engine.CompileRenderStringAsync(tempcahekey, template, modelArg);
+                    stepResult = await engine.CompileRenderStringAsync(cachekey2, template, modelArg);
                 }
 
             }
@@ -611,14 +607,23 @@ using Microsoft.AspNetCore.Mvc;";
         {
             lock (lockobj)
             {
-                ComposeEntity cons = APP.Composeentitys.FirstOrDefault(p => p.Guid == appconfig.StartUpCompoistyID);
-                if (cons == null)
+                ComposeEntity cons = null;
+                if (APPCommon.AppConfig.IsUseGloableCahe)
+                {
+                    cons = APP.Composeentitys.FirstOrDefault(p => p.Guid == appconfig.StartUpCompoistyID);
+                    if (cons == null)
+                    {
+                        cons = CodeService.GetConposity(appconfig.StartUpCompoistyID, allname).FirstOrDefault();
+                        if (cons != null)
+                        {
+                            APP.Composeentitys.Add(cons);
+                        }
+                    }
+
+                }
+                else
                 {
                     cons = CodeService.GetConposity(appconfig.StartUpCompoistyID, allname).FirstOrDefault();
-                    if (cons != null)
-                    {
-                        APP.Composeentitys.Add(cons);
-                    }
                 }
 
                 if (cons == null)
@@ -626,7 +631,7 @@ using Microsoft.AspNetCore.Mvc;";
                     cons = new ComposeEntity()
                     {
                         Name = allname,
-                        RunMode = RunMode.Coding
+                        RunMode = RunMode.Coding, Guid = appconfig.StartUpCompoistyID
                     };
                     var reint = CodeService.InsertCode(cons);
                     APP.Composeentitys.Add(cons);
@@ -655,15 +660,22 @@ using Microsoft.AspNetCore.Mvc;";
         }
         private static IEnumerable<AConFlowStep> FindSteps(string ComId, ISysDatabaseService codeService)
         {
-
-            var cons = APP.AConFlowSteps.Where(p => p.AComposityId == ComId);
-            if (cons == null || cons.Count() == 0)
+            IEnumerable<AConFlowStep> cons = null;
+            if (APPCommon.AppConfig.IsUseGloableCahe)
+            {
+                cons = APP.AConFlowSteps.Where(p => p.AComposityId == ComId);
+                if (cons == null || cons.Count() == 0)
+                {
+                    cons = codeService.GetAConStateSteps(ComId).OrderBy(p => p.StepOrder).ToList();
+                    if (cons != null)
+                    {
+                        APP.AConFlowSteps.AddRange(cons);
+                    }
+                }
+            }
+            else
             {
                 cons = codeService.GetAConStateSteps(ComId).OrderBy(p => p.StepOrder).ToList();
-                if (cons != null)
-                {
-                    APP.AConFlowSteps.AddRange(cons);
-                }
             }
 
             if (cons == null)

@@ -833,7 +833,26 @@ namespace UniOrm
             cStream.FlushFinalBlock();
             return Encoding.UTF8.GetString(mStream.ToArray());
         }
-
+        /// <summary>
+        /// MD5字符串加密
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <returns>加密后字符串</returns>
+        public static string ToMD5(this string txt)
+        {
+            using (MD5 mi = MD5.Create())
+            {
+                byte[] buffer = Encoding.Default.GetBytes(txt);
+                //开始加密
+                byte[] newBuffer = mi.ComputeHash(buffer);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < newBuffer.Length; i++)
+                {
+                    sb.Append(newBuffer[i].ToString("x2"));
+                }
+                return sb.ToString();
+            }
+        }
         public static string SafeSubString(this string decryptString, int length)
         {
             if (string.IsNullOrEmpty(decryptString))
@@ -848,7 +867,7 @@ namespace UniOrm
                 }
                 else
                 {
-                    return decryptString.Substring(length);
+                    return decryptString.Substring(0,length);
                 }
             }
         }
