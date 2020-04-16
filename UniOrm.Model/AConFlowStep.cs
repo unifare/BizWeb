@@ -85,6 +85,7 @@ namespace UniOrm.Model
         public bool IsUsingCache { get; set; }
         public bool? IsUsingAuth { get; set; } = false;
         public string UserName { get; set; }
+        public string LoginUrl { get; set; } 
         public string UserRole { get; set; }
         public string Guid { get; set; }
         public string AComposityId { get; set; }

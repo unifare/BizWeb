@@ -145,7 +145,7 @@ namespace UniOrm.Application
                             await httpContext.AuthenticateAsync();
                             if (httpContext.User.Identity.Name != s.UserName|| !httpContext.User.Identity.IsAuthenticated)
                             { 
-                                APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.ResouceInfos["__actioncontext"], null);
+                                APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.ResouceInfos["__actioncontext"], s.LoginUrl);
                                  
                                 return;
                             }

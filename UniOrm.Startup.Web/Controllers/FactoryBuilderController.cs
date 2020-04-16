@@ -10,7 +10,8 @@ namespace UniOrm.Startup.Web.Controllers
 {
     [AllowAnonymous]
     [AdminAuthorize]
-     
+    [UserAuthorize]
+
     public class FactoryBuilderController : Controller
     {
         //IGodWorker TypeMaker;

@@ -119,15 +119,21 @@ namespace UniOrm
             }
         }
 
-        public static void ResponseUnAuth(ActionExecutingContext action, string returnObject)
+        public static void ResponseUnAuth(ActionExecutingContext action, string returnurl)
         {
-            action.Result = new ContentResult()
+            if (string.IsNullOrEmpty(returnurl))
             {
-                Content = returnObject,
-                ContentType = "text/html",
-                StatusCode = 401
-            };
-
+                action.Result = new ContentResult()
+                {
+                    ContentType = "text/html",
+                    StatusCode = 401
+                };
+            }
+            else
+            {
+                action.Result = new RedirectResult(returnurl);
+            }
+          
         }
 
         public static MethodInfo GetMethodFromConfig(bool IsPlugin, string libname, string typename, string methodName)
