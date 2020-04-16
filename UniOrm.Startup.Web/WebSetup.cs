@@ -176,6 +176,7 @@ namespace UniOrm.Startup.Web
             services.AddRazorPages();
             services.AddControllersWithViews(o =>
             {
+                o.Filters.Add<WorkAuthorzation>(); // 添加身份验证过滤器
 
                 if (IsUsingCmsGlobalRouterFilter)
                 {
@@ -235,7 +236,7 @@ namespace UniOrm.Startup.Web
         {
             if (IsUsingLocalIndentity)
             {
-                services.AddAuthentication(
+              var s=  services.AddAuthentication(
                     options =>
                     {
                         if (IsUsingIdentityserverClient == false || IsUsingIdentityserver4 == false)
@@ -254,8 +255,9 @@ namespace UniOrm.Startup.Web
                 {
                     option.LoginPath = new PathString("/" + backendfoldername + "/Admin/Signin");
                     option.AccessDeniedPath = new PathString("/Error/Forbidden");
-                })
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                });
+                
+                    s.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     if (IsUsingIdentityserver4)
                     {
@@ -283,6 +285,7 @@ namespace UniOrm.Startup.Web
                     options.TokenValidationParameters.RequireExpirationTime = true;
                     //};
                 });
+                
             }
             if (IsUsingIdentityserver4 && !IsUsingLocalIndentity)
             {
@@ -390,9 +393,9 @@ namespace UniOrm.Startup.Web
                 });
             }
             app.UseRouting();
-           
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseSession();
             var isAllowCros = Convert.ToBoolean(appConfig.GetDicstring("isAllowCros"));
             if (isAllowCros)
             {

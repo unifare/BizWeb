@@ -7,7 +7,7 @@ namespace UniOrm
 {
     public class AdminAuthorizeAttribute : AuthorizeAttribute
     {
-        public const string CustomerAuthenticationScheme = "CustomerAuthenticationScheme";
+        public const string CustomerAuthenticationScheme = "AdminAuthorizeAttribute";
         public AdminAuthorizeAttribute()
         {
             this.AuthenticationSchemes = CustomerAuthenticationScheme;

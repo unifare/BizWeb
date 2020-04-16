@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,9 @@ using UniOrm.Application;
 
 namespace UniOrm.Startup.Web.Controllers
 {
+    [AllowAnonymous]
+    [AdminAuthorize]
+     
     public class FactoryBuilderController : Controller
     {
         //IGodWorker TypeMaker;

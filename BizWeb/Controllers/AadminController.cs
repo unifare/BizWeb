@@ -120,8 +120,11 @@ namespace UniNote.WebClient.Controllers
             {
                 var authenticationType = AdminAuthorizeAttribute.CustomerAuthenticationScheme;
                 var identity = new ClaimsIdentity(authenticationType);
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.Sid, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "admin")); 
                 await HttpContext.SignInAsync(authenticationType, new ClaimsPrincipal(identity));
+              
                 return new { isok = true, msg = "" };
 
             }
