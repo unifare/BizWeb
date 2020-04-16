@@ -86,16 +86,17 @@ namespace UniOrm.Application
                     ComposeEntity = cons,
                     HashCode = cons.GetHash()
                 };
-                newrunmodel.ResouceInfos["__actioncontext"] = parameters[0];
-                newrunmodel.ResouceInfos["__httpcontext"] = parameters[0].GetProp("HttpContext");
-                httpContext = newrunmodel.ResouceInfos["__httpcontext"] as HttpContext;
-                newrunmodel.ResouceInfos["__session"] = httpContext.Session;
-                newrunmodel.ResouceInfos["__db"] = DB.Kata;
+                newrunmodel.Res["__actioncontext"] = parameters[0];
+                newrunmodel.Res["__httpcontext"] = parameters[0].GetProp("HttpContext");
+                httpContext = newrunmodel.Res["__httpcontext"] as HttpContext;
+                newrunmodel.Res["__session"] = httpContext.Session;
+                newrunmodel.Res["__db"] = DB.Kata;
                 var pagetool = new RazorTool();
                 pagetool.ActionContext = parameters[0] as ActionExecutingContext;
-                pagetool.ResouceInfos = newrunmodel.ResouceInfos;
-                newrunmodel.ResouceInfos["__page"] = pagetool;
-                newrunmodel.ResouceInfos["__config"] = appConfig;
+                pagetool.ResouceInfos = newrunmodel.Res;
+                pagetool.Funs = newrunmodel.Funtions;
+                newrunmodel.Res["__page"] = pagetool;
+                newrunmodel.Res["__config"] = appConfig;
 
                 if (!string.IsNullOrEmpty(cons.Templateid))
                 {
@@ -145,7 +146,7 @@ namespace UniOrm.Application
                             await httpContext.AuthenticateAsync();
                             if (httpContext.User.Identity.Name != s.UserName|| !httpContext.User.Identity.IsAuthenticated)
                             { 
-                                APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.ResouceInfos["__actioncontext"], s.LoginUrl);
+                                APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.Res["__actioncontext"], s.LoginUrl);
                                  
                                 return;
                             }
@@ -235,7 +236,7 @@ namespace UniOrm.Application
                                                             string dllbase = AppDomain.CurrentDomain.BaseDirectory;
 
                                                         }
-                                                        rebject = runcode.Script.RunAsync(newrunmodel.ResouceInfos).Result.ReturnValue;
+                                                        rebject = runcode.Script.RunAsync(newrunmodel.Res).Result.ReturnValue;
 
                                                     }
                                                 }
@@ -267,7 +268,7 @@ namespace UniOrm.Application
                                                         }
                                                         else
                                                         {
-                                                            var instance = newrunmodel.ResouceInfos[s.InstanceName];
+                                                            var instance = newrunmodel.Res[s.InstanceName];
                                                             DynaObject = methodsub.Invoke(instance, objParams.ToArray());
                                                         }
                                                     }
@@ -388,6 +389,7 @@ using Npgsql;
 using SqlKata.Compilers;
 using SqlKata.Execution;
 using SqlSugar;
+using CSScriptLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Numerics ;
@@ -403,15 +405,17 @@ using Microsoft.AspNetCore.Mvc;";
                + selfnamespace + "\r\n"
                + "public object " + functionName + "(object __param){ \r\n"
                + "var __model=__param.AsDynamic();"
-               + "var Page=__model[\"__page\"];"
+               + "var Page=__model.Res[\"__page\"];"
                + s.ProxyCode
                + "\r\n}";
 
 
             var runobj = CSScript.Evaluator.ReferenceAssembly(Assembly.GetExecutingAssembly())
                  .CreateDelegate(allcode);
-         
-            rebject = runobj(newrunmodel.ResouceInfos);
+            newrunmodel.Funtions.Add(s.StorePoolKey, runobj); 
+            var pagetool = newrunmodel.Res["__page"] as RazorTool;
+            pagetool.Funs = newrunmodel.Funtions; 
+            rebject = runobj(newrunmodel);
             return rebject;
         }
 
@@ -471,6 +475,7 @@ using Microsoft.AspNetCore.Mvc;";
 @using SqlKata.Compilers
 @using SqlKata.Execution
 @using SqlSugar
+@using CSScriptLib;
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using System.Numerics 
@@ -494,6 +499,7 @@ using Microsoft.AspNetCore.Mvc;";
                 stringbuilder.AppendLine("\r\n var Page = new RazorTool();  ");
                 stringbuilder.AppendLine("\r\n Page.Step=Model.Step; ");
                 stringbuilder.AppendLine("\r\n Page.ResouceInfos=Model.Item as Dictionary<string, object>; ");
+                stringbuilder.AppendLine("\r\n Page.Funs=Model.Funs as Dictionary<string, MethodDelegate>; ");
                 stringbuilder.AppendLine("\r\n  }");
                 var objParams = new List<object>();
                 if (!string.IsNullOrEmpty(s.ArgNames))
@@ -505,13 +511,13 @@ using Microsoft.AspNetCore.Mvc;";
                 if (module == null)
                 {
 
-                    modelArg = new { Step = s, Module = new { }, Item = newrunmodel.ResouceInfos };
+                    modelArg = new { Step = s, Module = new { }, Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
 
                 }
                 else
                 {
 
-                    modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.ResouceInfos };
+                    modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
 
                 }
                 var cachekey2 = template.ToMD5() ;
@@ -588,11 +594,11 @@ using Microsoft.AspNetCore.Mvc;";
                     var nextRnmodel = new RuntimeStepModel(config)
                     {
                         ParentRuntimeModel = newrunmodel,
-                        ResouceInfos= newrunmodel.ResouceInfos,
+                        Res= newrunmodel.Res,
                         ComposeEntity = nextcon,
                         HashCode = nextcon.GetHash()
                     };
-                    nextRnmodel.ResouceInfos.Remove(newrunmodel.NextRunTimeKey);
+                    nextRnmodel.Res.Remove(newrunmodel.NextRunTimeKey);
                     await RunComposity(requsetHash, httpContext, nextRnmodel, dbFactory, codeService, config);
 
                 }

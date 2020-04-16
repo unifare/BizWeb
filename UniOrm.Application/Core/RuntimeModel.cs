@@ -1,4 +1,5 @@
-﻿using Fasterflect;
+﻿using CSScriptLib;
+using Fasterflect;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,8 @@ namespace UniOrm.Core
         public RuntimeStepModel ParentRuntimeModel { get; set; }
         static readonly string logName = "AConState.Application.TypeMaker";
         public string NextRunTimeKey = "_NextRunTimeKey";
-        public Dictionary<string, object> ResouceInfos { get; set; } 
+        public Dictionary<string, object> Res { get; set; }
+        public Dictionary<string, MethodDelegate> Funtions { get; set; } = new Dictionary<string, MethodDelegate>();
         public ComposeTemplate ComposeTemplate { get; set; }
         public object DBground { get; set; }
         IConfiguration Config { get; set; }
@@ -46,7 +48,7 @@ namespace UniOrm.Core
         public RuntimeStepModel(IConfiguration config)
         {
             Config = config;
-            ResouceInfos = new Dictionary<string, object>();
+            Res = new Dictionary<string, object>();
         }
 
 
@@ -62,25 +64,25 @@ namespace UniOrm.Core
         public bool SetComposityResourceValue(string key, object value)
         {
 
-            if (!ResouceInfos.ContainsKey(key))
+            if (!Res.ContainsKey(key))
             {
-                ResouceInfos.Add(key, value);
+                Res.Add(key, value);
             }
             else
             {
-                ResouceInfos[key] = value;
+                Res[key] = value;
             }
             return true;
         }
         public object Resuce(string argNames)
         {
-            if (!ResouceInfos.ContainsKey(argNames))
+            if (!Res.ContainsKey(argNames))
             {
                 return null;
             }
             else
             {
-                return ResouceInfos[argNames];
+                return Res[argNames];
             }
         }
         public List<object> GetPoolResuce(IEnumerable<string> argNames)

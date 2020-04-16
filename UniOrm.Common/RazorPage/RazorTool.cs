@@ -13,6 +13,7 @@ using UniOrm.Common;
 using SqlKata.Execution;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.IO;
+using CSScriptLib;
 
 namespace UniOrm
 {
@@ -27,7 +28,7 @@ namespace UniOrm
             IHttpContextAccessor factory = APPCommon.ApplicationServices.GetService<IHttpContextAccessor>();
             HttpContext = factory.HttpContext;
         }
-
+        public Dictionary<string, MethodDelegate> Funs { get; set; }
         public AConFlowStep Step { get; set; }
         public Dictionary<string, object> ResouceInfos { get; set; }
         public string V(string key)
@@ -78,6 +79,21 @@ namespace UniOrm
             {
                 return HttpContext.Request.Query;
             }
+        }
+        public object F(string funcName,object arags)
+        {
+            if (this.Funs == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (this.Funs.ContainsKey(funcName))
+                {
+                   return Funs[funcName]( arags);
+                }
+            }
+            return null;
         }
 
         public object R(string key)
