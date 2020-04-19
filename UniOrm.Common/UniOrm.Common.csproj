@@ -40,6 +40,7 @@
     <PackageReference Include="SqlKata" Version="2.0.2-ci-771" />
     <PackageReference Include="SqlKata.Execution" Version="2.0.2-ci-771" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.13" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <PackageReference Include="UEditor.Core" Version="1.0.6" />
@@ -48,6 +49,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UniOrm.FlunentMigrator\UniOrm.FlunentMigrator.csproj" />
     <ProjectReference Include="..\UniOrm.Model\UniOrm.Model.csproj" />
+    <ProjectReference Include="..\UniOrm.PHP\UniOrm.PHP.csproj" />
   </ItemGroup>
 
 </Project>

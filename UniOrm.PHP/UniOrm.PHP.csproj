@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Peachpie.App" Version="0.9.950" />
+    <PackageReference Include="Peachpie.AspNetCore.Web" Version="0.9.950" />
+    <PackageReference Include="Peachpie.CodeAnalysis" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.Graphics" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.MsSql" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.Network" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.PDO" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.PDO.Firebird" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.PDO.PgSQL" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.PDO.Sqlite" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.PDO.SqlSrv" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.Scripting" Version="0.9.950" />
+    <PackageReference Include="Peachpie.Library.XmlDom" Version="0.9.950" />
+    <PackageReference Include="Peachpie.NETCore.Web" Version="0.9.0-CI01110" />
+  </ItemGroup>
+
+</Project>

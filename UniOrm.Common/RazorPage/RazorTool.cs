@@ -14,6 +14,7 @@ using SqlKata.Execution;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.IO;
 using CSScriptLib;
+using System.Drawing; 
 
 namespace UniOrm
 {
@@ -95,23 +96,37 @@ namespace UniOrm
             }
             return null;
         }
-
         public object R(string key)
         {
-            if( this.ResouceInfos==null)
+            if (this.ResouceInfos == null)
             {
                 return null;
             }
             else
             {
-                if( this.ResouceInfos.ContainsKey(key))
+                if (this.ResouceInfos.ContainsKey(key))
                 {
-                    return ResouceInfos[key].AsDynamic() ;
+                    return ResouceInfos[key].AsDynamic();
                 }
             }
             return null;
         }
+        public int Rand(int min, int max)
+        {
+            return new Random(DateTime.Now.Millisecond).Next(min, max);
+        }
     
+
+        public Image ImageFromFile(string relativePath)
+        {
+          return  Image.FromFile(relativePath.ToServerFullPathEnEnsure());
+        }
+
+        public Image ImageSetText(string relativePath)
+        {
+            return Image.FromFile(relativePath.ToServerFullPathEnEnsure());
+        }
+
         public object R2I(object DynaObject)
         {
             return MagicExtension.BackToInst(DynaObject); 

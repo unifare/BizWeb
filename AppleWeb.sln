@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizWeb", "BizWeb\BizWeb.csproj", "{D3E56A3C-EFE9-4001-B338-C2B9779B5FF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BizWeb", "BizWeb\BizWeb.csproj", "{D3E56A3C-EFE9-4001-B338-C2B9779B5FF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniOrm.Common", "UniOrm.Common\UniOrm.Common.csproj", "{9A3A8A11-F8F3-4AC8-A96A-40FE81F2D46C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.Common", "UniOrm.Common\UniOrm.Common.csproj", "{9A3A8A11-F8F3-4AC8-A96A-40FE81F2D46C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastratrue", "Infrastratrue", "{8E21E110-EEAD-4794-BBAF-F355A64EE106}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.Model", "UniOrm.Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.FlunentMigrator", "UniOrm.FlunentMigrator\UniOrm.FlunentMigrator.csproj", "{76CD34D7-D727-4447-8716-8BA0CA421308}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniOrm.Application", "UniOrm.Application\UniOrm.Application.csproj", "{2AB4856E-A1A0-4DB1-8FA7-0F6869BCA09F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.Application", "UniOrm.Application\UniOrm.Application.csproj", "{2AB4856E-A1A0-4DB1-8FA7-0F6869BCA09F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.DataMigrationiHistrory", "UniOrm.DataMigrationiHistrory\UniOrm.DataMigrationiHistrory.csproj", "{C050F162-6DFE-4CA3-8204-814C44A16270}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebEditorPlugin", "Plugins\WebEditorPlugins\WebEditorPlugin.csproj", "{1781F4E2-70F7-47E7-8BA1-FA0102B183DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.ShopExPlugin", "Plugins\ShopExPlugin\UniOrm.ShopExPlugin.csproj", "{9B242593-95BF-42FA-8484-091379FD9C58}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniOrm.PHP", "UniOrm.PHP\UniOrm.PHP.csproj", "{6CBD290D-79AD-4395-B006-38A1DB3FAE38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +177,14 @@ Global
 		{9B242593-95BF-42FA-8484-091379FD9C58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B242593-95BF-42FA-8484-091379FD9C58}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B242593-95BF-42FA-8484-091379FD9C58}.Release|x86.Build.0 = Release|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Debug|x86.Build.0 = Debug|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Release|x86.ActiveCfg = Release|Any CPU
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +204,7 @@ Global
 		{0406A42F-2D8B-435D-839E-312549A2D634} = {69584CA3-57E2-4654-8B19-01D6166B6601}
 		{1781F4E2-70F7-47E7-8BA1-FA0102B183DA} = {69584CA3-57E2-4654-8B19-01D6166B6601}
 		{9B242593-95BF-42FA-8484-091379FD9C58} = {69584CA3-57E2-4654-8B19-01D6166B6601}
+		{6CBD290D-79AD-4395-B006-38A1DB3FAE38} = {8E21E110-EEAD-4794-BBAF-F355A64EE106}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA37C252-435A-4E83-A88B-79294E61436D}
