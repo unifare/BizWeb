@@ -13,6 +13,7 @@ using UniOrm;
 using UniOrm.Application;
 using UniOrm.Startup.Web;
 using SqlSugar;
+using UniOrm.Model;
 
 namespace UniNote.WebClient.Controllers
 {
@@ -29,7 +30,14 @@ namespace UniNote.WebClient.Controllers
 
         public IActionResult Index()
         {
-            return View();
+           var sh= dbFactory.Queryable<SystemHtml>().Where(p => p.Name == "admin_Index").Single();
+
+            return new ContentResult()
+            {
+                Content = sh.Value,
+                ContentType = "text/html",
+                StatusCode = 200
+            };
         }
         public IActionResult console()
         {

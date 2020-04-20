@@ -738,6 +738,8 @@ Hello, @Model.Item.Name .Welcome to RazorLight repository
                 SystemDictionarytype = 0,
                 AddTime = DateTime.Now,
             };
+
+
             Insert.IntoTable(WholeTableName("SystemDictionary")).Row(SystemDictionary1);
         }
 
