@@ -24,7 +24,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using Microsoft.Extensions.Configuration;
-using Peachpie.AspNetCore.Web;
 namespace UniOrm.Application
 {
     public class RutimeGlobal

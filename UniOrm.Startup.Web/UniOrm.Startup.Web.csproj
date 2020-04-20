@@ -25,5 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UniOrm.Application\UniOrm.Application.csproj" />
+    <ProjectReference Include="..\UniOrm.PHP\UniOrm.PHP.csproj" />
   </ItemGroup>  
 </Project>

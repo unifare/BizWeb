@@ -498,9 +498,8 @@ namespace UniOrm
             if (filename.IsNullOrEmpty())
             {
                 return dirPath;
-            }
-
-            return Path.Combine(dirPath, filename.Replace('/',  Path.DirectorySeparatorChar ));
+            } 
+            return Path.Combine(dirPath, filename.Replace('/', Path.DirectorySeparatorChar).TrimStart(Path.DirectorySeparatorChar));
         }
 
         public static string GetFileExtension(this string filePath)
@@ -646,7 +645,47 @@ namespace UniOrm
         {
             return AppDomain.CurrentDomain.BaseDirectory.CombineFilePath(relatedfilePath);
         }
-
+        public static string ToRelativePath(this string filePath ,string basedir)
+        { 
+            if (filePath.StartsWith(Path.DirectorySeparatorChar))
+            {
+                return filePath;
+            }
+            else
+            {
+                var padir = filePath;
+                if (padir.Replace("\\", "").Replace("/", "") == basedir.Replace("\\", "").Replace("/", ""))
+                {
+                    padir = "/";
+                }
+                else
+                {
+                    padir = padir.GetDirName();
+                }
+                return padir.FindAndSubstring(basedir).Replace("\\", "/");
+            }
+        }
+        public static string ToRelativePath(this string  filePath)
+        {
+            var basedir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
+            if ( filePath.StartsWith(Path.DirectorySeparatorChar))
+            {
+                return filePath;
+            }
+            else
+            {
+                var padir = filePath;
+                if (padir.Replace("\\", "").Replace("/", "") == basedir.Replace("\\", "").Replace("/", ""))
+                {
+                    padir = "/";
+                }
+                else
+                {
+                    padir = padir.GetDirName();
+                }
+                return padir.FindAndSubstring(basedir).Replace("\\", "/");
+            }
+        }
         public static string DValue(this string key)
         {
             return APPCommon.AppConfig.GetDicstring(key);
@@ -853,7 +892,8 @@ namespace UniOrm
                 return sb.ToString();
             }
         }
-        public static string SafeSubString(this string decryptString, int length)
+
+        public static string SafeSubString(this string decryptString, int start)
         {
             if (string.IsNullOrEmpty(decryptString))
             {
@@ -861,17 +901,35 @@ namespace UniOrm
             }
             else
             {
-                if (decryptString.Length <= length)
+                if (decryptString.Length <= start)
                 {
                     return decryptString;
                 }
                 else
                 {
-                    return decryptString.Substring(0,length);
+                    return decryptString.Substring(start);
                 }
             }
         }
 
+        public static string SafeSubStringToEnd(this string decryptString, string findstring)
+        {
+            if (string.IsNullOrEmpty(decryptString))
+            {
+                return "";
+            }
+            else
+            {
+                if (decryptString.Length <= findstring.Length)
+                {
+                    return "";
+                }
+                else
+                {
+                    return decryptString.Substring(decryptString.IndexOf(findstring));
+                }
+            }
+        }
         public static string SafeSubString(this string decryptString, int start, int length)
         {
             if (string.IsNullOrEmpty(decryptString))

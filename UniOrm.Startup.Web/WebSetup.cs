@@ -392,7 +392,7 @@ namespace UniOrm.Startup.Web
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
-            app.UsePhp(new PhpRequestOptions() { RootPath = APPCommon.UserUploadBaseDir }) ;
+            //app.UsePhp(new PhpRequestOptions() { RootPath = APPCommon.UserUploadBaseDir }) ;
             app.UseRouting();
 
             app.UseAuthentication();

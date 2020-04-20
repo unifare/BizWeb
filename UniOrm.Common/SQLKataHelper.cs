@@ -68,7 +68,7 @@ namespace UniOrm
                     compiler = SQLKataHelper.SqliteCompiler;
                     break;
                 case 0:
-                     connection = new MySqlConnection(sqlconstring);
+                     connection = new  MySqlConnection(sqlconstring);
                      compiler = SQLKataHelper.MySqlCompiler;  //2
                     break;
                 case 4:

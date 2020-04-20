@@ -41,8 +41,8 @@ namespace UniNote.WebClient.Controllers
         }
         public IActionResult GetAllFiles(string dir)
         {
-            var basedir = AppDomain.CurrentDomain.BaseDirectory;
-            var fullpath = dir.ToServerFullPath();
+            var basedir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar);
+            var fullpath = dir.ToServerFullPath().TrimEnd(Path.DirectorySeparatorChar);
             if (!Directory.Exists(fullpath))
             {
                 return new JsonResult(new { isok = false });
@@ -51,19 +51,12 @@ namespace UniNote.WebClient.Controllers
             {
                 var index = 0;
                 var list = new List<FileDTO>();
-                var fullpadir = fullpath.GetDirFullPath();
-                if (dir != "/")
+                var fullpadir = fullpath.GetDirFullPath().TrimEnd(Path.DirectorySeparatorChar);
+                if (fullpath != basedir  )
                 {
-                    var padir = fullpadir;
-                    if (padir.Replace("\\", "").Replace("/", "") == basedir.Replace("\\", "").Replace("/", ""))
-                    {
-                        padir = "/";
-                    }
-                    else
-                    {
-                        padir = fullpath.GetDirName();
-                    }
-                    list.Add(new FileDTO { Id = index, Name = "..上一级", RelatedPath = fullpadir.FindAndSubstring(basedir).Replace("\\", "/"), ParentDirName = padir, IsDirectry = true });
+
+                    var repath = fullpadir.ToRelativePath(basedir);
+                    list.Add(new FileDTO { Id = index, Name = "..上一级", RelatedPath = repath, ParentDirName = repath, IsDirectry = true });
                     index++;
                 }
 
@@ -106,7 +99,8 @@ namespace UniNote.WebClient.Controllers
                     });
                     index++;
                 }
-                return new JsonResult(new { isok = true, parentdir = dir, list = list });
+                var redir=fullpadir.ToRelativePath(basedir);
+                return new JsonResult(new { isok = true, parentdir = redir, list = list });
             }
 
         }
