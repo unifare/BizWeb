@@ -365,7 +365,9 @@
                     app.addFrom = 2
                     app.editingCompose.Name = app.editLangName;
                 },
-
+                ToEditStep: function (el) {
+                    app.ToEditCompose(  el); 
+                },
                 searchComposite: function () {
                     if (this.compositkey == '') {
                         this.coms = this.comsCopy;
