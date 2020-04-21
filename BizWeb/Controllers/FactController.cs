@@ -298,6 +298,8 @@ namespace UniNote.WebClient.Controllers
         public int AddTriger([FromBody]TrigerRuleInfo id)
         {
             id.AddTime = DateTime.Now;
+            id.Rule = id.Rule?.Trim();
+            id.ComposityId = id.ComposityId?.Trim();
             if (string.IsNullOrEmpty(id.HttpMethod))
             {
                 id.HttpMethod = "GET";
@@ -309,6 +311,9 @@ namespace UniNote.WebClient.Controllers
         [HttpPost]
         public int UpateTriger([FromBody]TrigerRuleInfo id)
         {
+            id.Rule = id.Rule?.Trim();
+            id.HttpMethod = id.HttpMethod?.Trim();
+            id.ComposityId = id.ComposityId?.Trim();
             var allFlowSteps = m_codeService.UpdateSimpleCode(id);
             return allFlowSteps;
         }
@@ -323,6 +328,7 @@ namespace UniNote.WebClient.Controllers
         public int AddCompose([FromBody]ComposeEntity id)
         {
             id.AddTime = DateTime.Now;
+            id.Guid = id.Guid?.Trim(); 
             var allFlowSteps = m_codeService.InsertCode<ComposeEntity>(id);
             return allFlowSteps;
         }
@@ -345,6 +351,8 @@ namespace UniNote.WebClient.Controllers
         public int UpdateCompose([FromBody]ComposeEntity id)
         {
             id.AddTime = DateTime.Now;
+            id.Guid = id.Guid?.Trim();
+            id.TrigeMethod = id.TrigeMethod?.Trim();
             var allFlowSteps = m_codeService.UpdateSimpleCode(id);
             return allFlowSteps;
         }
