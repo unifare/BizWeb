@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace UniOrm
 {
@@ -185,67 +186,132 @@ namespace UniOrm
             return typeProperties;
         }
 
-        private static bool ParametersCompatible(MethodInfo method, object[] passedArguments)
+        private static bool ParametersCompatible(MethodInfo method, object[] passedArguments,bool isExtense)
         {
             Debug.Assert(method != null);
             Debug.Assert(passedArguments != null);
 
             var parametersOnMethod = method.GetParameters();
-
-            if (parametersOnMethod.Length != passedArguments.Length)
-                return false;
-
-            for (int i = 0; i < parametersOnMethod.Length; ++i)
+            var sartindex = 0;
+            if(isExtense)
             {
-                var parameterType = parametersOnMethod[i].ParameterType.GetTypeInfo();
-                ref var argument = ref passedArguments[i];
-
-                if (argument == null && parameterType.IsValueType)
+                sartindex = 1;
+                if (parametersOnMethod.Length-1 != passedArguments.Length)
                 {
-                    // Value types can not be null.
                     return false;
                 }
-
-                if (!parameterType.IsInstanceOfType(argument))
+            }
+            else if (parametersOnMethod.Length != passedArguments.Length)
+            {
+                return false;
+            }
+            for (int i = sartindex; i < parametersOnMethod.Length; ++i)
+            {
+                var parameterType = parametersOnMethod[i].ParameterType.GetTypeInfo();
+             
+                if (isExtense)
                 {
-                    // Parameters should be instance of the parameter type.
-                    if (parameterType.IsByRef)
+                   ref var argument = ref passedArguments[i-1];
+
+                    if (argument == null && parameterType.IsValueType)
                     {
-                        var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
+                        // Value types can not be null.
+                        return false;
+                    }
 
-                        Debug.Assert(typePassedByRef != null);
-
-                        if (typePassedByRef.IsValueType && argument == null)
+                    if (!parameterType.IsInstanceOfType(argument))
+                    {
+                        // Parameters should be instance of the parameter type.
+                        if (parameterType.IsByRef)
                         {
-                            return false;
-                        }
+                            var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
 
-                        if (argument != null)
-                        {
-                            var argumentType = argument.GetType().GetTypeInfo();
-                            var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
-                            if (parameterType != argumentByRefType)
+                            Debug.Assert(typePassedByRef != null);
+
+                            if (typePassedByRef.IsValueType && argument == null)
                             {
-                                try
+                                return false;
+                            }
+
+                            if (argument != null)
+                            {
+                                var argumentType = argument.GetType().GetTypeInfo();
+                                var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
+                                if (parameterType != argumentByRefType)
                                 {
-                                    argument = Convert.ChangeType(argument, typePassedByRef.AsType());
-                                }
-                                catch (InvalidCastException)
-                                {
-                                    return false;
+                                    try
+                                    {
+                                        argument = Convert.ChangeType(argument, typePassedByRef.AsType());
+                                    }
+                                    catch (InvalidCastException)
+                                    {
+                                        return false;
+                                    }
                                 }
                             }
                         }
+                        else if (argument == null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
-                    else if (argument == null)
+
+                }
+                else
+                {
+                   ref var argument = ref passedArguments[i];
+                    if (argument == null && parameterType.IsValueType)
                     {
-                        continue;
-                    }
-                    else
-                    {
+                        // Value types can not be null.
                         return false;
                     }
+
+                    if (!parameterType.IsInstanceOfType(argument))
+                    {
+                        // Parameters should be instance of the parameter type.
+                        if (parameterType.IsByRef)
+                        {
+                            var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
+
+                            Debug.Assert(typePassedByRef != null);
+
+                            if (typePassedByRef.IsValueType && argument == null)
+                            {
+                                return false;
+                            }
+
+                            if (argument != null)
+                            {
+                                var argumentType = argument.GetType().GetTypeInfo();
+                                var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
+                                if (parameterType != argumentByRefType)
+                                {
+                                    try
+                                    {
+                                        argument = Convert.ChangeType(argument, typePassedByRef.AsType());
+                                    }
+                                    catch (InvalidCastException)
+                                    {
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                        else if (argument == null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                 }
+              
             }
 
             return true;
@@ -285,29 +351,67 @@ namespace UniOrm
                             }
                         }
 
-                        if (ParametersCompatible(candidate, args))
+                        if (ParametersCompatible(candidate, args,false))
                         {
                             method = candidate;
                             break;
                         }
                     }
                 }
+                if (method == null)
+                {
+                    methods = currentType.GetExtensionMethods();
+                    for (int i = 0; i < methods.Length; ++i)
+                    {
+                        candidate = methods[i];
 
+                        if (candidate.Name == name)
+                        {
+                            // Check if the method is called as a generic method.
+                            if (typeArgs.Length > 0 && candidate.ContainsGenericParameters)
+                            {
+                                var candidateTypeArgs = candidate.GetGenericArguments();
+                                if (candidateTypeArgs.Length == typeArgs.Length)
+                                {
+                                    candidate = candidate.MakeGenericMethod(typeArgs);
+                                }
+                            }
+
+                            if (ParametersCompatible(candidate, args,true))
+                            {
+                                method = candidate;
+                                break;
+                            }
+                        }
+                    }
+                }
                 if (method == null)
                 {
                     // Move up in the type hierarchy.
                     currentType = currentType.GetTypeInfo().BaseType;
                 }
             }
+         
 
             if (method == null)
             {
+               
                 throw new MissingMethodException($"Method with name '{name}' not found on type '{type.FullName}'.");
             }
-
-            return method.Invoke(target, args);
+            if (method.CustomAttributes.Any(p => p.AttributeType == typeof(System.Runtime.CompilerServices.ExtensionAttribute)))
+            {
+                var newargs = new List<object>();
+                newargs.Add(target);
+                newargs.AddRange(args);
+                return method.Invoke(null, newargs.ToArray());
+            }
+            else
+            {
+                return method.Invoke(target, args);
+            }
+           
         }
-
+        
         private static object Unwrap(object o)
         {
             // If it's a wrap object, unwrap it and return the real thing
@@ -342,6 +446,52 @@ namespace UniOrm
             }
 
             return typeArgs;
+        }
+    }
+
+
+    public static class TypeExtension
+    {
+        /// <summary>
+        /// This Methode extends the System.Type-type to get all extended methods. It searches hereby in all assemblies which are known by the current AppDomain.
+        /// </summary>
+        /// <remarks>
+        /// Insired by Jon Skeet from his answer on http://stackoverflow.com/questions/299515/c-sharp-reflection-to-identify-extension-methods
+        /// </remarks>
+        /// <returns>returns MethodInfo[] with the extended Method</returns>
+
+        public static MethodInfo[] GetExtensionMethods(this Type t)
+        {
+            List<Type> AssTypes = new List<Type>();
+
+            foreach (Assembly item in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                AssTypes.AddRange(item.GetTypes());
+            }
+
+            var query = from type in AssTypes
+                        where type.IsSealed && !type.IsGenericType && !type.IsNested
+                        from method in type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                        where method.IsDefined(typeof(ExtensionAttribute), false)
+                        where method.GetParameters()[0].ParameterType == t
+                        select method;
+            return query.ToArray<MethodInfo>();
+        }
+
+        /// <summary>
+        /// Extends the System.Type-type to search for a given extended MethodeName.
+        /// </summary>
+        /// <param name="MethodeName">Name of the Methode</param>
+        /// <returns>the found Methode or null</returns>
+        public static MethodInfo GetExtensionMethod(this Type t, string MethodeName)
+        {
+            var mi = from methode in t.GetExtensionMethods()
+                     where methode.Name == MethodeName
+                     select methode;
+            if (mi.Count<MethodInfo>() <= 0)
+                return null;
+            else
+                return mi.First<MethodInfo>();
         }
     }
 }

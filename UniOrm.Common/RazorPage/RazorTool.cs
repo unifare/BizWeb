@@ -19,20 +19,26 @@ using System.Threading.Tasks;
 
 namespace UniOrm
 {
-    
+    public static class RazorToolEx{
+        public static object D2O (this object dynamicObj)
+        {
+            return  MagicExtension.BackToInst(dynamicObj);
+        }
+    }
     public class RazorTool
     {
         public ActionExecutingContext ActionContext { get; set; }
-        public HttpContext HttpContext { get; set; }
+        public HttpContext HttpContext { get; set; } 
+        public Dictionary<string, MethodDelegate> Funs { get; set; }
+        public AConFlowStep Step { get; set; }
+        public Dictionary<string, object> ResouceInfos { get; set; }
+
         public RazorTool()
         {
            
             IHttpContextAccessor factory = APPCommon.ApplicationServices.GetService<IHttpContextAccessor>();
             HttpContext = factory.HttpContext;
         }
-        public Dictionary<string, MethodDelegate> Funs { get; set; }
-        public AConFlowStep Step { get; set; }
-        public Dictionary<string, object> ResouceInfos { get; set; }
         public string V(string key)
         {
             return APPCommon.AppConfig.GetDicstring(key);
@@ -124,7 +130,7 @@ namespace UniOrm
                 }
                 else
                 {
-                    return kata;
+                    return kata ;
                 }
             }
         }
@@ -135,6 +141,11 @@ namespace UniOrm
             {
                 return HttpContext.Request.Form;
             } 
+        }
+
+        public int Insert(string tablenmae,object inserObject)
+        {
+          return Kata.Query(tablenmae).Insert(inserObject);
         }
 
         public IQueryCollection Query
@@ -298,7 +309,30 @@ namespace UniOrm
             HttpContext.Session.SetString(key, value);
         }
 
+        public string GetIp( )
+        {
+            var ip =  Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = HttpContext.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
+        }
 
+
+        public string GetLocalIp()
+        {
+            return Request.HttpContext.Connection.LocalIpAddress.MapToIPv4().ToString();
+                //":"
+                //+ Request.HttpContext.Connection.LocalPort);
+            //return str;
+        }
+
+
+        public string Url(string key)
+        {
+            return HttpContext.Request.Query[key];
+        }
 
 
         public string UrlQuery(string key)
