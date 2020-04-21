@@ -18,20 +18,22 @@ namespace UniOrm.DataMigrationiHistrory
 
             IfDatabase("SqlServer", "Postgres", "sqlite").Create.Table(WholeTableName("LocalLangs"))
                   .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                  .WithColumn("Guid").AsString(300)
-                  .WithColumn("Name").AsString(300)
-                  .WithColumn("IsSytem").AsBoolean()
+                  .WithColumn("Guid").AsString(300).Nullable()
+                  .WithColumn("Name").AsString(300).Nullable()
+                  .WithColumn("IsSytem").AsBoolean().Nullable()
                   .WithColumn("Value").AsCustom("ntext").Nullable()
-                  .WithColumn("Lang").AsInt32()
+                  .WithColumn("Lang").AsInt32().WithDefaultValue(0)
+                  .WithColumn("LangName").AsString(50).Nullable()
                   .WithColumn("AddTime").AsDateTime().Nullable()
                 ;
             IfDatabase("mysql").Create.Table(WholeTableName("LocalLangs"))
                 .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("Guid").AsString(300)
-                .WithColumn("Name").AsString(300)
-                .WithColumn("IsSytem").AsBoolean()
+                .WithColumn("Guid").AsString(300).Nullable()
+                .WithColumn("Name").AsString(300).Nullable()
+                .WithColumn("IsSytem").AsBoolean().Nullable()
                 .WithColumn("Value").AsCustom("text").Nullable()
-                .WithColumn("Lang").AsInt32()
+                .WithColumn("Lang").AsInt32().WithDefaultValue(0)
+                .WithColumn("LangName").AsString(50).Nullable()
                 .WithColumn("AddTime").AsDateTime().Nullable()
                 ;
             var SystemDictionary1 = new
@@ -40,6 +42,7 @@ namespace UniOrm.DataMigrationiHistrory
                 Guid = Guid.NewGuid().ToString(),
                 IsSytem = true,
                 Value = @"你好",
+                LangName="zh",
                 Lang=0
             };
             var SystemDictionary2 = new
@@ -48,6 +51,7 @@ namespace UniOrm.DataMigrationiHistrory
                 Guid = Guid.NewGuid().ToString(),
                 IsSytem = true,
                 Value = @"Hello",
+                LangName = "en",
                 Lang = 2
             };
             Insert.IntoTable(WholeTableName("LocalLangs")).Row(SystemDictionary1);

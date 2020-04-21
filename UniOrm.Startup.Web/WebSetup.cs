@@ -124,7 +124,7 @@ namespace UniOrm.Startup.Web
 
             APP.InitDbMigrate();
             APPCommon.AppConfig.LoadDBDictionary();
-            //services.AddTheme(); //添加Theme服务
+            APPCommon.LoadLocalLangs();
             if (isEnableSwagger)
             {
                 //注册Swagger生成器，定义一个和多个Swagger 文档
@@ -379,7 +379,7 @@ namespace UniOrm.Startup.Web
             CreatUserSpaceDirectory(app);
             APP.ConfigureSiteAllModules(app);
 
-            app.UseCookiePolicy(); //是否启用cookie隐私
+            //app.UseCookiePolicy(); //是否启用cookie隐私
 
             var isEnableSwagger = Convert.ToBoolean(appConfig.GetDicstring("isEnableSwagger")); ;
             if (isEnableSwagger)

@@ -14,7 +14,8 @@ using SqlKata.Execution;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.IO;
 using CSScriptLib;
-using System.Drawing; 
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace UniOrm
 {
@@ -35,6 +36,68 @@ namespace UniOrm
         public string V(string key)
         {
             return APPCommon.AppConfig.GetDicstring(key);
+        }
+
+        public string L(string key)
+        {
+            var restr = string.Empty;
+            var localcookie = GetCookies("__locallang");
+
+            var localquery = HttpContext.Request.Query["lang"];
+            if (!string.IsNullOrEmpty(localquery))
+            {
+                var lmodel = APPCommon.GetLoalLang(key, localquery).Result;
+                restr = GetDefaultValue(key, ref lmodel);
+                SetCookies("__locallang", localquery);
+            }
+            else
+            {
+                if( string.IsNullOrEmpty(localcookie))
+                {
+                    var lmodel = APPCommon.GetLoalLang(key, null, 0).Result;
+                    restr = GetDefaultValue(key, ref lmodel);
+                    restr = lmodel.Value;
+                }
+                else
+                {
+                     var lmodel = APPCommon.GetLoalLang(key, localcookie ).Result;
+                    restr = GetDefaultValue(key, ref lmodel);
+                    restr = lmodel.Value;
+                }
+               
+            }
+            return restr;
+        }
+
+        private static string GetDefaultValue(string key, ref LocalLangs lmodel)
+        {
+            string restr;
+            if (lmodel == null)
+            {
+                lmodel = APPCommon.GetLoalLang(key, null, 0).Result;
+            }
+            if (lmodel == null)
+            {
+                restr = string.Empty;
+            }
+            else
+            {
+                restr = lmodel.Value;
+            }
+
+            return restr;
+        }
+
+        public string L(string key, int lang)
+        {
+            var s = APPCommon.GetLoalLang(key, null, lang).Result;
+            return s.Value;
+        }
+
+        public string L(string key, string langName)
+        {
+            var s = APPCommon.GetLoalLang(key, langName).Result;
+            return s.Value;
         }
 
         public string Include(string RelativefilePath)

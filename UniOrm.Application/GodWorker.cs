@@ -286,13 +286,13 @@ namespace UniOrm.Application
                                                 break;
                                             case FlowStepType.Function:
                                                 {
-                                                    DynaObject = DealTheFunction(newrunmodel, s);
+                                                    DynaObject = DealTheFunction(newrunmodel, s,httpContext);
                                                 }
                                                 break;
                                             case FlowStepType.RazorText:
                                                 try
                                                 {
-                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s, s.ProxyCode);
+                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s,httpContext, s.ProxyCode);
                                                 }
                                                 catch (Exception exp)
                                                 {
@@ -304,7 +304,7 @@ namespace UniOrm.Application
                                                 { 
                                                     var filePath = s.ProxyCode;
                                                     string template = File.ReadAllText(Path.Combine(APPCommon.UserUploadBaseDir, filePath));
-                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s, template);
+                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s, httpContext, template);
                                                 }
                                                 catch (Exception exp)
                                                 {
@@ -340,7 +340,7 @@ namespace UniOrm.Application
             }
         }
 
-        private static object DealTheFunction(RuntimeStepModel newrunmodel, AConFlowStep s)
+        private static object DealTheFunction(RuntimeStepModel newrunmodel, AConFlowStep s ,HttpContext httpContext)
         {
             object rebject;
             var defaultNamespace = @"using UniOrm;
@@ -420,7 +420,7 @@ using Microsoft.AspNetCore.Mvc;";
             return rebject;
         }
 
-        private static async Task<string> HandleRazorText(RuntimeStepModel newrunmodel, AConFlowStep s, string template)
+        private static async Task<string> HandleRazorText(RuntimeStepModel newrunmodel, AConFlowStep s, HttpContext httpContext, string template)
         {
             var engine = APP.Razorengine;
             //string template = s.ProxyCode;
@@ -521,7 +521,7 @@ using Microsoft.AspNetCore.Mvc;";
                     modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
 
                 }
-                var cachekey2 = template.ToMD5() ;
+                var cachekey2 = template.ToMD5();
                 var cacheResult = engine.Handler.Cache.RetrieveTemplate(cachekey2);
                 template = stringbuilder.AppendLine("\r\n").Append(template).ToString();
                 if (cacheResult.Success)

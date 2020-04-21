@@ -19,8 +19,9 @@ namespace UniOrm.Model
         public long Id { get; set; }
         public string Guid { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
-        public bool IsSytem { get; set; }
+        public string LangName { get; set; }
+        public string Value { get; set; } = string.Empty;
+        public bool IsSytem { get; set; } = false;
         public ReportLanguageType Lang { get; set; } 
         public DateTime? AddTime { get; set; }
     }

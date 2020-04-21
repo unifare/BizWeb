@@ -3,9 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 @section css{
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/assets/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap/assets/css/style.css" rel="stylesheet" />
+    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     <style type="text/css">
         .container {
             padding: 0 15px;
@@ -50,9 +48,7 @@
 
 
 <div id="app">
-    <div style="overflow:visible">
-
-        <div><button v-on:click="UpdateCache()">更新缓存</button></div>
+    <div style="overflow:visible"> 
         <div class="row">
              
             <div class="col-sm-4">
@@ -77,8 +73,8 @@
 
                                     <tr v-for="el in coms" v-bind:class="{ selectrow: el.Name==selectedCompose.Name }">
                                         <td style="width:100px">
-                                            <a   v-on:click="ToEditCompose(el)"  >修改</a>
-                                            <a  v-on:click="ToSetupCompose(el)"  >设置</a>
+                                            <a   v-on:click="ToDelCompose(el)">删除</a>
+                                            <a v-on:click="ToSetupCompose(el)">设置</a>
                                         </td>
                                         <td style="width:70px" class=".text-truncate ">{{el.Guid}}</td>
                                         <td>{{el.Name}}</td>
@@ -93,12 +89,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-5">
-
-
+            <div class="col-sm-5"> 
                 <div class="panel  panel-primary">
                     <div class="panel-heading">Flow List</div>
-                    <div class="panel-body" style="        max-height: 100px;">
+                    <div class="panel-body" style="max-height: 100px;">
                         <div>
                             <input  type="button" value="新增"      class="btn btn-primary " v-on:click="ToAddFlow( )" />
                         </div>
@@ -137,99 +131,7 @@
 
 
 
-    </div>
-    <div class="modal fade" id="TrigerDiv" role="dialog">
-        <div class="temp-custom-modal-wrap">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content temp-custom-modal-content">
-                    <button type="button" class="close temp-custom-close-button" data-dismiss="modal">&times;</button>
-                    <div class="modal-body temp-custom-modal-body">
-                        <div class="temp-login-form-wrapper">
-                            <div class="row custom-row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 temp-form-column-wrap-image">
-                                    <div class=" temp-payment-column-wrap-image">
-                                        <div class="temp-form-inner-wrapper">
-                                            <h2>Triger</h2>
-                                            <p>路由器。</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="temp-form-column-wrap">
-                                        <h2>基本信息</h2>
-
-                                        <form>
-                                            <div class="row">
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <span class="  ">
-
-                                                            <label class="temp_input_label">
-                                                                <span class="temp_input_label-content">名称</span>
-                                                            </label>
-                                                            <input class="temp_input_field" v-model="editingTriger.RuleName" type="text">
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <span class="  ">
-
-                                                            <label class="temp_input_label">
-                                                                <span class="temp_input_label-content">Rule</span>
-                                                            </label>
-                                                            <input class="temp_input_field" v-model="editingTriger.Rule" type="text">
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <span class="  ">
-
-                                                            <label class="temp_input_label">
-                                                                <span class="temp_input_label-content">httpMethod</span>
-                                                            </label>
-                                                            <select v-model="editingTriger.HttpMethod">
-                                                                <option value="GET">GET</option>
-                                                                <option value="POST">POST</option>
-                                                                <option value="PUT ">PUT </option> 
-                                                                <option value="DELETE">DELETE</option> 
-                                                            </select>
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group">
-                                                        <span class="  ">
-
-                                                            <label class="temp_input_label">
-                                                                <span class="temp_input_label-content">ComposityId</span>
-                                                            </label>
-                                                            <input class="temp_input_field" v-model="editingTriger.ComposityId" type="text">
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="temp-login-button-wrap">
-                                                        <input class="btn btn-info temp-form-button" v-on:click="SaveAddTriger( )" type="button" value="保存" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    </div> 
     <div class="modal fade" id="composeEntity" role="dialog">
         <div class="temp-custom-modal-wrap">
             <div class="modal-dialog">
@@ -264,6 +166,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="form-group">
                                                         <span class="  ">
@@ -280,9 +183,35 @@
                                                         <span class="  ">
 
                                                             <label class="temp_input_label">
-                                                                <span class="temp_input_label-content">Description</span>
+                                                                <span class="temp_input_label-content">LangName</span>
                                                             </label>
-                                                            <input class="temp_input_field" v-model="editingCompose.Description" type="text">
+                                                            <select v-model="editingCompose.LangName">
+                                                                <option value="zh">Simplified Chinese</option>
+                                                                <option value="tw">Traditional Chinese</option>
+                                                                <option value="en">English</option>
+
+                                                                <option value="ru">Russian</option>
+                                                                <option value="fr">French</option>
+                                                                <option value="sp">Spanish</option>
+
+                                                                <option value="ba">Bahasa</option>
+                                                                <option value="po">Portuguese</option>
+                                                                <option value="tu">Turkish</option>
+                                                                <option value="vi">Vietnamese</option>
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <span class="  ">
+
+                                                            <label class="temp_input_label">
+                                                                <span class="temp_input_label-content">Value</span>
+                                                            </label>
+                                                            <textarea   class="temp_input_field" cols="50" v-model="editingCompose.Value">
+                                                            </textarea>
+                                                           
                                                         </span>
                                                     </div>
                                                 </div>
@@ -302,310 +231,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="StepDetail" role="dialog">
-        <div class="temp-custom-modal-wrap">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content temp-custom-modal-content">
-                    <button type="button" class="close temp-custom-close-button" data-dismiss="modal">&times;</button>
-                    <div class="modal-body temp-custom-modal-body">
-                        <div class="temp-login-form-wrapper">
-                            <div class="row  " style="width:100%;">
-
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                    <div class="temp-form-column-wrap">
-                                        <h2>基本信息</h2>
-
-                                        <form>
-                                            <div class="row" >
-                                                <div style="height:490px; overflow:auto;">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">需要授权</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.IsUsingAuth" type="checkbox">
-                                                            </span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">授权用户</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.UserName" type="text">
-                                                            </span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">授权角色</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.UserRole" type="text">
-                                                            </span>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">登录地址</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.LoginUrl" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">名称</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.Name" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">Guid</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.Guid" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">StepOrder</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.StepOrder" type="number">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">InParamNames</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.ArgNames" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">dllfileName</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.TypeLib" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">typename</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.TypeFullName" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">IsCache</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.IsUsingCache" type="checkbox">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">MethodName</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.MethodName" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">ModuleName</span>
-                                                                </label>
-                                                                <select v-model="editingStep.ModuleName">
-                                                                    <option :value="item.id" v-for="item in allmodules">{{item.value }}</option>
-
-                                                                </select>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">FlowStepType</span>
-                                                                </label>
-                                                                <select v-model="editingStep.FlowStepType">
-                                                                    <option value="0">GetData</option>
-                                                                    <option value="1">Set</option>
-                                                                    <option value="2">Declare</option>
-
-                                                                    <option value="3">CallMethodAndStore</option>
-                                                                    <option value="4">CallMethod</option>
-                                                                    <option value="5">Action</option>
-
-                                                                    <option value="6">Function</option>
-                                                                    <option value="7">Return</option>
-                                                                    <option value="8">IF</option>
-                                                                    <option value="9">Else</option>
-                                                                    <option value="10">ElseIF</option>
-                                                                    <option value="11">StaiticFile</option>
-                                                                    <option value="12">Text</option>
-                                                                    <option value="13">RazorText</option>
-                                                                    <option value="14">RazorFile</option>
-                                                                </select>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="form-group">
-                                                            <span class="  ">
-
-                                                                <label class="temp_input_label">
-                                                                    <span class="temp_input_label-content">returnkeyName</span>
-                                                                </label>
-                                                                <input class="temp_input_field" v-model="editingStep.StorePoolKey" type="text">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="temp-login-button-wrap">
-                                                        <input class="btn btn-info temp-form-button" v-on:click="ToSaveStep( )" type="button" value="保存" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                                    <div class="row" style=" border-bottom:1px solid #808080; margin-bottom:0px;" >
-                                        <div class="col-sm-6">
-                                            Functionlist <input type="text" /><input type="button" value="搜索" />
-                                            <div>
-                                                <ul style="height:130px; overflow:auto; margin-bottom:0px !important;">
-                                                    <li style="border-bottom:1px solid #808080;"
-                                                        v-for="(item, index) in functionlist" data-toggle="popover"   :title="item.FunctionName"
-                                                        @@click="getFunction(item)">
-                                                        {{item.FunctionMemo}}
-                                                    </li>
-                                                </ul >
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-
-                                            <div style="border-bottom:1px solid #808080;height:145px; overflow-y:auto;">
-                                                <textarea style="width:100%; height:140px;">
-                                                        
-{{selectcode.FunctionCode}}
-                                                </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div   >
-                                        <nav>
-
-                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">CallMethod</a>
-                                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Decrare</a>
-                                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#Text" role="tab" aria-controls="nav-contact" aria-selected="false">Text</a>
-                                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#File" role="tab" aria-controls="nav-contact" aria-selected="false">File</a>
-                                                <a class="nav-item nav-link" id="nav-GetData-tab" data-toggle="tab" href="#nav-GetData" role="tab" aria-controls="nav-GetData" aria-selected="true">GetData</a>
-                                            </div>
-                                        </nav>
-                                        <div class="tab-content" id="nav-tabContent"  style=" height:380px; overflow:auto">
-                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                                <div class="row">
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                                        <div>dlls</div>
-                                                        <div>系统</div>
-                                                        <div v-for="el in dlls" @@click="getTypes(el,'')">
-                                                            {{el}}
-                                                        </div>
-                                                        <div>自定义</div>
-                                                        <div v-for="el in plugindlls" @@click="getTypes(el,'p')">{{el}}</div>
-                                                        <div>
-                                                            选择文件:  <input type="file" id="dllfile" name="dllfile" /> <input type="button" value="uploader" v-on:click="uploaderdll()" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style=" overflow:auto;">
-                                                        <div>Types</div>
-                                                        <template v-for="el in types">
-                                                            <div style="margin-bottom:4px; background-color:aliceblue" @@click="getmethod(el)">
-                                                                {{el.Name}}
-                                                            </div>
-                                                        </template>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                                                        <div>Methods</div>
-                                                        <div style="margin-bottom:4px; background-color:antiquewhite;" v-on:click="SelectMothod(el)" v-for="el in methods">{{el.methodname}}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                                <div>ProxyCode</div>
-                                                <textarea v-model="editingStep.ProxyCode" style=" width:100%; height:290px;"  ></textarea>
-                                            </div>
-                                            <div class="tab-pane fade" id="Text" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                                <div>Text</div>
-                                                <textarea v-model="editingStep.OutPutText" style=" width:100%; height:290px;" ></textarea>
-                                            </div>
-                                            <div class="tab-pane fade" id="File" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                                <div>File</div>
-
-                                            </div>
-
-                                            <div class="tab-pane fade" id="nav-GetData" role="tabpanel" aria-labelledby="nav-GetData-tab">
-                                                <div>IsUsingParentConnstring  <input type="checkbox" v-model="editingStep.IsUsingParentConnstring"> </div>
-                                                <div>
-                                                    Connstring
-                                                    <textarea v-model="editingStep.Connectionstring" style=" width:100%;" rows="4"></textarea>
-                                                </div>
-                                                <div>
-                                                    Sql
-                                                    <textarea v-model="editingStep.InParamter1" style=" width:100%;" rows="9"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    </div> 
 </div>
 
 
@@ -629,15 +255,17 @@
             data: {
                 allmodules: allmodules,
                 compositkey: '',
-                urlkey:'',
+                urlkey: '',
                 actointype: "add",
-                isAddStepBtnDisabled:true,
+                isAddStepBtnDisabled: true,
+                editLangName: '',
+                addFrom: 1,
                 editingStep: {},
                 editingTriger: {},
                 editingCompose: {},
                 selectedCompose: {},
                 trigers: trigers,
-                trigersCopy:[],
+                trigersCopy: [],
                 coms: registers,
                 comsCopy: [],
                 steps: step,
@@ -645,16 +273,16 @@
                 plugindlls: plugindlls,
                 selectcode: {},
                 types: types,
-                functionlist:[],
+                functionlist: [],
                 methods: Methods
             },
-            created: function(){
-               
+            created: function () {
+
             },
             filters: {
                 GetLangName: function (value) {
                     var rev = "简体中文";
-                   
+
                     switch (value) {
                         case 0:
                             rev = "简体中文";
@@ -696,28 +324,28 @@
                             rev = "Text";
                             break;
 
-                         case 13:
+                        case 13:
                             rev = "RazorText";
                             break;
-                         case 14:
+                        case 14:
                             rev = "RazorFile";
                             break;
-                         case 15:
+                        case 15:
                             rev = "TemplateText";
                             break;
-                         case 16:
+                        case 16:
                             rev = "TemplateFile";
                             break;
-                         case 17:
+                        case 17:
                             rev = "TemplateRazorText";
                             break;
-                         case 18:
+                        case 18:
                             rev = "ServerTransfer";
                             break;
-                          case 12:
+                        case 12:
                             rev = "Redirector";
                             break;
-                         case 19:
+                        case 19:
                             rev = "UrlRewriter";
                             break;
                         //case 12:
@@ -730,310 +358,14 @@
 
             },
             methods: {
-                getFunction: function (item) {
-                   this. selectcode = item;
-                },
-                getTypes: function (el, ty) {
-                    var data = { dll: el, ty: ty };
-                    $.ajax({
-                        type: "get",
-                        url: "/api/Fact/GetTypes",
-                        contentType: 'application/json',
-                        data: data,
-                        async: true,
-                        success: function (jsonResult) {
 
-                            app.types = jsonResult;
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                },
-                selectComposityRow: function (el,dom) {
-                    $(dom).css
-                },
-                uploaderdll: function () {
-                    var formData = new FormData();
-                    formData.append("dllfile", document.getElementById("dllfile").files[0]);
-
-                    $.ajax({
-                        url: "/api/Fact/UpdateDLL/",
-                        type: "POST",
-                        data: formData,
-                        /**
-                        *必须false才会自动加上正确的Content-Type
-                        */
-                        contentType: false,
-                        /**
-                        * 必须false才会避开jQuery对 formdata 的默认处理
-                        * XMLHttpRequest会对 formdata 进行正确的处理
-                        */
-                        processData: false,
-                        success: function (data) {
-                            if (data.isok == true) {
-                                alert("上传成功！");
-
-                                GetAllPgulinsReflections();
-                            }
-
-                        },
-                        error: function () {
-                            alert("上传失败！");
-                            $("#imgWait").hide();
-                        }
-                    });
-                },
-                UpdateCache: function () {
-                    if (!confirm("are you sure?")) {
-                        return false;
-                    }
-                    $.ajax({
-                        type: "post",
-                        url: "/api/Fact/UpdateCache/",
-                        contentType: 'application/json',
-                        async: true,
-                        success: function (jsonResult) {
-
-                            if (jsonResult == 0) {
-                                alert("ok");
-                            }
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                },
-                ToDeleteAddTriger: function (el) {
-                    if (!confirm("delete step?")) {
-                        return false
-                    }
-                    $.ajax({
-                        type: "delete",
-                        url: "/api/Fact/DeletTriger/",
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify(el.Id),
-                        async: true,
-                        success: function (jsonResult) {
-
-                            if (jsonResult > 0) {
-                                alert("  success");
-
-                                GetAllTrigers();
-                            }
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                },
-                ToAddTrigle: function () {
-
-                    app.editingTriger = {
-                        Id: 0,
-                        RuleName: "",
-                        Rule: "",
-                        ComposityId: newGuid(),
-                        HttpMethod: "",
-                        IsEnable: ""
-                    };
-                    app.actointype = "add"
-                    $('#TrigerDiv').modal("show")
-                },
-                SaveAddTriger: function () {
-                    var el = app.editingTriger;
-                    if (app.actointype == "add") {
-
-                        $.ajax({
-                            type: "post",
-                            url: "/api/Fact/AddTriger/",
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify(el),
-
-                            async: true,
-                            success: function (jsonResult) {
-
-                                if (jsonResult >= 0) {
-                                    alert("  success");
-                                    $('#TrigerDiv').modal("hide")
-                                    GetAllTrigers();
-                                }
-                            },
-                            error: function (e) {
-                                console.log(e);
-                            }
-                        });
-                    }
-                    else {
-                        $.ajax({
-                            type: "post",
-                            url: "/api/Fact/UpateTriger/",
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify(el),
-
-                            async: true,
-                            success: function (jsonResult) {
-
-                                if (jsonResult >= 0) {
-                                    alert("  success");
-                                    $('#TrigerDiv').modal("hide")
-                                    GetAllTrigers();
-                                }
-                            },
-                            error: function (e) {
-                                console.log(e);
-                            }
-                        });
-                    }
-                },
-                ToEditTrigers: function (el) {
-                    app.editingTriger = el
-                    app.actointype = "edit"
-                    $('#TrigerDiv').modal("show")
-                },
                 ToAddFlow: function () {
-                    //if (app.editingStep == null || app.editingStep == undefined) {
-                    app.editingStep = {
-                        Id: 0, Name: '',
-                        Guid:newGuid(),
-                        StepOrder: 0,
-                        ArgNames: '',
-                        ProxyCode: '',
-                        TypeLib: '',
-                        TypeFullName: '',
-                        MethodName: '',
-                        FlowStepType: ''
-                    };
-                    // app.
-                    //}
-                    app.actointype = "add";
-                    GetAllReflections();
-                    GetAllPgulinsReflections();
-                    $('#StepDetail').modal("show")
-                    //else {
-                    //    app.editingStep.TypeLib = el.dll;
-                    //    app.editingStep.TypeFullName = el.typename;
-                    //    app.editingStep.MethodName = el.methodname;
-                    //}
-                },
-                SelectMothod: function (el) {
-                    if (app.editingStep == null || app.editingStep == undefined) {
-                        app.editingStep = {
-                            Id: 0, Name: '',
 
-                            StepOrder: 0,
-                            ArgNames: '',
-                            TypeLib: el.TypeLib,
-                            IsBuildIn: el.IsBuildIn,
-                            TypeFullName: el.typename,
-                            MethodName: el.methodname,
-                            FlowStepType: el.FlowStepType
-                        };
-                        // app.
-                    }
-                    else {
-                        app.editingStep.TypeLib = el.TypeLib;
-                        app.editingStep.IsBuildIn = el.IsBuildIn;
-                        app.editingStep.TypeFullName = el.typename;
-                        app.editingStep.MethodName = el.methodname;
-                    }
+                    app.ToAddCompose();
+                    app.addFrom = 2
+                    app.editingCompose.Name = app.editLangName;
                 },
-                ToSaveStep: function () {
-                    if (app.editingStep == null || app.editingStep == undefined) {
-                        alert("errro");
-                    }
-                    var sdfe = app.editingStep;
-                    sdfe.AComposityId = app.selectedCompose.Guid;
-                    var addressurl = "ToInsertStep";
-                    if (app.actointype != "add") {
-                        addressurl = "ToUpateStep";
-                    }
 
-                    $.ajax({
-                        type: "post",
-                        url: "/api/Fact/" + addressurl,
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify(sdfe),
-
-                        async: true,
-                        success: function (jsonResult) { 
-                                alert("  success");
-                              
-                                getAconSlowStepByComposid(app.selectedCompose.AComposityId)
-                                $('#StepDetail').modal("hide") 
-                        },
-                        error: function (e) {
-                            console.log(e);
-                            getAconSlowStepByComposid(app.selectedCompose.AComposityId)
-                            $('#StepDetail').modal("hide")
-                        }
-                    });
-                },
-                ToEditStep: function (el) {
-                    app.editingStep = el;
-                    app.actointype = "edit";
-                    GetAllReflections();
-                    GetAllPgulinsReflections();
-                    $('#StepDetail').modal("show")
-                },
-                ToDelStep: function (el) {
-                    if (!confirm("delete step?")) {
-                        return false
-                    }
-                    $.ajax({
-                        type: "delete",
-                        url: "/api/Fact/DeleteSetp",
-                        dataType: 'json',
-                        contentType: 'application/json',///'application/json' 一定要写
-                        data: JSON.stringify(el.Guid),  ///JSON.stringify 一定要写
-                        async: true,
-                        success: function (jsonResult) {
-
-                            if (jsonResult > 0) {
-                                alert("  success");
-                                getAconSlowStepByComposid(app.selectedCompose.Guid);
-                            }
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                },
-                ToSetupCompose: function (el) {
-                    app.selectedCompose = el;
-                    getAconSlowStepByComposid(el.Name)
-                    app.isAddStepBtnDisabled = false;
-                },
-                searchurl: function () {
-                    if (this.urlkey == '') {
-                        this.trigers = this.trigersCopy;
-                    }
-                    else {
-                        this.trigers = [];
-                        for (var i = 0; i < this.trigersCopy.length; i++) {
-                            var co = this.trigersCopy[i];
-                            if (co.RuleName != null) {
-                                if (co.RuleName.indexOf(this.urlkey) >= 0) {
-                                    this.trigers.push(this.trigersCopy[i]);
-                                }
-                            }
-                            else if (co.Rule != null) {
-                                if (co.Rule.indexOf(this.urlkey) >= 0) {
-                                    this.trigers.push(this.trigersCopy[i]);
-                                }
-                            }
-                            else if (co.ComposityId != null) {
-                                if (co.ComposityId.indexOf(this.urlkey) >= 0) {
-                                    this.trigers.push(this.trigersCopy[i]);
-                                }
-                            }
-                        }
-                    }
-                },
                 searchComposite: function () {
                     if (this.compositkey == '') {
                         this.coms = this.comsCopy;
@@ -1056,27 +388,82 @@
                         }
                     }
                 },
-                ToSaveCompose: function () {
+                ToDelCompose: function (el) {
+                    if (!confirm("delete this key?")) {
+                        return false
+                    }
+                    $.ajax({
+                        type: "delete",
+                        url: "DelAllLangs",
+                        dataType: 'json',
+                        data: { Name: el.Name },
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult.isok===true) {
+                                alert("  success");
+                                GetAllCompose(); 
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
+                ToSetupCompose: function (el) {
+                    app.selectedCompose = el;
+                    app.editLangName = el.Name;
+                    getAconSlowStepByComposid(el.Name)
+                    app.isAddStepBtnDisabled = false;
+                },
+                ToDelStep: function (el) {
+                    if (!confirm("delete this lang?")) {
+                        return false
+                    }
+                    $.ajax({
+                        type: "delete",
+                        url: "DelLangs",
+                        dataType: 'json',
+                        data: { Id: el.Id },  
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult.isok === true) {
+                                alert("  success");
+                                getAconSlowStepByComposid(app.editLangName);
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
+                ToSaveCompose: function () { 
                     var el = app.editingCompose;
-                    var addressurl = "AddCompose";
+                    var editname = el.Name; 
+                    var addressurl = "AddLangs";
                     if (app.actointype != "add") {
-                        addressurl = "UpdateCompose";
+                        addressurl = "SaveLangs"; 
                     }
 
                     $.ajax({
                         type: "post",
-                        url: "/api/Fact/" + addressurl,
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify(el),
-
-                        async: true,
+                        url: addressurl,
+                        dataType: 'json', 
+                        data: {
+                            Id: el.Id, Name: el.Name, Value: el.Value, Guid: el.Guid, LangName: el.LangName
+                        },  
                         success: function (jsonResult) {
 
-                            if (jsonResult > 0) {
+                            if (jsonResult.isok ===true) {
                                 alert("  success");
-                                app.editingCompose = { id: 0, Guid: "", Name: "", Description: "" };
-                                GetAllCompose()
+                                app.editingCompose = { id: 0, Guid: newGuid(), Name: app.editLangName, Lang: 0, LangName: "zh", Value: "", IsSytem: false };
+                                if (app.addFrom == 2 && app.editLangName != '') {
+                                   getAconSlowStepByComposid(app.editLangName);
+                                }
+                                else if (app.addFrom == 1 ) {
+                                    GetAllCompose();
+                                }
                             }
                         },
                         error: function (e) {
@@ -1086,52 +473,21 @@
                 },
                 ToAddCompose: function () {
                     app.actointype = "add";
-                    app.editingCompose = { id: 0, Guid: newGuid(), Name: "", Description: "" };
+                    app.addFrom = 1;
+                    app.editingCompose = { id: 0, Guid: newGuid(), Name: "",Lang:0, LangName: "zh", Value: "", IsSytem:false};
                     $('#composeEntity').modal("show")
                 },
                 ToEditCompose: function (el) {
                     app.editingCompose = el;
+                    app.editLangName = el.Name;
                     app.actointype = "edit";
                     $('#composeEntity').modal("show")
 
                 },
-                getmethod: function (el) {
-                    $.ajax({
-                        type: "get",
-                        url: "/api/Fact/GetMothod",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: {
-                            id: encodeURIComponent( el.dllfile), FullName: el.FullName
-                        },
-                        async: true,
-                        success: function (jsonResult) {
-                            app.methods = jsonResult
-
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                }
+            
             }
         })
-        function GetAllTrigers() {
-            $.ajax({
-                type: "get",
-                url: "/sd23nj/Langs/GetAllLangs",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) {
-                    app.trigers = jsonResult;
-                    app.trigersCopy = app.trigers;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
+     
         function getAconSlowStepByComposid(name) {
             $.ajax({
                 type: "get",
@@ -1168,96 +524,10 @@
                 }
             });
         }
-        function GetAllFunctions() {
-            $.ajax({
-                type: "get",
-                url: "/api/Fact/GetAllFunctions",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) { 
-                    app.functionlist = jsonResult; 
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
-        function GetTypesByDll(dll) {
-            $.ajax({
-                type: "get",
-                url: "/api/Fact/GetTypes/dll",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) {
-
-                    app.dlls = jsonResult.dlls;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
-
-        function GetAllPgulinsReflections() {
-            $.ajax({
-                type: "get",
-                url: "/api/Fact/GetAllPluginReflections",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) {
-
-                    app.plugindlls = jsonResult.dlls;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
-
-        function GetAllReflections() {
-            $.ajax({
-                type: "get",
-                url: "/api/Fact/GetDefaultDlls",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) {
-
-                    app.dlls = jsonResult.dlls;
-                    app.types = [];
-                    app.methods = [];
-                    if (app.dlls.length > 0) {
-                        $.ajax({
-                            type: "get",
-                            url: "/api/Fact/GetTypes/" + app.dlls[0] + "ty=",
-                            dataType: "json",
-                            async: true,
-                            success: function (jsonResult) {
-
-                                app.types = jsonResult;
-                                aap.methods = [];
-                            },
-                            error: function (e) {
-                                console.log(e);
-                            }
-                        });
-                    }
-
-                    //app.methods = jsonResult.methods;
-                    //app.types = jsonResult.types;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-        }
+      
+         
         $(function () {
-            GetAllCompose();
-           
-            GetAllFunctions();
+            GetAllCompose(); 
         })
         function newGuid()
 {

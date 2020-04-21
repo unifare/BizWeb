@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using UniOrm.Model;
+using SqlSugar;
+using System.Threading.Tasks;
 
 namespace UniOrm
 {
@@ -38,7 +41,7 @@ namespace UniOrm
         readonly static string logName = "UniOrm.APPCommon";
         public static RuntimeCache RuntimeCache;
         public static DefaultModuleManager ModuleManager { get; set; } = new DefaultModuleManager();
-
+        public static List<LocalLangs> Langs = new List<LocalLangs>();
         private static AppConfig _AppConfig;
 
         private static string _appBaseDir = string.Empty;
@@ -55,6 +58,49 @@ namespace UniOrm
 
         }
 
+        public static async Task LoadLocalLangs()
+        {
+            Langs = await DB.UniClient.Queryable<LocalLangs>().ToListAsync();
+
+        }
+        public static async Task<LocalLangs> GetLoalLang(string key, string langname = "zh_CN", int lang = 0)
+        {
+         
+            LocalLangs lg = new LocalLangs();
+            if (!string.IsNullOrEmpty(langname))
+            {
+                var cachelang = Langs.FirstOrDefault(p => p.Name == key && string.Compare(p.LangName, langname, true) == 0);
+
+                if (cachelang != null)
+                {
+                    lg = cachelang;
+                }
+                else
+                {
+                    lg = await DB.UniClient.Queryable<LocalLangs>().Where(p => p.Name == key && SqlFunc.ToLower(p.LangName) == SqlFunc.ToLower("JACK")).FirstAsync();
+                }
+            }
+            else
+            {
+                var cachelang = Langs.FirstOrDefault(p => p.Name == key && Convert.ToInt32(p.Lang) == lang);
+
+                if (cachelang != null)
+                {
+                    lg = cachelang;
+                }
+                else
+                {
+                    lg = await DB.UniClient.Queryable<LocalLangs>().Where(p => p.Name == key && Convert.ToInt32(p.Lang) == lang).FirstAsync();
+                }
+            }
+            return lg;
+        }
+
+        //public static async Task<LocalLangs> GetLoalLang(string key, int lang =0)
+        //{
+        //    var lg = await DB.UniClient.Queryable<LocalLangs>().Where(p => p.Name == key && Convert.ToInt32( p.Lang )== lang).FirstAsync();
+        //    return lg;
+        //}
         private static string _userUploadBaseDir = string.Empty;
         public static string UserUploadBaseDir
         {

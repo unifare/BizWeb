@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace UniOrm
 {
-    public static class LocalizationHelper
+    public static class HtmlHelperEx
     {
         public static string Include(this HtmlHelper html, string RelativefilePath)
         {
