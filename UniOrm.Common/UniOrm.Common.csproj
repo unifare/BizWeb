@@ -11,6 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Logger.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Logger.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="CS-Script.Core" Version="1.3.1" />

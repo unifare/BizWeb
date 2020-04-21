@@ -7,8 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Fasterflect.Netstandard" Version="1.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\UniOrm.Common\UniOrm.Common.csproj" />
   </ItemGroup>
 
 </Project>

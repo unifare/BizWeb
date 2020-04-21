@@ -10,12 +10,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text.Json;
+using UniOrm;
 
 namespace BasicPlugin
 {
  
     public class HttpUtility
     {
+        private static readonly string LoggerName = "HttpUtility";
         static ConcurrentBag<RegexEn> regexEns = new ConcurrentBag<RegexEn>();
    
         public static string GetIsTriger(List<dynamic> assrules, HttpContext context  )
@@ -68,7 +70,7 @@ namespace BasicPlugin
                 }
             }
 
-
+            Logger.LogDebug(LoggerName, $"url: {url} ,medth: {method} not found");
             return "";
         }
   

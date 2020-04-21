@@ -79,10 +79,18 @@ namespace UniNote.WebClient.Controllers
         public int ToInsertStep([FromBody]AConFlowStep id)
         {
             var model = id;
+            EnsureData(model);
             var allpos = m_codeService.InsertCode<AConFlowStep>(model);
             return allpos;
         }
 
+        private static void EnsureData(AConFlowStep model)
+        {
+            model.ArgNames = model.ArgNames?.Trim();
+            model.AComposityId = model.AComposityId.Trim();
+            model.MethodName = model.MethodName?.Trim();
+            model.StorePoolKey = model.StorePoolKey?.Trim();
+        }
 
         [HttpPost]
         public object UpdateDLL()
@@ -108,6 +116,7 @@ namespace UniNote.WebClient.Controllers
         public int ToUpateStep([FromBody]AConFlowStep id)
         {
             var model = id;
+            EnsureData(model);
             var allpos = m_codeService.UpdateSimpleCode(model);
             return allpos;
         }

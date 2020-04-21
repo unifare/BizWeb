@@ -38,6 +38,7 @@ namespace UniOrm.Application
 
     public class GodWorker : IGodWorker
     {
+        private static readonly string LoggerName = "GodWorker";
         public Dictionary<string, object> WorkerResouceInfos { get; set; }
         public string WorkerName { get; set; }
         readonly static object lockobj = new object();
@@ -158,7 +159,7 @@ namespace UniOrm.Application
                               APP.RuntimeCache.Set(cacheKey, newobj);
                               return newobj;
                           });
-                        
+
                         if (s.IsUsingCache && stepResult != null)
                         {
                             rebject = stepResult;
@@ -167,154 +168,153 @@ namespace UniOrm.Application
                         {
                             if (!s.IsUsingCache || stepResult == null)
                             {
-                                switch (s.ExcuteType)
+
+                                switch (s.FlowStepType)
                                 {
-                                    case ExcuteType.Syn:
-                                        switch (s.FlowStepType)
+                                    case FlowStepType.Declare:
                                         {
-                                            case FlowStepType.Declare:
+                                            lock (lockobj)
+                                            {
+                                                //root.Usings[2].Name.ToString()
+                                                // var rebject2 = Manager.GetData(spec.InParamter1, spec.InParamter2);
+                                                var runcode = APP.FindOrAddRumtimeCode(s.Guid);
+                                                var so_default = ScriptOptions.Default;
+                                                if (runcode == null)
                                                 {
-                                                    lock (lockobj)
+                                                    runcode = new RuntimeCode()
                                                     {
-                                                        //root.Usings[2].Name.ToString()
-                                                        // var rebject2 = Manager.GetData(spec.InParamter1, spec.InParamter2);
-                                                        var runcode = APP.FindOrAddRumtimeCode(s.Guid);
-                                                        var so_default = ScriptOptions.Default;
-                                                        if (runcode == null)
+                                                        StepGuid = s.Guid,
+                                                        CodeLines = s.ProxyCode,
+
+                                                    };
+                                                    List<string> dlls = new List<string>();
+
+                                                    var isref = false;
+                                                    string dllbase = AppDomain.CurrentDomain.BaseDirectory;
+
+
+                                                    if (!string.IsNullOrEmpty(s.TypeLib))
+                                                    {
+                                                        var dllfile = dllbase + s.TypeLib;
+                                                        if (APP.DynamicReferenceDlls.Contains(dllfile))
                                                         {
-                                                            runcode = new RuntimeCode()
-                                                            {
-                                                                StepGuid = s.Guid,
-                                                                CodeLines = s.ProxyCode,
-
-                                                            };
-                                                            List<string> dlls = new List<string>();
-
-                                                            var isref = false;
-                                                            string dllbase = AppDomain.CurrentDomain.BaseDirectory;
-
-
-                                                            if (!string.IsNullOrEmpty(s.TypeLib))
-                                                            {
-                                                                var dllfile = dllbase + s.TypeLib;
-                                                                if (APP.DynamicReferenceDlls.Contains(dllfile))
-                                                                {
-                                                                    isref = false;
-                                                                }
-                                                                else
-                                                                {
-                                                                    APP.DynamicReferenceDlls.Add(dllfile);
-                                                                    isref = true;
-                                                                    dlls.Add(dllfile);
-                                                                }
-                                                            }
-                                                            if (!string.IsNullOrEmpty(s.ReferenceDlls))
-                                                            {
-                                                                isref = true;
-                                                                string[] dllnams = s.ReferenceDlls.Split(',');
-                                                                foreach (var n in dllnams)
-                                                                {
-                                                                    APP.DynamicReferenceDlls.Add(dllbase + n);
-                                                                }
-
-                                                                dlls.AddRange(dllnams);
-                                                            }
-                                                            if (isref)
-                                                            {
-                                                                so_default = so_default.WithReferences(dlls.ToArray());
-                                                            }
-                                                            so_default = so_default.WithReferences(Assembly.GetExecutingAssembly());
-
-                                                            var state = CSharpScript.Create<object>(s.ProxyCode, so_default, typeof(Dictionary<string, object>));
-                                                          
-                                                            runcode.Script = state;
-                                                            APP.RuntimeCodes.Add(s.Guid, runcode);
-                                                        }
-                                                        if (!string.IsNullOrEmpty(s.ReferenceDlls))
-                                                        {
-                                                            string dllbase = AppDomain.CurrentDomain.BaseDirectory;
-
-                                                        }
-                                                        rebject = runcode.Script.RunAsync(newrunmodel.Res).Result.ReturnValue;
-
-                                                    }
-                                                }
-                                                break;
-                                            case FlowStepType.GetData:
-                                                { 
-                                                    DynaObject = HandleGetData(httpContext, newrunmodel, dbFactory,  s);
-                                                }
-                                                break;
-                                            case FlowStepType.CallMethod:
-                                                {
-                                                    var methodsub = APP.GetMethodFromConfig(s.IsBuildIn.Value, s.TypeLib, s.TypeFullName, s.MethodName);
-                                                    var objParams = new List<object>();
-                                                    if (!string.IsNullOrEmpty(s.ArgNames))
-                                                    {
-                                                        objParams = newrunmodel.GetPoolResuce(s.ArgNames.Split(','));
-                                                    }
-
-                                                    else
-                                                    {
-                                                        objParams = null;
-                                                    }
-                                                    try
-                                                    {
-                                                        if (methodsub.IsStatic)
-                                                        {
-
-                                                            DynaObject = methodsub.Invoke(null, objParams.ToArray());
+                                                            isref = false;
                                                         }
                                                         else
                                                         {
-                                                            var instance = newrunmodel.Res[s.InstanceName];
-                                                            DynaObject = methodsub.Invoke(instance, objParams.ToArray());
+                                                            APP.DynamicReferenceDlls.Add(dllfile);
+                                                            isref = true;
+                                                            dlls.Add(dllfile);
                                                         }
                                                     }
-                                                    catch (Exception exp)
+                                                    if (!string.IsNullOrEmpty(s.ReferenceDlls))
                                                     {
-                                                        Logger.LogError(logName, "Run -> FlowStepType.CallMethod error,composity:{0},step:{1},-------------exception:{2}", cons.Id, s.Guid, LoggerHelper.GetExceptionString(exp));
-                                                        break;
+                                                        isref = true;
+                                                        string[] dllnams = s.ReferenceDlls.Split(',');
+                                                        foreach (var n in dllnams)
+                                                        {
+                                                            APP.DynamicReferenceDlls.Add(dllbase + n);
+                                                        }
+
+                                                        dlls.AddRange(dllnams);
                                                     }
+                                                    if (isref)
+                                                    {
+                                                        so_default = so_default.WithReferences(dlls.ToArray());
+                                                    }
+                                                    so_default = so_default.WithReferences(Assembly.GetExecutingAssembly());
 
-                                                }
-                                                break;
-                                            case FlowStepType.Text:
-                                                {
-                                                    rebject = s.OutPutText;
-                                                }
-                                                break;
-                                            case FlowStepType.Function:
-                                                {
-                                                    DynaObject = DealTheFunction(newrunmodel, s,httpContext);
-                                                }
-                                                break;
-                                            case FlowStepType.RazorText:
-                                                try
-                                                {
-                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s,httpContext, s.ProxyCode);
-                                                }
-                                                catch (Exception exp)
-                                                {
-                                                    Logger.LogError(logName, "parser RazorText wrong: " + exp.Message + "-------" + LoggerHelper.GetExceptionString(exp));
-                                                }
-                                                break;
-                                            case FlowStepType.RazorFile:
-                                                try
-                                                { 
-                                                    var filePath = s.ProxyCode;
-                                                    string template = File.ReadAllText(Path.Combine(APPCommon.UserUploadBaseDir, filePath));
-                                                    rebject = stepResult = await HandleRazorText(newrunmodel, s, httpContext, template);
-                                                }
-                                                catch (Exception exp)
-                                                {
-                                                    Logger.LogError(logName, "parser RazorFile wrong: " + exp.Message + "-------" + LoggerHelper.GetExceptionString(exp));
-                                                }
-                                                break;
+                                                    var state = CSharpScript.Create<object>(s.ProxyCode, so_default, typeof(Dictionary<string, object>));
 
+                                                    runcode.Script = state;
+                                                    APP.RuntimeCodes.Add(s.Guid, runcode);
+                                                }
+                                                if (!string.IsNullOrEmpty(s.ReferenceDlls))
+                                                {
+                                                    string dllbase = AppDomain.CurrentDomain.BaseDirectory;
+
+                                                } 
+                                                rebject = runcode.Script.RunAsync(newrunmodel.Res).Result.ReturnValue;
+                                                Logger.LogInfo(LoggerName, $"AComposityId id {s.AComposityId} ,step {s.StepOrder}, Declare: result {rebject}  ");
+                                            }
                                         }
                                         break;
+                                    case FlowStepType.GetData:
+                                        {
+                                            DynaObject = HandleGetData(httpContext, newrunmodel, dbFactory, s);
+                                        }
+                                        break;
+                                    case FlowStepType.CallMethod:
+                                        {
+                                            var methodsub = APP.GetMethodFromConfig(s.IsBuildIn.Value, s.TypeLib, s.TypeFullName, s.MethodName);
+                                            var objParams = new List<object>();
+                                            if (!string.IsNullOrEmpty(s.ArgNames))
+                                            {
+                                                objParams = newrunmodel.GetPoolResuce(s.ArgNames.Split(','));
+                                            }
+
+                                            else
+                                            {
+                                                objParams = null;
+                                            }
+                                            try
+                                            {
+                                                if (methodsub.IsStatic)
+                                                {
+
+                                                    DynaObject = methodsub.Invoke(null, objParams.ToArray());
+                                                }
+                                                else
+                                                {
+                                                    var instance = newrunmodel.Res[s.InstanceName];
+                                                    DynaObject = methodsub.Invoke(instance, objParams.ToArray());
+                                                }
+                                            }
+                                            catch (Exception exp)
+                                            {
+                                                Logger.LogError(logName, "Run -> FlowStepType.CallMethod error,composity:{0},step:{1},-------------exception:{2}", cons.Id, s.Guid, LoggerHelper.GetExceptionString(exp));
+                                                break;
+                                            }
+                                            Logger.LogInfo(LoggerName, $"AComposityId id {s.AComposityId} ,step {s.StepOrder}, CallMethod {s.MethodName}: result {DynaObject}  ");
+                                        }
+                                        break;
+                                    case FlowStepType.Text:
+                                        {
+                                            rebject = s.OutPutText;
+                                        }
+                                        break;
+                                    case FlowStepType.Function:
+                                        {
+                                            DynaObject = DealTheFunction(newrunmodel, s, httpContext);
+                                            Logger.LogInfo(LoggerName, $"DealTheFunction: result {DynaObject}  ");
+                                        }
+                                        break;
+                                    case FlowStepType.RazorText:
+                                        try
+                                        {
+                                            rebject = stepResult = await HandleRazorText(newrunmodel, s, httpContext, s.ProxyCode);
+                                           
+                                        }
+                                        catch (Exception exp)
+                                        {
+                                            Logger.LogError(logName, "parser RazorText wrong: " + exp.Message + "-------" + LoggerHelper.GetExceptionString(exp));
+                                        }
+                                        break;
+                                    case FlowStepType.RazorFile:
+                                        try
+                                        {
+                                            var filePath = s.ProxyCode;
+                                            string template = File.ReadAllText(Path.Combine(APPCommon.UserUploadBaseDir, filePath));
+                                            rebject = stepResult = await HandleRazorText(newrunmodel, s, httpContext, template);
+                                        }
+                                        catch (Exception exp)
+                                        {
+                                            Logger.LogError(logName, "parser RazorFile wrong: " + exp.Message + "-------" + LoggerHelper.GetExceptionString(exp));
+                                        }
+                                        break;
+
                                 }
+
                                 if (rebject == null)
                                 {
                                     rebject = MagicExtension.BackToInst(DynaObject);

@@ -882,7 +882,6 @@
                         type: "delete",
                         url: "/api/Fact/DeletTriger/",
                         dataType: 'json',
-                        contentType: 'application/json',
                         data: JSON.stringify(el.Id),
                         async: true,
                         success: function (jsonResult) {
@@ -912,7 +911,7 @@
                     $('#TrigerDiv').modal("show")
                 },
                 SaveAddTriger: function () {
-                    var el = app.editingTriger;
+                    var el = app.editingTriger; 
                     if (app.actointype == "add") {
 
                         $.ajax({
@@ -1017,6 +1016,7 @@
                     }
                     var sdfe = app.editingStep;
                     sdfe.AComposityId = app.selectedCompose.Guid;
+                    sdfe.ArgNames = $.trim(sdfe.ArgNames)
                     var addressurl = "ToInsertStep";
                     if (app.actointype != "add") {
                         addressurl = "ToUpateStep";

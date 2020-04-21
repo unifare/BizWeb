@@ -62,7 +62,7 @@ namespace UniOrm
                 {
                     var lmodel = APPCommon.GetLoalLang(key, null, 0).Result;
                     restr = GetDefaultValue(key, ref lmodel);
-                    restr = lmodel.Value;
+                    restr = lmodel?.Value;
                 }
                 else
                 {
