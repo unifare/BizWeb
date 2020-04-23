@@ -29,3 +29,6 @@ bld/
 /DevSites/UniNote/UniNote.WebClient/logs/run.txt
 /DevSites/UniNote/UniNote.WebClient/logs/debug.txt
 /DevSites/UniNote/UniNote.WebClient/logs/err.txt
+BizWeb/logs/debug.txt
+BizWeb/logs/err.txt
+BizWeb/logs/run.txt
