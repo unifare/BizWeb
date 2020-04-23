@@ -170,7 +170,7 @@ namespace UniOrm
             }
             return null;
         }
-        public object R(string key)
+        public dynamic R(string key)
         {
             if (this.ResouceInfos == null)
             {

@@ -22,6 +22,9 @@ using Microsoft.AspNetCore.Mvc;
 using UniOrm.Model;
 using SqlSugar;
 using System.Threading.Tasks;
+using SqlKata;
+using SqlKata.Execution;
+using SqlKata.Extensions;
 
 namespace UniOrm
 {
@@ -247,9 +250,9 @@ namespace UniOrm
             }
         }
 
-        public static List<dynamic> GetData(  string ssql, params object[] inParamters)
+        public static List<dynamic> GetData(  string ssql, object  inParamters)
         {
-            if (inParamters != null && inParamters.Length > 0)
+            if (inParamters != null )
             { 
                 return DB.UniClient.Ado.SqlQuery<dynamic>(ssql, inParamters);
             }
@@ -260,6 +263,9 @@ namespace UniOrm
 
         }
 
-
+        public static IEnumerable<dynamic> GetKataData(Query inQuery, object inParamters)
+        { 
+            return inQuery.Get(); 
+        }
     }
 }

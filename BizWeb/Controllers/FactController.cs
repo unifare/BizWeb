@@ -308,6 +308,7 @@ namespace UniNote.WebClient.Controllers
             var allFlowSteps = m_codeService.InsertCode<TrigerRuleInfo>(id);
             return allFlowSteps;
         }
+
         [HttpPost]
         public int UpateTriger([FromBody]TrigerRuleInfo id)
         {
@@ -317,6 +318,7 @@ namespace UniNote.WebClient.Controllers
             var allFlowSteps = m_codeService.UpdateSimpleCode(id);
             return allFlowSteps;
         }
+
         [HttpPost]
         public int UpdateTriger([FromBody]TrigerRuleInfo id)
         {

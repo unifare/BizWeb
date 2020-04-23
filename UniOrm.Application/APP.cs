@@ -342,7 +342,7 @@ namespace UniOrm
             }
         }
 
-        public static object GetData( string ssql, params object[] inParamters)
+        public static object GetData( string ssql, object inParamters)
         {
 
             return APPCommon.GetData(  ssql, inParamters);

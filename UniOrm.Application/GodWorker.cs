@@ -539,30 +539,42 @@ using Microsoft.AspNetCore.Mvc;";
 
         private static object HandleGetData(HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, AConFlowStep s)
         {
-            object dynaObject; 
-            var objParams2 = new List<object>();
-            if (!string.IsNullOrEmpty(s.ArgNames))
-            {
-                var args = s.ArgNames.Split(',');
-                foreach (var aarg in args)
-                {
-                    object obj = aarg;
-                    if (aarg.StartsWith("&"))
-                    {
-                        obj = newrunmodel.Resuce(aarg);
+            object dynaObject=null;
+            //var objParams2 = new List<object>();
+            //if (!string.IsNullOrEmpty(s.ArgNames))
+            //{
+            //    var args = s.ArgNames.Split(',');
+            //    foreach (var aarg in args)
+            //    {
+            //        object obj = aarg;
+            //        if (aarg.StartsWith("&"))
+            //        {
+            //            obj = newrunmodel.Resuce(aarg);
 
-                    }
-                    objParams2.Add(obj);
+            //        }
+            //        objParams2.Add(obj);
+            //    }
+            //}
+            if (!String.IsNullOrEmpty(s.ArgNames))
+            {
+                if (s.ArgNames.Contains(','))
+                {
+                    dynaObject = newrunmodel.Resuce(s.ArgNames.Split(',')[0]);
+                }
+                else
+                {
+                    dynaObject = newrunmodel.Resuce(s.ArgNames);
                 }
             }
-            if (objParams2 == null || objParams2.Count == 0)
-            {
-                dynaObject = APP.GetData( s.InParamter1);
-            }
-            else
-            {
-                dynaObject = APP.GetData( s.InParamter1, objParams2.ToArray());
-            }
+         
+            //if (objParams2 == null || objParams2.Count == 0)
+            //{
+            //    dynaObject = APP.GetData( s.InParamter1);
+            //}
+            //else
+            //{
+            dynaObject = APP.GetData( s.InParamter1, dynaObject);
+            //}
 
             return dynaObject;
         }

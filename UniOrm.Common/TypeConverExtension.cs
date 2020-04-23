@@ -658,10 +658,10 @@ namespace UniOrm
                 {
                     padir = "/";
                 }
-                else
-                {
-                    padir = padir.GetDirName();
-                }
+                //else
+                //{
+                //    padir = padir.GetDirName();
+                //}
                 return padir.FindAndSubstring(basedir).Replace("\\", "/");
             }
         }

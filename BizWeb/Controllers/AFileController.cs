@@ -51,10 +51,10 @@ namespace UniNote.WebClient.Controllers
             {
                 var index = 0;
                 var list = new List<FileDTO>();
-                var fullpadir = fullpath.GetDirFullPath().TrimEnd(Path.DirectorySeparatorChar);
+               
                 if (fullpath != basedir  )
                 {
-
+                    var fullpadir = fullpath.GetDirFullPath().TrimEnd(Path.DirectorySeparatorChar);
                     var repath = fullpadir.ToRelativePath(basedir);
                     list.Add(new FileDTO { Id = index, Name = "..上一级", RelatedPath = repath, ParentDirName = repath, IsDirectry = true });
                     index++;
@@ -99,8 +99,15 @@ namespace UniNote.WebClient.Controllers
                     });
                     index++;
                 }
-                var redir=fullpadir.ToRelativePath(basedir);
-                return new JsonResult(new { isok = true, parentdir = redir, list = list });
+                if (dir != "/")
+                {
+                    var redir = fullpath.ToRelativePath(basedir);
+                    return new JsonResult(new { isok = true, parentdir = redir, list = list });
+                }
+                else
+                {
+                    return new JsonResult(new { isok = true, parentdir = "/", list = list });
+                }
             }
 
         }
