@@ -347,6 +347,15 @@ namespace UniNote.WebClient.Controllers
             APP.AConFlowSteps.Clear();
             APP.ComposeTemplates.Clear();
             APP.ClearCache();
+            //var razorlist = m_codeService.GetSimpleCode<SystemHtml>(null);
+            //foreach(var ss in razorlist)
+            //{
+            //    if(APP.Razorengine.Handler.Cache.Contains(ss.Name))
+            //    {
+            //        APP.Razorengine.Handler.Cache.Remove(ss.Name);
+            //    }
+            //}
+            APP.InitRazorEngine();
             return 0;
         }
         [HttpPost]

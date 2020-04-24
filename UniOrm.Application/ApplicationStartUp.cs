@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using Autofac.Extensions.DependencyInjection;
+using Autofac.Extensions;
+using Autofac.Builder;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +14,7 @@ using UniOrm.Core;
 using UniOrm;
 using UniOrm.Common; 
 using UniOrm.DataMigrationiHistrory;
+using SqlSugar;
 
 namespace UniOrm.Application
 {
@@ -74,8 +77,7 @@ namespace UniOrm.Application
             APP.RegisterAutofacModule(new AutofacModule()); 
             APP.RegisterAutofacModuleTypes();
             APP.RegisterAutofacAssemblies(modulesAssembly);
-          
-            builder.RegisterInstance<SqlSugar.ISqlSugarClient>(DB.UniClient);
+            builder.Register<ISqlSugarClient>(c => DB.UniClient);
 
             builder.Populate(services);
 

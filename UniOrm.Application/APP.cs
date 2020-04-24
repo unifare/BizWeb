@@ -19,7 +19,9 @@ using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using RazorLight; 
+using RazorLight;
+using RazorLight.Razor;
+using UniOrm.Common.RazorPage;
 
 namespace UniOrm
 {
@@ -111,68 +113,29 @@ namespace UniOrm
             }
         }
         private static RazorLightEngine razorengine = null;
+        
         public static RazorLightEngine Razorengine
         {
             get
             {
                 if (razorengine == null)
                 {
-                    razorengine = new RazorLightEngineBuilder()
-                        .UseEmbeddedResourcesProject( Assembly.GetEntryAssembly())
-                        .UseMemoryCachingProvider().
-                        Build();
-                    var isok = razorengine.Options.Namespaces.Add("UniOrm");
-                    isok = razorengine.Options.Namespaces.Add("UniOrm.Application");
-                    isok = razorengine.Options.Namespaces.Add("UniOrm.Common");
-                    isok = razorengine.Options.Namespaces.Add("UniOrm.Model");
-                    isok = razorengine.Options.Namespaces.Add("UniOrm.Startup.Web");
-
-                    isok = razorengine.Options.Namespaces.Add("System");
-                    isok = razorengine.Options.Namespaces.Add("System.Web");
-                    isok = razorengine.Options.Namespaces.Add("System.IO");
-                    isok = razorengine.Options.Namespaces.Add("System.Text");
-                    isok = razorengine.Options.Namespaces.Add("System.Text.Encodings");
-                    isok = razorengine.Options.Namespaces.Add("System.Text.RegularExpressions");
-                    isok = razorengine.Options.Namespaces.Add("System.Collections.Generic");
-                    isok = razorengine.Options.Namespaces.Add("System.Diagnostics");
-                    isok = razorengine.Options.Namespaces.Add("System.Linq");
-                    isok = razorengine.Options.Namespaces.Add("System.Security.Claims");
-                    isok = razorengine.Options.Namespaces.Add("System.Threading");
-                    isok = razorengine.Options.Namespaces.Add("System.Threading.Tasks");
-                    isok = razorengine.Options.Namespaces.Add("System.Reflection");
-                    isok = razorengine.Options.Namespaces.Add("System.Dynamic");
-                    isok = razorengine.Options.Namespaces.Add("System.Diagnostics");
-                    isok = razorengine.Options.Namespaces.Add("System.Linq.Expressions");
-                    isok = razorengine.Options.Namespaces.Add("System.Xml");
-                    isok = razorengine.Options.Namespaces.Add("System.Xml.Linq");
-                    isok = razorengine.Options.Namespaces.Add("System.Configuration");
-
-                    isok = razorengine.Options.Namespaces.Add("System.Data");
-                    isok = razorengine.Options.Namespaces.Add("System.Data.SqlClient");
-                    isok = razorengine.Options.Namespaces.Add("System.Data.Common");
-                    isok = razorengine.Options.Namespaces.Add("System.Data.OleDb");
-                    isok = razorengine.Options.Namespaces.Add("System.Globalization");
-                    isok = razorengine.Options.Namespaces.Add("System.Net");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.Http");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.Http.Headers");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.Mail");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.Security");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.Sockets");
-                    isok = razorengine.Options.Namespaces.Add("System.Net.WebSockets");
-                    isok = razorengine.Options.Namespaces.Add("System.Drawing");
-                    isok = razorengine.Options.Namespaces.Add("System.Drawing.Printing");
-                    isok = razorengine.Options.Namespaces.Add("Newtonsoft.Json");
-                    isok = razorengine.Options.Namespaces.Add("Newtonsoft.Json.Linq");
-                    isok = razorengine.Options.Namespaces.Add("System.Numerics");
-                    isok = razorengine.Options.Namespaces.Add("Microsoft.AspNetCore.Authentication");
-                    isok = razorengine.Options.Namespaces.Add("Microsoft.AspNetCore.Authorization");
-                    isok = razorengine.Options.Namespaces.Add("Microsoft.Extensions.DependencyInjection");
-                    isok = razorengine.Options.Namespaces.Add("Microsoft.AspNetCore.Mvc");
-
+                    InitRazorEngine();
                 }
                 return razorengine;
             }
         }
+
+        public static void InitRazorEngine()
+        {
+            var project = new UniRazorProject();
+            razorengine = new RazorLightEngineBuilder()
+                .AddDefaultNamespaces(APPCommon.AppConfig.RazorNamesapace.ToArray())
+                .UseProject(project)
+                .UseMemoryCachingProvider().
+                Build();
+        }
+
         public static Dictionary<string, MethodInfo> MethodInfos
         {
             get

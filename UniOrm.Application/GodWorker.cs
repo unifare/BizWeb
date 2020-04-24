@@ -297,7 +297,7 @@ namespace UniOrm.Application
                                         }
                                         catch (Exception exp)
                                         {
-                                            Logger.LogError(logName, "parser RazorText wrong: " + exp.Message + "-------" + LoggerHelper.GetExceptionString(exp));
+                                            Logger.LogError(logName, $"parser RazorText wrong: {exp.Message}-------{LoggerHelper.GetExceptionString(exp)}");
                                         }
                                         break;
                                     case FlowStepType.RazorFile:
@@ -422,16 +422,49 @@ using Microsoft.AspNetCore.Mvc;";
         private static async Task<string> HandleRazorText(RuntimeStepModel newrunmodel, AConFlowStep s, HttpContext httpContext, string template)
         {
             var engine = APP.Razorengine;
-            //string template = s.ProxyCode;
             string stepResult = "";
-            if (string.IsNullOrEmpty(template))
+
+            StringBuilder stringbuilder = UsingNameSpace(s, engine);
+            var objParams = new List<object>();
+            if (!string.IsNullOrEmpty(s.ArgNames))
             {
+                objParams = newrunmodel.GetPoolResuce(s.ArgNames.Split(','));
+            }
+            dynamic modelArg = null;
+            var module = APPCommon.ModuleManager.GetModule(null, s.ModuleName);
+            if (module == null)
+            {
+
+                modelArg = new { Step = s, Module = new { }, Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
 
             }
             else
             {
-                var stringbuilder = new StringBuilder();
-                stringbuilder.Append(@"@using UniOrm 
+
+                modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
+
+            }
+            var cachekey2 = template.ToMD5();
+            var cacheResult = engine.Handler.Cache.RetrieveTemplate(cachekey2);
+            template = stringbuilder.AppendLine("\r\n").Append(template).ToString();
+            if (cacheResult.Success)
+            {
+                stepResult = await engine.RenderTemplateAsync(cacheResult.Template.TemplatePageFactory(), modelArg);
+            }
+            else
+            {
+                stepResult = await engine.CompileRenderStringAsync(cachekey2, template, modelArg);
+            }
+
+
+
+            return stepResult;
+        }
+
+        private static StringBuilder UsingNameSpace(AConFlowStep s, RazorLightEngine engine)
+        {
+            var stringbuilder = new StringBuilder();
+            stringbuilder.Append(@"@using UniOrm 
 @using UniOrm.Application
 @using UniOrm.Common
 @using UniOrm.Model
@@ -485,56 +518,24 @@ using Microsoft.AspNetCore.Mvc;";
 @using Microsoft.AspNetCore.Mvc");
 
 
-                if (!string.IsNullOrEmpty(s.ReferenceDlls))
+            if (!string.IsNullOrEmpty(s.ReferenceDlls))
+            {
+                string[] dllnams = s.ReferenceDlls.Split(',');
+                foreach (var n in dllnams)
                 {
-                    string[] dllnams = s.ReferenceDlls.Split(',');
-                    foreach (var n in dllnams)
-                    {
-                        var rootname = n.TrimEnd(".dll".ToCharArray());
-                        engine.Options.Namespaces.Add(n.TrimEnd(".dll".ToCharArray()));
-                        stringbuilder.AppendLine(rootname);
-                    }
+                    var rootname = n.TrimEnd(".dll".ToCharArray());
+                    engine.Options.Namespaces.Add(n.TrimEnd(".dll".ToCharArray()));
+                    stringbuilder.AppendLine(rootname);
                 }
-                stringbuilder.AppendLine("\r\n@{ DisableEncoding = true;  ");
-                stringbuilder.AppendLine("\r\n var Page = new RazorTool();  ");
-                stringbuilder.AppendLine("\r\n Page.Step=Model.Step; ");
-                stringbuilder.AppendLine("\r\n Page.ResouceInfos=Model.Item as Dictionary<string, object>; ");
-                stringbuilder.AppendLine("\r\n Page.Funs=Model.Funs as Dictionary<string, MethodDelegate>; ");
-                stringbuilder.AppendLine("\r\n  }");
-                var objParams = new List<object>();
-                if (!string.IsNullOrEmpty(s.ArgNames))
-                {
-                    objParams = newrunmodel.GetPoolResuce(s.ArgNames.Split(','));
-                }
-                dynamic modelArg = null;
-                var module = APPCommon.ModuleManager.GetModule(null, s.ModuleName);
-                if (module == null)
-                {
-
-                    modelArg = new { Step = s, Module = new { }, Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
-
-                }
-                else
-                {
-
-                    modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
-
-                }
-                var cachekey2 = template.ToMD5();
-                var cacheResult = engine.Handler.Cache.RetrieveTemplate(cachekey2);
-                template = stringbuilder.AppendLine("\r\n").Append(template).ToString();
-                if (cacheResult.Success)
-                {
-                    stepResult = await engine.RenderTemplateAsync(cacheResult.Template.TemplatePageFactory(), modelArg);
-                }
-                else
-                {
-                    stepResult = await engine.CompileRenderStringAsync(cachekey2, template, modelArg);
-                }
-
             }
+            stringbuilder.AppendLine("\r\n@{ DisableEncoding = true;  ");
 
-            return stepResult;
+            stringbuilder.AppendLine("\r\n var Page = new RazorTool();  ");
+            stringbuilder.AppendLine("\r\n Page.Step=Model.Step; ");
+            stringbuilder.AppendLine("\r\n Page.ResouceInfos=Model.Item as Dictionary<string, object>; ");
+            stringbuilder.AppendLine("\r\n Page.Funs=Model.Funs as Dictionary<string, MethodDelegate>; ");
+            stringbuilder.AppendLine("\r\n  }");
+            return stringbuilder;
         }
 
         private static object HandleGetData(HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, AConFlowStep s)

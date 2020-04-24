@@ -84,6 +84,66 @@
       }
 
     ],
+     "RazorNamesapace" :[
+    "UniOrm",
+    "UniOrm.Application" ,
+    "UniOrm.Common",
+    "UniOrm.Model" ,
+    "UniOrm.Startup.Web",
+    "System" ,
+    "System.Web",
+    "System.IO" ,
+    "System.Text",
+    "System.Text.Encodings" ,
+    "System.Text.RegularExpressions",
+    "System.Collections.Generic" ,
+    "System.Diagnostics",
+    "System.Linq" ,
+    "System.Security.Claims",
+    "System.Threading" ,
+    "System.Threading.Tasks",
+    "System.Reflection" ,
+    "System.Dynamic",
+    
+    "System.Diagnostics" ,
+    "System.Linq.Expressions",
+    
+    "System.Xml" ,
+    "System.Xml.Linq",
+    "System.Configuration" ,
+    "Npgsql",
+    "SqlKata.Compilers" ,
+    "SqlKata.Execution",
+    "SqlSugar" ,
+    "CSScriptLib",
+    "System.Data" ,
+    "System.Data.SqlClient",
+    
+    "System.Data.Common" ,
+    "System.Data.OleDb",
+    
+    "System.Globalization" ,
+    "System.Net",
+    
+    "System.Net.Http" ,
+    "System.Net.Http.Headers",
+    
+    "System.Net.Mail" ,
+    "System.Net.Security",
+    
+    "System.Net.Sockets" ,
+    "System.Net.WebSockets",
+    "System.Drawing" ,
+    "System.Drawing.Printing",
+    "Newtonsoft.Json" ,
+    "Newtonsoft.Json.Linq",
+    "System.Numerics" ,
+    "Microsoft.AspNetCore.Authentication",
+    
+    "Microsoft.AspNetCore.Authorization" ,
+    "Microsoft.Extensions.DependencyInjection",
+    "Microsoft.AspNetCore.Mvc" 
+    ],
     "SystemDictionaries": [
       {
         "KeyName": "AreaName",

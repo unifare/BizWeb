@@ -20,5 +20,6 @@ namespace UniOrm.Model
         public bool IsSytem { get; set; }
         public string Value { get; set; }
         public DateTime AddTime { get; set; }
+        public DateTime LastUpdateTime { get; set; }
     }
 }

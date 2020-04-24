@@ -34,6 +34,7 @@ namespace UniOrm
         public string StartUpCompoistyID { get; set; }
         public List<SystemDictionary> SystemDictionaries { get; set; }
         public Dictionary<string, object> ResultDictionary { get; set; }
+        public List<string> RazorNamesapace { get; set; } = new List<string>();
         public SqlSugarClient Db
         {
             get

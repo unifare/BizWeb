@@ -30,14 +30,9 @@ namespace UniNote.WebClient.Controllers
 
         public IActionResult Index()
         {
-           var sh= dbFactory.Queryable<SystemHtml>().Where(p => p.Name == "admin_Index").Single();
-
-            return new ContentResult()
-            {
-                Content = sh.Value,
-                ContentType = "text/html",
-                StatusCode = 200
-            };
+           var sh= dbFactory.Queryable<SystemHtml>().Where(p => p.Name == "网站管理目录").Single();
+            ViewBag.nav = sh.Value;
+            return View();
         }
         public IActionResult console()
         {

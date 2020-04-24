@@ -114,6 +114,11 @@ namespace UniOrm
             return content;
         }
 
+        //public string DBHtml(string key)
+        //{
+        //    return DB.UniClient.Queryable<i(APPCommon.GetWTableName(tablename)).Insert(obj);
+        //}
+
         public List<dynamic> GetData(string sql, object args)
         {
             return DB.UniClient.Ado.SqlQuery<dynamic>(sql, args);
