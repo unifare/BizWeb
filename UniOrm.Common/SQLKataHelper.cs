@@ -21,6 +21,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
+using PetaPoco.NetCore;
+
 namespace UniOrm
 {
     public class SQLKataHelper
@@ -81,7 +83,54 @@ namespace UniOrm
         }
 
     }
+    public class SQLPetaPocoHelper
+    { 
+        public static Database CreatePeta(string sqlcontypestr, string sqlconstring)
+        {
+            IDbConnection connection = new MySqlConnection(sqlconstring);
+     
+                                                              // var dttypesqlsugar = DbType.MySql;
+            switch (sqlcontypestr)
+            {
+                case "sqlite": //0
+                    connection = new SqliteConnection(sqlconstring);
+                
+                    break;
+                case "sqlserver"://1
+                    connection = new SqlConnection(sqlconstring);
+               
+                    break;
+                case "postgre": //3
+                    connection = new NpgsqlConnection(sqlconstring);
+                   
+                    break;
+            }
+            return new Database(connection );
+        }
+        public static Database CreatePeta(int dbtyp, string sqlconstring)
+        {
+            IDbConnection connection = null; 
+                                        // var dttypesqlsugar = DbType.MySql;
+            switch (dbtyp)
+            {
+                case 1:
+                    connection = new SqlConnection(sqlconstring); 
+                    break;
+                case 2:
+                    connection = new SqliteConnection(sqlconstring); 
+                    break;
+                case 0:
+                    connection = new MySqlConnection(sqlconstring); 
+                    break;
+                case 4:
+                    connection = new NpgsqlConnection(sqlconstring); 
+                    break;
 
+            }
+            return new Database(connection);
+        }
+
+    }
     public static class SQLKataHelperEx
     {
         public static Type DBTypeStringToCShapType(this SqlSugarClient db, DbColumnInfo colinfo)

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using PetaPoco.NetCore;
 
 namespace UniOrm.Common
 {
@@ -32,7 +33,16 @@ namespace UniOrm.Common
         public DB(DbConnectionConfig  dcConnectionConfig)
         {
             DcConnectionConfig = dcConnectionConfig ;
-          
+
+        }
+        public static Database Peta
+        {
+            get
+            {
+                var configapp = APPCommon.AppConfig.UsingDBConfig;
+         
+                return   SQLPetaPocoHelper.CreatePeta((int)configapp.DBType, configapp.Connectionstring);  
+            }
         }
 
         public static SqlSugarClient UniClient

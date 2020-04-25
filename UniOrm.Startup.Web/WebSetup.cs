@@ -183,7 +183,7 @@ namespace UniOrm.Startup.Web
                     o.Filters.Add<GlobalActionFilter>();
                 }
             })
-            .AddRazorRuntimeCompilation( )
+            .AddRazorRuntimeCompilation()
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
@@ -201,7 +201,7 @@ namespace UniOrm.Startup.Web
                    //url重写
                    //options.Conventions.AddPageRoute("/Post", "Post/{year}/{month}/{day}");
                    //以下示例将 URL www.domain.com/product 映射到Razor 页面 “extras”文件夹“products.cshtml”文件：
-                    //options.Conventions.AddPageRoute("/extras/products", "product");
+                   //options.Conventions.AddPageRoute("/extras/products", "product");
                    //最后一个例子说明将所有请求映射到单个文件。如果站点内容存储在特定位置（数据库，Markdown文件），并且由单个文件（例如 “index.cshtml” ）
                    //负责根据 URL 定位内容，然后将其处理为HTML，则可以执行此操作：
                    //options.Conventions.AddPageRoute("/index", "{*url}");
@@ -218,8 +218,7 @@ namespace UniOrm.Startup.Web
                 //m.PopulateFeature(feature);
                 //services.AddSingleton(feature.Controllers.Select(t => t.AsType()).ToArray());
             })
-            .InitializeTagHelper<FormTagHelper>((helper, context) => helper.Antiforgery = false)
-           .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            .InitializeTagHelper<FormTagHelper>((helper, context) => helper.Antiforgery = false); 
             var asses = AppDomain.CurrentDomain.GetAssemblies();
             var we = services.InitAutofac(asses);
             appConfig.ResultDictionary = appConfig.ResultDictionary;

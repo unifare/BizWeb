@@ -21,26 +21,13 @@ namespace BasicPlugin
         static ConcurrentBag<RegexEn> regexEns = new ConcurrentBag<RegexEn>();
    
         public static string GetIsTriger(List<dynamic> assrules, HttpContext context  )
-        {
-            //var assrules = assrulesPbj.AsDynamic();
-            //var url = urlobj.AsDynamic() ;
-            // dynamic assrules = new JObjectAccessor(assrulesPbj as string);
-
-            //var assrules = (List<TrigerRuleInfo>)runtimeArgument.ResourceList.FirstOrDefault(p => p.KeyName == "allrules").RuntimeValue;
-            //var url = runtimeArgument.ResourceList.FirstOrDefault(p => p.KeyName == "url").Value;
-            //List<sdf> sdf = new List<sdf>();
-            //sdf.Count
-            //var allrows = (int)inparams1.GetPropertyValue("Count");
+        { 
             var url= context.Request.Path.Value;
             var method = context.Request.Method;
             for (var i = 0; i < assrules.Count; i++)
             {
-                var TrigerRow = assrules[i];
-                //if(string.IsNullOrEmpty( TrigerRow.HttpMethod ?? "GET"))
-                //{
-                //    TrigerRow.HttpMethod = "GET";
-                //}
-                if (   string.Compare( TrigerRow.HttpMethod , method, true)==0 )
+                var TrigerRow = assrules[i]; 
+                if ( string.IsNullOrEmpty(TrigerRow.HttpMethod)||  TrigerRow.HttpMethod.Trim().ToLower().Contains(method.ToLower()))
                 {
                     string ruleText = TrigerRow.Rule;
                     if (string.IsNullOrEmpty(ruleText))
@@ -64,6 +51,7 @@ namespace BasicPlugin
                         var ismach = reg.IsMatch(url);
                         if (ismach)
                         {
+                            Logger.LogInfo(LoggerName, $"url: {url} ,medth: {method} ComposityId :{TrigerRow.ComposityId}");
                             return TrigerRow.ComposityId;
                         }
                     }

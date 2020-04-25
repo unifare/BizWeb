@@ -238,12 +238,18 @@
                                                             <label class="temp_input_label">
                                                                 <span class="temp_input_label-content">httpMethod</span>
                                                             </label>
-                                                            <select v-model="editingTriger.HttpMethod">
-                                                                <option value="GET">GET</option>
-                                                                <option value="POST">POST</option>
-                                                                <option value="PUT ">PUT </option> 
-                                                                <option value="DELETE">DELETE</option> 
-                                                            </select>
+
+                                                            <input type="checkbox" id="jack"  name="HttpMethod" value="GET" v-model="editingTriger.HttpMethod">
+                                                            <label for="jack">GET</label>
+                                                            <input type="checkbox" id="john"  name="HttpMethod" value="POST" v-model="editingTriger.HttpMethod">
+                                                            <label for="john">POST</label>
+                                                            <input type="checkbox" id="mike" name="HttpMethod" value="PUT" v-model="editingTriger.HttpMethod">
+                                                            <label for="mike">PUT</label>
+                                                            <input type="checkbox" id="DELETE"  name="HttpMethod" value="DELETE"
+                                                                  
+                                                                   v-model="editingTriger.HttpMethod">
+                                                            <label for="DELETE">PUT</label>
+                                                            
                                                         </span>
                                                     </div>
                                                 </div>
@@ -912,6 +918,12 @@
                 },
                 SaveAddTriger: function () {
                     var el = app.editingTriger; 
+                    var newvalue = '';
+                    for (var i = 0; i < el.HttpMethod.length; i++) {
+                        newvalue+=el.HttpMethod[i]+',' 
+                    }
+                    newvalue = newvalue.substring(0, newvalue.length - 1)
+                    el.HttpMethod = newvalue;
                     if (app.actointype == "add") {
 
                         $.ajax({
@@ -1194,6 +1206,15 @@
                 //data: urlData,
                 async: true,
                 success: function (jsonResult) {
+                   
+                    for (var i = 0; i < jsonResult.length; i++) {
+                        var oldvalue = jsonResult[i].HttpMethod;
+                        var olds = oldvalue.split(',')
+                        jsonResult[i].HttpMethod = [];
+                        for (var j = 0; j < olds.length; j++) {
+                            jsonResult[i].HttpMethod.push(olds[j])
+                        }
+                    }
                     app.trigers = jsonResult;
                     app.trigersCopy = app.trigers;
                 },

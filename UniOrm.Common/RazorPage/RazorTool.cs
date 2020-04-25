@@ -16,6 +16,10 @@ using System.IO;
 using CSScriptLib;
 using System.Drawing;
 using System.Threading.Tasks;
+using PetaPoco.NetCore;
+using System.Dynamic;
+using System.Collections;
+using SqlKata;
 
 namespace UniOrm
 {
@@ -23,6 +27,33 @@ namespace UniOrm
         public static object D2O (this object dynamicObj)
         {
             return  MagicExtension.BackToInst(dynamicObj);
+        }
+
+        public static IEnumerable<dynamic> List(this Sql sql )
+        {
+            var result = DB.Peta.Query<dynamic>( sql);//第一个参数是页码，第二个参数是页容量，第三个参数是SQL语句  
+            return result;
+        }
+
+        public static DataPage<dynamic> Page(this Query query, int pageindex = 1, int pagesize = 30)
+        {
+            //var result = query.ForPage(pageindex,pagesize).Get();//第一个参数是页码，第二个参数是页容量，第三个参数是SQL语句  
+            var presult = query.Paginate(pageindex, pagesize);
+            var page = new DataPage<dynamic>();
+            page.CurrentPage = presult.Page;
+            page.Items = presult.List.ToList();
+            page.ItemsPerPage = presult.PerPage;
+            page.TotalPages = presult.TotalPages;
+            page.TotalItems = presult.Count;
+
+
+            return page;
+        }
+
+        public static Page<dynamic> Page( this Sql sql, int pageindex=1,int pagesize=30)
+        { 
+            var result = DB.Peta.Page<dynamic>(pageindex, pagesize, sql);//第一个参数是页码，第二个参数是页容量，第三个参数是SQL语句  
+            return result;
         }
     }
     public class RazorTool
@@ -39,6 +70,14 @@ namespace UniOrm
             IHttpContextAccessor factory = APPCommon.ApplicationServices.GetService<IHttpContextAccessor>();
             HttpContext = factory.HttpContext;
         }
+
+        public bool HasPro(dynamic data, string propertyname)
+        {
+            if (data is ExpandoObject)
+                return ((IDictionary<string, object>)data).ContainsKey(propertyname);
+            return data.GetType().GetProperty(propertyname) != null;
+        }
+
         public string V(string key)
         {
             return APPCommon.AppConfig.GetDicstring(key);
@@ -118,12 +157,166 @@ namespace UniOrm
         //{
         //    return DB.UniClient.Queryable<i(APPCommon.GetWTableName(tablename)).Insert(obj);
         //}
+        public dynamic NewObj()
+        {
+            return new ExpandoObject();
+        }
 
         public List<dynamic> GetData(string sql, object args)
         {
-            return DB.UniClient.Ado.SqlQuery<dynamic>(sql, args);
+            return Db.Ado.SqlQuery<dynamic>(sql, args) ;
         }
 
+        //public Page<dynamic> DataSql(int pageIndex = 1, int pageSize = 30, string sql =null, params object[] args )
+        //{
+        //    if( sql==null)
+        //    {
+        //        return null;
+        //    }
+        //    Sql Sql = new Sql(sql);
+        //    if(args!=null)
+        //    { 
+        //        Sql = new Sql(sql, args); 
+        //    }  
+        //    var result = DB.Peta.Page<dynamic>(pageIndex, pageSize, Sql);//第一个参数是页码，第二个参数是页容量，第三个参数是SQL语句  
+        //    return result;
+        //}
+
+        public Sql Sql( string sql , params object[] args)
+        {
+            if (sql == null)
+            {
+                return null;
+            }
+            Sql Sql = new Sql(sql);
+            if (args != null)
+            {
+                Sql = new Sql(sql, args);
+            }
+            var result = DB.Peta.Query<dynamic>(  Sql);//第一个参数是页码，第二个参数是页容量，第三个参数是SQL语句  
+            return Sql;
+        }
+
+     
+
+        public Query DataObj( string tableName ,
+          string orderby = null,
+          List<dynamic> oargs = null,
+        object where = null )
+        {
+
+            var result = DB.Kata.Query(tableName);
+            if (where != null)
+            {
+                result = result.Where(where);
+            }
+
+            if (orderby != null)
+            {
+                if (oargs != null && oargs.Any())
+                {
+                    result = result.OrderByRaw(orderby, oargs);
+                }
+                else
+                {
+                    result = result.OrderByRaw(orderby);
+                }
+
+            }
+          
+            return result;
+        }
+
+        public Query Data(string tableName, 
+            string orderby = null,
+            List<dynamic> oargs = null, 
+            params object[] where
+            )
+        {
+
+            var result = DB.Kata.Query(tableName);
+            if (where != null && where.Any())
+            {
+                foreach (object item in where)
+                {
+                    if (string.Compare(item.GetProp("c").ToSafeString() , "or", true) == 0)
+                    {
+                        result = result.OrWhere(item.GetProp("name").ToString(), item.GetProp("op").ToString(), item.GetProp("value"));
+                    }
+                    else
+                    {
+                        result = result.Where(item.GetProp("name").ToString(), item.GetProp("op").ToString(), item.GetProp("value"));
+                    }
+                }
+            }
+
+            if (orderby != null)
+            {
+                if (oargs != null && oargs.Any())
+                {
+                    result = result.OrderByRaw(orderby, oargs);
+                }
+                else
+                {
+                    result = result.OrderByRaw(orderby);
+                }
+
+            }
+             
+            return result;
+        }
+
+        public Query DataStr(string tableName, IEnumerable<object[]> where,
+            string orderby = null,
+            List<dynamic> oargs = null
+            )
+        {
+
+            var result = DB.Kata.Query(tableName);
+            if (where != null && where.Any())
+            {
+                foreach (var item in where)
+                {
+                    if (string.Compare(item[0].ToString(),"or",true) ==0)
+                    {
+                        result = result.OrWhere(item[1].ToString(), item[2].ToString(), item[3]);
+                    } 
+                    else
+                    {
+                        result = result.Where( item[1].ToString(), item[2].ToString(), item[3]);
+                    }
+                }
+            }
+
+            if (orderby != null)
+            {
+                if (oargs != null && oargs.Any())
+                {
+                    result = result.OrderByRaw(orderby, oargs);
+                }
+                else
+                {
+                    result = result.OrderByRaw(orderby);
+                }
+
+            } 
+            return result;
+        }
+
+        private ISqlSugarClient _Db;
+        public ISqlSugarClient Db
+        {
+            get
+            {
+                if (kata == null)
+                {
+                    _Db= DB.UniClient;
+                }
+               
+              return _Db;
+                 
+            }
+        }
         private QueryFactory kata;
         public QueryFactory Kata
         {
@@ -131,12 +324,9 @@ namespace UniOrm
             {
                 if (kata == null)
                 {
-                    return DB.Kata;
-                }
-                else
-                {
-                    return kata ;
-                }
+                    kata = DB.Kata;
+                } 
+                return kata; 
             }
         }
 

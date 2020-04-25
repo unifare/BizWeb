@@ -186,72 +186,35 @@ namespace UniOrm
             return typeProperties;
         }
 
-        private static bool ParametersCompatible(MethodInfo method, object[] passedArguments,bool isExtense)
+        private static bool ParametersCompatible(MethodInfo method, ref object[] passedArguments, bool isExtense  )
         {
             Debug.Assert(method != null);
             Debug.Assert(passedArguments != null);
-
+            List<object> newargs = new List<object>();
             var parametersOnMethod = method.GetParameters();
             var sartindex = 0;
-            if(isExtense)
+            if (isExtense)
             {
                 sartindex = 1;
-                if (parametersOnMethod.Length-1 != passedArguments.Length)
-                {
-                    return false;
-                }
+                //if (parametersOnMethod.Length-1 != passedArguments.Length)
+                //{
+                //    return false;
+                //}
             }
-            else if (parametersOnMethod.Length != passedArguments.Length)
-            {
-                return false;
-            }
+
+
             for (int i = sartindex; i < parametersOnMethod.Length; ++i)
             {
+                bool isMisstype = false;
                 var parameterType = parametersOnMethod[i].ParameterType.GetTypeInfo();
-             
+
                 if (isExtense)
                 {
-                   ref var argument = ref passedArguments[i-1];
-
-                    if (argument == null && parameterType.IsValueType)
+                    if (i >= passedArguments.Length)
                     {
-                        // Value types can not be null.
-                        return false;
-                    }
-
-                    if (!parameterType.IsInstanceOfType(argument))
-                    {
-                        // Parameters should be instance of the parameter type.
-                        if (parameterType.IsByRef)
-                        {
-                            var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
-
-                            Debug.Assert(typePassedByRef != null);
-
-                            if (typePassedByRef.IsValueType && argument == null)
-                            {
-                                return false;
-                            }
-
-                            if (argument != null)
-                            {
-                                var argumentType = argument.GetType().GetTypeInfo();
-                                var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
-                                if (parameterType != argumentByRefType)
-                                {
-                                    try
-                                    {
-                                        argument = Convert.ChangeType(argument, typePassedByRef.AsType());
-                                    }
-                                    catch (InvalidCastException)
-                                    {
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                        else if (argument == null)
-                        {
+                        if (parametersOnMethod[i].HasDefaultValue)
+                        { 
+                            newargs.Add(Type.Missing);
                             continue;
                         }
                         else
@@ -259,50 +222,88 @@ namespace UniOrm
                             return false;
                         }
                     }
+                    else
+                    {
+                        ref var argument = ref passedArguments[i - 1];
 
+                        if (argument == null && parameterType.IsValueType)
+                        {
+                            // Value types can not be null.
+                            return false;
+                        }
+
+                        if (!parameterType.IsInstanceOfType(argument))
+                        {
+                            // Parameters should be instance of the parameter type.
+                            if (parameterType.IsByRef)
+                            {
+                                var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
+
+                                Debug.Assert(typePassedByRef != null);
+
+                                if (typePassedByRef.IsValueType && argument == null)
+                                {
+                                    return false;
+                                }
+
+                                if (argument != null)
+                                {
+                                    var argumentType = argument.GetType().GetTypeInfo();
+                                    var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
+                                    if (parameterType != argumentByRefType)
+                                    {
+                                        try
+                                        {
+                                            argument = Convert.ChangeType(argument, typePassedByRef.AsType());
+                                        }
+                                        catch (InvalidCastException)
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (argument == null)
+                            {
+
+                            }
+                            else
+                            {
+                                if (parametersOnMethod[i].HasDefaultValue)
+                                {
+                                    if (i == parametersOnMethod.Length - 1)
+                                    {
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        isMisstype = true;
+                                    }
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+
+                        if (isMisstype)
+                        {
+                            newargs.Add(Type.Missing);
+                        }
+                        else
+                        {
+                            newargs.Add(argument);
+                        }
+                    }
                 }
                 else
                 {
-                   ref var argument = ref passedArguments[i];
-                    if (argument == null && parameterType.IsValueType)
+                    if (i >= passedArguments.Length)
                     {
-                        // Value types can not be null.
-                        return false;
-                    }
-
-                    if (!parameterType.IsInstanceOfType(argument))
-                    {
-                        // Parameters should be instance of the parameter type.
-                        if (parameterType.IsByRef)
-                        {
-                            var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
-
-                            Debug.Assert(typePassedByRef != null);
-
-                            if (typePassedByRef.IsValueType && argument == null)
-                            {
-                                return false;
-                            }
-
-                            if (argument != null)
-                            {
-                                var argumentType = argument.GetType().GetTypeInfo();
-                                var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
-                                if (parameterType != argumentByRefType)
-                                {
-                                    try
-                                    {
-                                        argument = Convert.ChangeType(argument, typePassedByRef.AsType());
-                                    }
-                                    catch (InvalidCastException)
-                                    {
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                        else if (argument == null)
-                        {
+                        if (parametersOnMethod[i].HasDefaultValue)
+                        { 
+                            newargs.Add(Type.Missing);
                             continue;
                         }
                         else
@@ -310,10 +311,84 @@ namespace UniOrm
                             return false;
                         }
                     }
-                }
-              
-            }
+                    else
+                    {
+                        ref var argument = ref passedArguments[i];
 
+                        if (argument == null && parameterType.IsValueType)
+                        {
+                            // Value types can not be null.
+                            return false;
+                        }
+
+                        if (!parameterType.IsInstanceOfType(argument))
+                        {
+                            // Parameters should be instance of the parameter type.
+                            if (parameterType.IsByRef)
+                            {
+                                var typePassedByRef = parameterType.GetElementType().GetTypeInfo();
+
+                                Debug.Assert(typePassedByRef != null);
+
+                                if (typePassedByRef.IsValueType && argument == null)
+                                {
+                                    return false;
+                                }
+
+                                if (argument != null)
+                                {
+                                    var argumentType = argument.GetType().GetTypeInfo();
+                                    var argumentByRefType = argumentType.MakeByRefType().GetTypeInfo();
+                                    if (parameterType != argumentByRefType)
+                                    {
+                                        try
+                                        {
+                                            argument = Convert.ChangeType(argument, typePassedByRef.AsType());
+                                        }
+                                        catch (InvalidCastException)
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (argument == null)
+                            {
+                            }
+                            else
+                            {
+                                if (parametersOnMethod[i].HasDefaultValue)
+                                {
+                                    if (i == parametersOnMethod.Length - 1)
+                                    {
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        isMisstype = true;
+                                    }
+                                }
+                                else
+                                {
+                                    return false;
+                                }
+                            }
+
+                        }
+
+                        if (isMisstype)
+                        {
+                            newargs.Add(Type.Missing);
+                        }
+                        else
+                        {
+                            newargs.Add(argument);
+                        }
+                    }
+                }
+
+            }
+            passedArguments = newargs.ToArray();
             return true;
         }
 
@@ -351,7 +426,7 @@ namespace UniOrm
                             }
                         }
 
-                        if (ParametersCompatible(candidate, args,false))
+                        if (ParametersCompatible(candidate, ref args,false))
                         {
                             method = candidate;
                             break;
@@ -377,7 +452,7 @@ namespace UniOrm
                                 }
                             }
 
-                            if (ParametersCompatible(candidate, args,true))
+                            if (ParametersCompatible(candidate, ref args,true))
                             {
                                 method = candidate;
                                 break;
