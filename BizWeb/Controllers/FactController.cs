@@ -62,6 +62,7 @@ namespace UniNote.WebClient.Controllers
             var allpos = m_codeService.DeleteSimpleCode<AConFlowStep>(oldobj);
             return allpos;
         }
+
         [HttpDelete]
         public bool DeletTriger([FromBody] int id)
         {
@@ -310,22 +311,24 @@ namespace UniNote.WebClient.Controllers
         }
 
         [HttpPost]
-        public int UpateTriger([FromBody]TrigerRuleInfo id)
+        public int UpdateTriger([FromBody]TrigerRuleInfo id)
         {
             id.Rule = id.Rule?.Trim();
             id.HttpMethod = id.HttpMethod?.Trim();
             id.ComposityId = id.ComposityId?.Trim();
+
+          //var  ww= m_codeService.GetSimpleCode<ComposeEntity>(new { Guid = id.ComposityId }).FirstOrDefault();
+
+          //  if( ww!=null)
+          //  {
+          //      ww.Guid== 
+          //  }
             var allFlowSteps = m_codeService.UpdateSimpleCode(id);
+
             return allFlowSteps;
         }
 
-        [HttpPost]
-        public int UpdateTriger([FromBody]TrigerRuleInfo id)
-        {
-            id.AddTime = DateTime.Now;
-            var allFlowSteps = m_codeService.InsertCode<TrigerRuleInfo>(id);
-            return allFlowSteps;
-        }
+        
         [HttpPost]
         public int AddCompose([FromBody]ComposeEntity id)
         {
@@ -364,32 +367,52 @@ namespace UniNote.WebClient.Controllers
             id.AddTime = DateTime.Now;
             id.Guid = id.Guid?.Trim();
             id.TrigeMethod = id.TrigeMethod?.Trim();
+
+            var ce = m_codeService.GetSimpleCode<ComposeEntity>(new { AComposityId = id.Id }).FirstOrDefault() ;
+            var oldguid = string.Empty;
+            if( ce!=null)
+            {
+                oldguid = ce.Guid;
+            }
+            if(string.IsNullOrEmpty(oldguid ))
+            {
+                return -1;
+            }
+
+            var ww = m_codeService.GetSimpleCode<AConFlowStep>(new { AComposityId = oldguid }) ;
+            if (ww.Any())
+            {
+                foreach (var ss in ww)
+                {
+                    ss.AComposityId = id.Guid;
+                    m_codeService.UpdateSimpleCode<AConFlowStep>(ss);
+                }
+            }
             var allFlowSteps = m_codeService.UpdateSimpleCode(id);
             return allFlowSteps;
         }
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        //[HttpDelete("{id}")]
+        [HttpDelete]
+        public bool RemoveComposity([FromBody]int id)
         {
+            var oldobj = m_codeService.GetSimpleCodeLinq<ComposeEntity>(p => p.Id == id).FirstOrDefault();
+            if (oldobj == null)
+            {
+                return false;
+            }
+            var ww = m_codeService.GetSimpleCode<AConFlowStep>(new { AComposityId = oldobj.Guid });
+            if (ww.Any())
+            {
+                foreach (var ss in ww)
+                { 
+                    m_codeService.DeleteSimpleCode<AConFlowStep>(ss);
+                }
+            }
+            var allpos = m_codeService.DeleteSimpleCode<ComposeEntity>(oldobj);
+            return allpos; 
         }
+
     }
 }

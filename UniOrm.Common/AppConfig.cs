@@ -45,10 +45,11 @@ namespace UniOrm
         } 
 
         public void LoadDBDictionary()
-        {
+        { 
             SystemDictionaries.AddRange(Db.Queryable<SystemDictionary>().ToList());
         }
-      
+
+       
         public string GetDicstring(string key)
         {
             var item = SystemDictionaries.FirstOrDefault(p => p.KeyName == key);

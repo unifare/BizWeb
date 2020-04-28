@@ -162,6 +162,74 @@ namespace UniOrm
             return new ExpandoObject();
         }
 
+        Uni _url2 = null;
+
+        public Uni Url2 {
+            get
+            {
+                if(_url2 == null)
+                {
+                    _url2 = new Uni();
+                    foreach(var i in Request.Query)
+                    {
+                        if(!_url2.Dictionary.ContainsKey(i.Key))
+                        {
+                            _url2.Dictionary.Add(i.Key, i.Value);
+                        }
+                    }
+                }
+                return _url2;
+            }
+        }
+        Uni _form2 = null;
+
+        public Uni Form2
+        {
+            get
+            {
+                if (_form2 == null)
+                {
+                    _form2 = new Uni();
+                    foreach (var i in Request.Form)
+                    {
+                        if (!_form2.Dictionary.ContainsKey(i.Key))
+                        {
+                            _form2.Dictionary.Add(i.Key, i.Value);
+                        }
+                    }
+                }
+                return _form2;
+            }
+        }
+
+        public Stream Stream
+        {
+            get
+            { 
+                return Request.Body;
+            }
+        }
+        public string StreamToText()
+        { 
+            using (StreamReader sr = new StreamReader(Request.Body))
+            {
+              return   sr.ReadToEnd(); 
+            } 
+        }
+
+        public bool SaveFile(int index, string dir,string newfileName=null)
+        {
+            if(Request.Form.Files.Count<=index)
+            {
+                return false;
+            }
+            else
+            {
+                Request.Form.Files[index].UploadSaveSingleFile(dir, newfileName);
+                return true;
+            }
+        }
+
         public List<dynamic> GetData(string sql, object args)
         {
             return Db.Ado.SqlQuery<dynamic>(sql, args) ;

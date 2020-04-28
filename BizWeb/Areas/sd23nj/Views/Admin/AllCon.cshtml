@@ -122,6 +122,7 @@
 
                                     <tr v-for="el in coms" v-bind:class="{ selectrow: el.Name==selectedCompose.Name }">
                                         <td style="width:100px">
+                                            <a v-on:click="ToRemoveCompose(el)">删除</a>
                                             <a   v-on:click="ToEditCompose(el)"  >修改</a>
                                             <a  v-on:click="ToSetupCompose(el)"  >设置</a>
                                         </td>
@@ -807,7 +808,7 @@
             },
             methods: {
                 getFunction: function (item) {
-                   this. selectcode = item;
+                    this.selectcode = item;
                 },
                 getTypes: function (el, ty) {
                     var data = { dll: el, ty: ty };
@@ -826,7 +827,7 @@
                         }
                     });
                 },
-                selectComposityRow: function (el,dom) {
+                selectComposityRow: function (el, dom) {
                     $(dom).css
                 },
                 uploaderdll: function () {
@@ -917,10 +918,10 @@
                     $('#TrigerDiv').modal("show")
                 },
                 SaveAddTriger: function () {
-                    var el = app.editingTriger; 
+                    var el = app.editingTriger;
                     var newvalue = '';
                     for (var i = 0; i < el.HttpMethod.length; i++) {
-                        newvalue+=el.HttpMethod[i]+',' 
+                        newvalue += el.HttpMethod[i] + ','
                     }
                     newvalue = newvalue.substring(0, newvalue.length - 1)
                     el.HttpMethod = newvalue;
@@ -950,7 +951,7 @@
                     else {
                         $.ajax({
                             type: "post",
-                            url: "/api/Fact/UpateTriger/",
+                            url: "/api/Fact/UpdateTriger/",
                             dataType: 'json',
                             contentType: 'application/json',
                             data: JSON.stringify(el),
@@ -979,7 +980,7 @@
                     //if (app.editingStep == null || app.editingStep == undefined) {
                     app.editingStep = {
                         Id: 0, Name: '',
-                        Guid:newGuid(),
+                        Guid: newGuid(),
                         StepOrder: 0,
                         ArgNames: '',
                         ProxyCode: '',
@@ -1042,11 +1043,11 @@
                         data: JSON.stringify(sdfe),
 
                         async: true,
-                        success: function (jsonResult) { 
-                                alert("  success");
-                              
-                                getAconSlowStepByComposid(app.selectedCompose.AComposityId)
-                                $('#StepDetail').modal("hide") 
+                        success: function (jsonResult) {
+                            alert("  success");
+
+                            getAconSlowStepByComposid(app.selectedCompose.AComposityId)
+                            $('#StepDetail').modal("hide")
                         },
                         error: function (e) {
                             console.log(e);
@@ -1176,6 +1177,30 @@
                     app.actointype = "edit";
                     $('#composeEntity').modal("show")
 
+                },
+                ToRemoveCompose: function (el) {
+                    if (!confirm("Are you confirm to remove this :" + el.Guid)) {
+                        return false;
+                    }
+                    $.ajax({
+                        type: "delete",
+                        url: "/api/Fact/RemoveComposity/",
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify(el.Id),
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult > 0) {
+                                alert("  success");
+                                GetAllCompose();
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                    
                 },
                 getmethod: function (el) {
                     $.ajax({

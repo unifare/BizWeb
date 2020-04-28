@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,15 +30,37 @@ namespace UniOrm
         {
             if (binder == null)
                 throw new ArgumentNullException(nameof(binder));
+            result = null;
+            if (TargetType.BaseType.Equals(typeof(DynamicObject)))
+            {
+                //var binder2 = new ExGetMemberBinder(binder.Name, true);
+                var dic = Instance.GetType().GetField("Dictionary").GetValue(Instance) as IDictionary<string, object>;
+                if( dic!=null && dic.ContainsKey(binder.Name.ToLower()))
+                {
+                    var ssss = dic[binder.Name];
+                    result = ssss.AsDynamic();
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else if (TargetType.Equals(typeof(ExpandoObject)))
+            {
+                result = ((IDictionary<string, object>)Instance)[binder.Name].AsDynamic();
+            }
+            else
+            {
+                IProperty prop = GetProperty(binder.Name);
 
-            IProperty prop = GetProperty(binder.Name);
+                // Get the property value
+                result = prop.GetValue(Instance, index: null);
 
-            // Get the property value
-            result = prop.GetValue(Instance, index: null);
+                // Wrap the sub object if necessary. This allows nested anonymous objects to work.
+                result = result.AsDynamic();
 
-            // Wrap the sub object if necessary. This allows nested anonymous objects to work.
-            result = result.AsDynamic();
 
+            }
             return true;
         }
 
@@ -125,8 +148,11 @@ namespace UniOrm
             return GetProperty("Item");
         }
 
+     
+
         private IProperty GetProperty(string propertyName)
         {
+           
             // Get the list of properties and fields for this type
             IDictionary<string, IProperty> typeProperties = GetTypeProperties(TargetType);
 
@@ -567,6 +593,19 @@ namespace UniOrm
                 return null;
             else
                 return mi.First<MethodInfo>();
+        }
+    }
+
+    public class ExGetMemberBinder : GetMemberBinder
+    {
+        public ExGetMemberBinder(string name, bool isigoreCase) : base(name, isigoreCase)
+        {
+
+        }
+
+        public override DynamicMetaObject FallbackGetMember(DynamicMetaObject target, DynamicMetaObject errorSuggestion)
+        {
+            throw new NotImplementedException();
         }
     }
 }
