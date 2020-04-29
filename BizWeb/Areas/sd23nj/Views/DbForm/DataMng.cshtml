@@ -3,269 +3,270 @@
     ViewData["Title"] = "数据库管理";
 }
 
-    <div class="container-fluid" id="app">
-        <div class="=row">
-            <div style="overflow:hidden">
-                选择数据库
-                <select id="dblist" v-model="selecteddb">
-                    @{
-                        var dbused = "";
-                        var i = 0;
-                        foreach (var con in ViewBag.Connections)
+<div class="container-fluid" id="app">
+    <div class="=row">
+        <div style="overflow:hidden">
+            选择数据库
+            <select id="dblist" v-model="selecteddb">
+                @{
+                    var dbused = "";
+                    var i = 0;
+                    foreach (var con in ViewBag.Connections)
+                    {
+                        var dbtypename = "sqlite";
+                        if (con.DBType == SqlSugar.DbType.SqlServer)
                         {
-                            var dbtypename = "sqlite";
-                            if (con.DBType == SqlSugar.DbType.SqlServer)
-                            {
-                                dbtypename = "sqlserver";
-                            }
-                            else if (con.DBType == SqlSugar.DbType.MySql)
-                            {
-                                dbtypename = "mysql";
-                            }
-                            else if (con.DBType == SqlSugar.DbType.PostgreSQL)
-                            {
-                                dbtypename = "postgresql";
-                            }
-                            else if (con.DBType == SqlSugar.DbType.Sqlite)
-                            {
-                                dbtypename = "sqlite";
-                            }
-                            if (i == 0)
-                            {
-                                dbused = dbtypename + "-" + con.Connectionstring;
-                            }
-                            <option> @dbtypename-@con.Connectionstring</option>
-                            i++;
+                            dbtypename = "sqlserver";
                         }
-
+                        else if (con.DBType == SqlSugar.DbType.MySql)
+                        {
+                            dbtypename = "mysql";
+                        }
+                        else if (con.DBType == SqlSugar.DbType.PostgreSQL)
+                        {
+                            dbtypename = "postgresql";
+                        }
+                        else if (con.DBType == SqlSugar.DbType.Sqlite)
+                        {
+                            dbtypename = "sqlite";
+                        }
+                        if (i == 0)
+                        {
+                            dbused = dbtypename + "-" + con.Connectionstring;
+                        }
+                        <option> @dbtypename-@con.Connectionstring</option>
+                        i++;
                     }
 
-                </select>  <input type="button" @@click="AddnetDB" value="新建数据库">
+                }
+
+            </select>  <input type="button" @@click="AddnetDB" value="新建数据库">
+        </div>
+        <div>
+
+        </div>
+    </div>
+    <div>当前数据库:  <input type="text" class="w-100" v-model="selecteddb"></div>
+    <div class="row">
+        <div class="col-12">
+            命令操作
+            <div class="row" style="border-top:1px solid #808080">
+                <div class="col-4" style="max-height:500px; overflow-y:auto; border-right:1px solid #808080">
+                    <div>tables <a @@click="addtable">添加表</a></div>
+                    <ul>
+                        <li v-bind:class="{ selectrow: item.Name==selecttablename }" v-for="(item, index) in returntablelist"
+                            @@click="selecttable(item)"
+                            v-on:dblclick="gettabledata(item.Name)">
+                            <a @@click="ediOldTable(item)">E</a><a @@click="delOldtable(item)">D</a>--{{item.Name}}
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-2" style="max-height:500px; overflow-y:auto;">
+                    <div>{{selecttablename}} columns</div>
+                    <ul>
+                        <li v-for="(item, index) in returncolumnlist" class="column_k">
+                            {{item.DbColumnName}} ({{item.DataType}},{{item.Length}})
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="col-6">
+                    <pre id="textcode" class="ace_editor" style=" width:800px; min-height:400px">  
+                    <textarea class="ace_text-input" v-model="excutecmdtext"></textarea>
+                        </pre>
+                    <div>
+                        <input type="button" value="执行" @@click="excutecmd" /><input type="button" value="添加" @@click="adddbrow" />
+                    </div>
+                    <div style="width:100%;overflow:auto;">
+                        <div style=" height:300px; overflow:auto;">
+                            <table id="datatb" v-if="returndata!=null&&returndata.length>0"
+                                   class="table table-bordered"
+                                   style="white-space: nowrap; ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th v-for="(value, key, index) in returndata[0]">{{key}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody style=" height:280px; overflow:auto;">
+                                    <tr v-for="row in returndata">
+
+                                        <td><a v-on:click="editrow( row)">修改</a><a v-on:click="delrow(row)">删除</a>  </td>
+                                        <td v-for="(value, key, index) in row">
+                                            {{value}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+            <div style="border-top:1px solid #808080">
+                执行反馈   <span v-bind:class='[dbcmdokstring ]'>{{sqloperateresult}}</span>
+            </div>
+
+        </div>
+    </div>
+    <div class="overlay" v-bind:class="{show:isshowDlg}">
+        <div class="con">
             <div>
-
-            </div>
-        </div>
-        <div>当前数据库:  <input type="text" class="w-100" v-model="selecteddb"></div>
-        <div class="row">
-            <div class="col-12">
-                命令操作
-                <div class="row" style="border-top:1px solid #808080">
-                    <div class="col-4" style="max-height:500px; overflow-y:auto; border-right:1px solid #808080">
-                        <div>tables <a @@click="addtable">添加表</a></div>
-                        <ul>
-                            <li v-bind:class="{ selectrow: item.Name==selecttablename }" v-for="(item, index) in returntablelist"
-                                @@click="selecttable(item)"
-                                v-on:dblclick="gettabledata(item.Name)" >
-                         <a @@click="ediOldTable(item)">E</a><a @@click="delOldtable(item)">D</a>--{{item.Name}}
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div class="col-2" style="max-height:500px; overflow-y:auto;">
-                        <div>{{selecttablename}} columns</div>
-                        <ul>
-                            <li v-for="(item, index) in returncolumnlist" class="column_k">
-                                {{item.DbColumnName}} ({{item.DataType}},{{item.Length}})
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div class="col-6">
-
-                        <textarea style="width:100%; height:150px" rows="150" v-model="excutecmdtext"></textarea>
-                        <div>
-                            <input type="button" value="执行" @@click="excutecmd" /><input type="button" value="添加" @@click="adddbrow" />
-                        </div>
-                        <div style="width:100%;overflow:auto;">
-                            <div style=" height:300px; overflow:auto;">
-                                <table id="datatb" v-if="returndata!=null&&returndata.length>0"
-                                       class="table table-bordered"
-                                       style="white-space: nowrap; ">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th v-for="(value, key, index) in returndata[0]">{{key}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style=" height:280px; overflow:auto;">
-                                        <tr v-for="row in returndata">
-
-                                            <td><a v-on:click="editrow( row)">修改</a><a v-on:click="delrow(row)">删除</a>  </td>
-                                            <td v-for="(value, key, index) in row">
-                                                {{value}}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div style="border-top:1px solid #808080">
-                    执行反馈   <span v-bind:class='[dbcmdokstring ]'>{{sqloperateresult}}</span>
-                </div>
-
-            </div>
-        </div>
-        <div class="overlay" v-bind:class="{show:isshowDlg}">   
-            <div class="con">
+                <h2 class="title">新增 | 修改</h2>
                 <div>
-                    <h2 class="title">新增 | 修改</h2>
-                    <div>
-                        当前表 :     {{selecttablename}}
-                    </div>
-                    <div class="content" style="max-height:500px; overflow:auto;">
-                        <table class="tb_table table table-bordered">
-                            <tr>
-                                <td>列名</td>
-                                <td>类型</td>
-                                <td>长度</td>
-                                <td>设置null</td>
-                                <td>值</td>
-
-
-                            </tr>
-                            <tr v-for="(displayobj, index) in displayeditobjs">
-                                <td> <span v-bind:class="{red:!displayobj.IsNullable}">{{displayobj.title}}</span>  </td>
-                                <td>
-                                    {{displayobj.dbtype}}
-                                </td>
-                                <td>
-                                    {{displayobj.leng}}
-                                </td>
-                                <td>
-                                    空<input type="radio" v-bind:name="'runoob-' + index" value="null" v-model="displayobj.isSetNull">
-                                    不为空<input type="radio" v-bind:name="'runoob-' + index" value="notnull" v-model="displayobj.isSetNull">
-                                </td>
-                                <td>
-                                    <div v-if="dbtype.toLowerCase()=='mysql'  ">
-                                        <div v-if="displayobj.dbtype.toLowerCase() =='tinyint' ">
-                                            <select v-model="displayobj.value">
-                                                <option>true</option>
-                                                <option>false</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    <div v-if="dbtype.toLowerCase()=='sqlite'  ">
-                                        <div v-if="displayobj.dbtype.toLowerCase() =='integer' && displayobj.leng==1">
-                                            <select v-model="displayobj.value">
-                                                <option>true</option>
-                                                <option>false</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    <div>
-                                        <div v-if="displayobj.dbtype.toLowerCase() =='bool' || displayobj.dbtype.toLowerCase() =='bit'">
-
-                                            <select v-model="displayobj.value">
-                                                <option>true</option>
-                                                <option>false</option>
-                                            </select>
-
-                                            <textarea v-model="displayobj.value" style="width:800px; height:60px;"></textarea>
-                                        </div>
-                                        <div v-else-if="displayobj.dbtype.toLowerCase() =='datetime' || displayobj.dbtype.toLowerCase() =='datetime2'">
-                                            <input type="text" :id="index+'wdate'" class="Wdate" v-model="displayobj.value"
-                                                   v-on:blur="setvuedate(index,$event)"
-                                                   onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' ,alwaysUseStartDate:true})" />
-                                        </div>
-                                        <div v-else>
-
-                                            <textarea v-model="displayobj.value" style="width:600px; height:60px;"></textarea>
-                                        </div>
-                                    </div>
-
-
-                                </td>
-
-
-                            </tr>
-
-                        </table>
-
-                    </div>
+                    当前表 :     {{selecttablename}}
                 </div>
-                <p>
-                    <input type="button" class="btn btn-default" @@click="cancldlg" value="取消">
-                    <input type="button" class="btn btn-primary" @@click="savedlg" value="保存">
-                </p>
-            </div>
+                <div class="content" style="max-height:500px; overflow:auto;">
+                    <table class="tb_table table table-bordered">
+                        <tr>
+                            <td>列名</td>
+                            <td>类型</td>
+                            <td>长度</td>
+                            <td>设置null</td>
+                            <td>值</td>
 
-        </div>
 
-        <div class="overlay" v-bind:class="{tbshow:isshowtbDlg}">
-            <div class="con">
-                <div>
-                    <h2 class="title">新增 | 修改</h2>
-                    <div>
-                        当前表 :  <input type="text"  v-model="editbname" />   说明<input type="text"  v-model ="tableDescription" />
-                    </div>
-                    <div class="content" style="max-height:500px; overflow:auto;">
-                        <table class="tb_table table table-bordered">
-                            <tr>
-                                <td></td>
-                                <td>列名</td>
-                                <td>类型</td>
-                                <td>长度</td>
-                                <td>null</td>
-                                <td style="width:50px">主键</td>
-                                <td style="width:50px">自增</td>
-                                @*<td>说明</td>*@
-                                <td>值</td>
-                            </tr>
-                            <tr v-for="(columndef, index) in edittbcolmnDefinits">
-                                <td><a @@click="deltbrow(index)" v-if="!(columndef.DbColumnName=='id'||columndef.DbColumnName=='Id'||columndef.DbColumnName=='ID')">删除</a></td>
-                                <td> <input type="text" v-model="columndef.DbColumnName" />   </td>
-                                <td>
-                                    <input type="text" v-model="columndef.DataType" />
-                                </td>
-                                <td>
-                                    <input type="text" style="width:60px;" v-model="columndef.Length" />
-                                    金位<input type="text" style="width:60px;" v-model="columndef.DecimalDigits" />
-                                </td>
-                                <td>
-                                    空<input type="radio" v-bind:name="'runoob2-' + index" value="true" v-model="columndef.IsNullable">
-                                    不为空<input type="radio" v-bind:name="'runoob2-' + index" value="false" v-model="columndef.IsNullable">
-                                </td>
-                                <td style="width:50px">
-                                    <input v-model="columndef.IsPrimarykey" value="true" type="radio"  v-bind:name="'primakey-' + index"  />
-                                </td>
-                                <td style="width:50px">
-                                    <input v-model="columndef.IsIdentity" value="true" type="radio"   v-bind:name="'indentiykey-' + index"   />
-                                </td>
+                        </tr>
+                        <tr v-for="(displayobj, index) in displayeditobjs">
+                            <td> <span v-bind:class="{red:!displayobj.IsNullable}">{{displayobj.title}}</span>  </td>
+                            <td>
+                                {{displayobj.dbtype}}
+                            </td>
+                            <td>
+                                {{displayobj.leng}}
+                            </td>
+                            <td>
+                                空<input type="radio" v-bind:name="'runoob-' + index" value="null" v-model="displayobj.isSetNull">
+                                不为空<input type="radio" v-bind:name="'runoob-' + index" value="notnull" v-model="displayobj.isSetNull">
+                            </td>
+                            <td>
+                                <div v-if="dbtype.toLowerCase()=='mysql'  ">
+                                    <div v-if="displayobj.dbtype.toLowerCase() =='tinyint' ">
+                                        <select v-model="displayobj.value">
+                                            <option>true</option>
+                                            <option>false</option>
+                                        </select>
+                                    </div>
 
-                                <td>
-                                    <textarea v-model="columndef.DefaultValue" style="width:300px; height:60px;"></textarea>
-                                </td>
+                                </div>
+                                <div v-if="dbtype.toLowerCase()=='sqlite'  ">
+                                    <div v-if="displayobj.dbtype.toLowerCase() =='integer' && displayobj.leng==1">
+                                        <select v-model="displayobj.value">
+                                            <option>true</option>
+                                            <option>false</option>
+                                        </select>
+                                    </div>
 
-                            </tr>
+                                </div>
+                                <div>
+                                    <div v-if="displayobj.dbtype.toLowerCase() =='bool' || displayobj.dbtype.toLowerCase() =='bit'">
 
-                        </table>
+                                        <select v-model="displayobj.value">
+                                            <option>true</option>
+                                            <option>false</option>
+                                        </select>
 
-                    </div>
+                                        <textarea v-model="displayobj.value" style="width:800px; height:60px;"></textarea>
+                                    </div>
+                                    <div v-else-if="displayobj.dbtype.toLowerCase() =='datetime' || displayobj.dbtype.toLowerCase() =='datetime2'">
+                                        <input type="text" :id="index+'wdate'" class="Wdate" v-model="displayobj.value"
+                                               v-on:blur="setvuedate(index,$event)"
+                                               onClick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' ,alwaysUseStartDate:true})" />
+                                    </div>
+                                    <div v-else>
+
+                                        <textarea v-model="displayobj.value" style="width:600px; height:60px;"></textarea>
+                                    </div>
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+                    </table>
+
                 </div>
-                <p >
-                    <div style="display:inline;float:left;">
-                        <input type="button" value="添加字段" @@click="addtbcolumn" />
-                    </div>
-                    <div style="display:inline;float:right;">
-                        <input type="button" class="btn btn-default" @@click="cancltbdlg" value="取消">
-                        <input type="button" class="btn btn-primary" @@click="savetbdlg" value="保存">
-                    </div>
-                 
-                </p>
             </div>
-
+            <p>
+                <input type="button" class="btn btn-default" @@click="cancldlg" value="取消">
+                <input type="button" class="btn btn-primary" @@click="savedlg" value="保存">
+            </p>
         </div>
-
-
-
 
     </div>
+
+    <div class="overlay" v-bind:class="{tbshow:isshowtbDlg}">
+        <div class="con">
+            <div>
+                <h2 class="title">新增 | 修改</h2>
+                <div>
+                    当前表 :  <input type="text" v-model="editbname" />   说明<input type="text" v-model="tableDescription" />
+                </div>
+                <div class="content" style="max-height:500px; overflow:auto;">
+                    <table class="tb_table table table-bordered">
+                        <tr>
+                            <td></td>
+                            <td>列名</td>
+                            <td>类型</td>
+                            <td>长度</td>
+                            <td>null</td>
+                            <td style="width:50px">主键</td>
+                            <td style="width:50px">自增</td>
+                            @*<td>说明</td>*@
+                            <td>值</td>
+                        </tr>
+                        <tr v-for="(columndef, index) in edittbcolmnDefinits">
+                            <td><a @@click="deltbrow(index)" v-if="!(columndef.DbColumnName=='id'||columndef.DbColumnName=='Id'||columndef.DbColumnName=='ID')">删除</a></td>
+                            <td> <input type="text" v-model="columndef.DbColumnName" />   </td>
+                            <td>
+                                <input type="text" v-model="columndef.DataType" />
+                            </td>
+                            <td>
+                                <input type="text" style="width:60px;" v-model="columndef.Length" />
+                                金位<input type="text" style="width:60px;" v-model="columndef.DecimalDigits" />
+                            </td>
+                            <td>
+                                空<input type="radio" v-bind:name="'runoob2-' + index" value="true" v-model="columndef.IsNullable">
+                                不为空<input type="radio" v-bind:name="'runoob2-' + index" value="false" v-model="columndef.IsNullable">
+                            </td>
+                            <td style="width:50px">
+                                <input v-model="columndef.IsPrimarykey" value="true" type="radio" v-bind:name="'primakey-' + index" />
+                            </td>
+                            <td style="width:50px">
+                                <input v-model="columndef.IsIdentity" value="true" type="radio" v-bind:name="'indentiykey-' + index" />
+                            </td>
+
+                            <td>
+                                <textarea v-model="columndef.DefaultValue" style="width:300px; height:60px;"></textarea>
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+            <p>
+                <div style="display:inline;float:left;">
+                    <input type="button" value="添加字段" @@click="addtbcolumn" />
+                </div>
+                <div style="display:inline;float:right;">
+                    <input type="button" class="btn btn-default" @@click="cancltbdlg" value="取消">
+                    <input type="button" class="btn btn-primary" @@click="savetbdlg" value="保存">
+                </div>
+
+            </p>
+        </div>
+
+    </div>
+
+
+
+
+</div>
 
 
 @section css{
@@ -332,6 +333,7 @@
         .show {
             display: block;
         }
+
         .tbshow {
             display: block;
         }
@@ -339,6 +341,7 @@
 }
 @section Scripts{
     <script src="/lib/My97DatePicker/WdatePicker.js" charset="utf-8"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/ace/1.4.11/ace.js"></script>
     <script>
 
         function getdatatablelist() {
@@ -444,7 +447,7 @@
                         console.log(e);
                     }).always(function (e) {
                     });
-                    
+
                 },
                 delOldtable(item) {
                     if (!confirm("是否确定删除表")) {
@@ -471,7 +474,7 @@
                 addtbcolumn()
                 {
                     var reobj = { TableName: '', IsPrimarykey: false, DbColumnName: '', ColumnDescription:'',DataType: '', Length: 0, DefaultValue: null, IsNullable: true, DecimalDigits: null };
-                   
+
                     this.edittbcolmnDefinits.push(reobj)
                 },
                 cancltbdlg() {
@@ -513,7 +516,7 @@
                     }
                     if (this.currentaction == "addtb") {
 
-                  
+
                         var data = {
                             tablename: this.editbname,
                             keyvalue: this.edittbcolmnDefinits,
@@ -542,7 +545,7 @@
                             sqlconnestring: this.selecteddb
                         }
                         $.post("EditTableRowDef", data).done(function (jsonResult) {
-                            if (jsonResult.isok == true) { 
+                            if (jsonResult.isok == true) {
 
                                 var data = { sqlconnestring: app.selecteddb, tname: app.selecttablename }
                                 $.get("GetColumnList", data).done(function (jsonResult) {
@@ -558,7 +561,7 @@
                                     console.log(e);
                                 }).always(function (e) {
                                 });
-                                app.sqloperateresult = "执行成功" 
+                                app.sqloperateresult = "执行成功"
                             }
                             else {
                                 app.dbcmdokstring = "text-danger";
@@ -794,7 +797,7 @@
                     this.selectDataRow = row;
                     this.isshowDlg = true;
                 },
-             
+
                 gettabledata(tbname) {
                     app.returndata = [];
                     var data = { cmd: "select  * from " + tbname, sqlconnestring: this.selecteddb }
@@ -838,7 +841,7 @@
                     });
                 },
                 excutecmd( ) {
-                    var excutecmdtext = this.excutecmdtext;
+                    var excutecmdtext = edit_textcode.getValue();// .excutecmdtext;
                     if ($.trim(excutecmdtext.toLowerCase()).indexOf("delete") == 0) {
                         if(!confirm("是否要执行删除操作"))
                         {
@@ -911,7 +914,36 @@
 
             getdatatablelist();
         })
+        function initCode(id) {
+            //初始化对象
+            var editor = ace.edit(id);
 
+            //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+            theme = "clouds"
+            language = "sql"
+            editor.setTheme("ace/theme/" + theme);
+            editor.session.setMode("ace/mode/" + language);
+
+            //字体大小
+            editor.setFontSize(18);
+
+            //设置只读（true时只读，用于展示代码）
+            editor.setReadOnly(false);
+
+            //自动换行,设置为off关闭
+            editor.setOption("wrap", "free")
+
+            //启用提示菜单
+            ace.require("ace/ext/language_tools");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true
+            });
+            return editor;
+        }
+        var edit_textcode = initCode("textcode");
+        edit_textcode.setValue('');
     </script>
 
 }
