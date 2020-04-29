@@ -217,7 +217,10 @@
                   
                             <td>
                      
-                                <div>  <textarea id="txtActiveInfo" v-model="editmodel.Value" style="width:800px; height:460px;"></textarea>
+                                <div>  
+                                    <pre id="textcode" class="ace_editor" style=" width:800px; min-height:400px">  
+                                        <textarea  v-model="editmodel.Value" class="ace_text-input" ></textarea>
+                                    </pre>
                                  </div> 
 
                             </td>
@@ -268,21 +271,7 @@
                 this.Init( );
             },
             mounted() { //mounted 是vue生命周期里 渲染完组件后的事件
-                //$("#txt_contentid").append('  <textarea id="txtActiveInfo" style="height:300px; width:100%; display:none;"></textarea>');
-                   KindEditor.ready(function (K) {
-                            editor1 = K.create('#txtActiveInfo', {
-                                uploadJson: '@Url.Action("SaveFiles", "KindEditor")',
-                                fileManagerJson: '@Url.Action("FileManager", "KindEditor")',
-                                allowFileManager: true,
-                                autoHeightMode: false,
-                                newlineTag: 'br',
-                                autoWidthMode: true,
-                                afterCreate: function () {
-
-                                }
-                            });
-
-                    });
+             
             },
             computed: {
                 //分页
@@ -343,7 +332,7 @@
                 },
 
                 savedlg() {
-                    this.editmodel.Value = editor1.html();
+                    this.editmodel.Value = edit_textcode.getValue();
                     if (this.action == "edit") {
                         var data = { Id: this.editmodel.Id, Value: this.editmodel.Value }
                         $.post("UpdateItem",data).done(function (jsonResult) {
@@ -378,13 +367,18 @@
                     this.action = "add";
                     this.isshowDlg = true;
                     this.editmodel = this.emptyitem;
-                    editor1.html('');
+                    edit_textcode.setValue('');
                 },
                 showedit(index,el) {
                     this.action = "edit";
                     this.isshowDlg = true;
                     this.editmodel = el;
-                    editor1.html(this.editmodel.Value );
+                    if (this.editmodel.Value == null) {
+                        edit_textcode.setValue('');
+                    }
+                    else {
+                        edit_textcode.setValue(this.editmodel.Value);
+                    }
                 },
                 Init()
                 {
@@ -432,10 +426,35 @@
               
             }
         })
-        //ue = UE.getEditor('container', {
-        //    initialFrameHeight: 250
-        KindEditor.options.filterMode = false;
+        function initCode(id) {
+            //初始化对象
+            var editor = ace.edit(id);
 
+            //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+            theme = "clouds"
+            language = "c_cpp"
+            editor.setTheme("ace/theme/" + theme);
+            editor.session.setMode("ace/mode/" + language);
+
+            //字体大小
+            editor.setFontSize(18);
+
+            //设置只读（true时只读，用于展示代码）
+            editor.setReadOnly(false);
+
+            //自动换行,设置为off关闭
+            editor.setOption("wrap", "free")
+
+            //启用提示菜单
+            ace.require("ace/ext/language_tools");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true
+            });
+            return editor;
+        }
+        var edit_textcode = initCode("textcode"); 
  
     </script>
 }

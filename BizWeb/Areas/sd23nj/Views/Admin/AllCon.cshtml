@@ -10,14 +10,15 @@
         .container {
             padding: 0 15px;
         }
-        .selectedRow{
 
-            background-color:goldenrod;
+        .selectedRow {
+            background-color: goldenrod;
         }
-         .unselectedRow{
 
-            background-color:#fff;
+        .unselectedRow {
+            background-color: #fff;
         }
+
         .modal-dialog {
             max-width: 100%;
             margin: 1.75rem auto;
@@ -26,15 +27,15 @@
         .modal-content {
             width: 100%;
         }
+
         .selectrow {
             background-color: #f4ecec;
         }
-        input[type=button]
-        {
 
+        input[type=button] {
         }
-        
-         table tr td {
+
+        table tr td {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -62,13 +63,13 @@
                         <input type="text" v-model="urlkey" @@change="searchurl" />  <input type="button" value="新增" class="btn btn-sm btn-primary" v-on:click="ToAddTrigle()" />
                     </div>
                     <div style=" height:550px; overflow:auto;">
-                        <table class="table-bordered"  style="white-space: nowrap; ">
+                        <table class="table-bordered" style="white-space: nowrap; ">
                             <thead>
                                 <tr>
                                     <th></th>
 
                                     <th>Rule</th>
-                                    <th>ComposityId</th> 
+                                    <th>ComposityId</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,34 +83,34 @@
 
 
                                     <td>{{el.Rule}}</td>
-                                    <td >
+                                    <td>
                                         <div style="padding:3px; background-color:#e1f2fc">
                                             <Div style="border-bottom:1px solid #f4ecec">
                                                 {{el.RuleName}}
                                             </Div>
                                             {{el.ComposityId}}
-                                        </div >
-                                       
+                                        </div>
+
                                     </td>
-                                    
+
                                 </tr>
 
 
                             </tbody>
                         </table>
-                        </div>
                     </div>
                 </div>
+            </div>
             <div class="col-sm-4">
 
                 <div class="panel  panel-primary">
                     <div class="panel-heading">Composity List</div>
                     <div class="panel-body" style="max-height:100px; ">
                         <div>
-                          <input type ="text" v-model="compositkey" @@change="searchComposite" />  <input type="button" value="新增" class="btn  btn-sm btn-primary" v-on:click="ToAddCompose()" />
+                            <input type="text" v-model="compositkey" @@change="searchComposite" />  <input type="button" value="新增" class="btn  btn-sm btn-primary" v-on:click="ToAddCompose()" />
                         </div>
                         <div style=" height:550px; overflow:auto;">
-                            <table id="comtab" class="table-bordered table"  style="white-space: nowrap; ">
+                            <table id="comtab" class="table-bordered table" style="white-space: nowrap; ">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -123,8 +124,8 @@
                                     <tr v-for="el in coms" v-bind:class="{ selectrow: el.Name==selectedCompose.Name }">
                                         <td style="width:100px">
                                             <a v-on:click="ToRemoveCompose(el)">删除</a>
-                                            <a   v-on:click="ToEditCompose(el)"  >修改</a>
-                                            <a  v-on:click="ToSetupCompose(el)"  >设置</a>
+                                            <a v-on:click="ToEditCompose(el)">修改</a>
+                                            <a v-on:click="ToSetupCompose(el)">设置</a>
                                         </td>
                                         <td style="width:70px" class=".text-truncate ">{{el.Guid}}</td>
                                         <td>{{el.Name}}</td>
@@ -135,7 +136,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -144,12 +145,13 @@
 
                 <div class="panel  panel-primary">
                     <div class="panel-heading">Flow List</div>
-                    <div class="panel-body" style="        max-height: 100px;">
+                    <div class="panel-body" style="        max-height: 100px;
+">
                         <div>
-                            <input  type="button" value="新增"      class="btn btn-primary " v-on:click="ToAddFlow( )" />
+                            <input type="button" value="新增" class="btn btn-primary " v-on:click="ToAddFlow( )" />
                         </div>
                         <div style=" width:100%; overflow :auto;">
-                            <table class="table-bordered table"  style="white-space: nowrap; ">
+                            <table class="table-bordered table" style="white-space: nowrap; ">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -163,8 +165,8 @@
 
                                     <tr v-for="el in steps">
                                         <td>
-                                            <a  v-on:click="ToDelStep(el)"  >删除</a>
-                                            <a  v-on:click="ToEditStep(el)" >修改</a>
+                                            <a v-on:click="ToDelStep(el)">删除</a>
+                                            <a v-on:click="ToEditStep(el)">修改</a>
                                         </td>
                                         <td>{{el.StepOrder}}</td>
                                         <td>{{el.ArgNames}}</td>
@@ -240,17 +242,16 @@
                                                                 <span class="temp_input_label-content">httpMethod</span>
                                                             </label>
 
-                                                            <input type="checkbox" id="jack"  name="HttpMethod" value="GET" v-model="editingTriger.HttpMethod">
+                                                            <input type="checkbox" id="jack" name="HttpMethod" value="GET" v-model="editingTriger.HttpMethod">
                                                             <label for="jack">GET</label>
-                                                            <input type="checkbox" id="john"  name="HttpMethod" value="POST" v-model="editingTriger.HttpMethod">
+                                                            <input type="checkbox" id="john" name="HttpMethod" value="POST" v-model="editingTriger.HttpMethod">
                                                             <label for="john">POST</label>
                                                             <input type="checkbox" id="mike" name="HttpMethod" value="PUT" v-model="editingTriger.HttpMethod">
                                                             <label for="mike">PUT</label>
-                                                            <input type="checkbox" id="DELETE"  name="HttpMethod" value="DELETE"
-                                                                  
+                                                            <input type="checkbox" id="DELETE" name="HttpMethod" value="DELETE"
                                                                    v-model="editingTriger.HttpMethod">
                                                             <label for="DELETE">PUT</label>
-                                                            
+
                                                         </span>
                                                     </div>
                                                 </div>
@@ -297,7 +298,7 @@
                                     <div class=" temp-payment-column-wrap-image">
                                         <div class="temp-form-inner-wrapper">
                                             <h2>Composity</h2>
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -372,7 +373,7 @@
                                         <h2>基本信息</h2>
 
                                         <form>
-                                            <div class="row" >
+                                            <div class="row">
                                                 <div style="height:490px; overflow:auto;">
                                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                         <div class="form-group">
@@ -561,30 +562,32 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                                    <div class="row" style=" border-bottom:1px solid #808080; margin-bottom:0px;" >
+                                    <div class="row" style=" border-bottom:1px solid #808080; margin-bottom:0px;">
                                         <div class="col-sm-6">
                                             Functionlist <input type="text" /><input type="button" value="搜索" />
                                             <div>
                                                 <ul style="height:130px; overflow:auto; margin-bottom:0px !important;">
                                                     <li style="border-bottom:1px solid #808080;"
-                                                        v-for="(item, index) in functionlist" data-toggle="popover"   :title="item.FunctionName"
+                                                        v-for="(item, index) in functionlist" data-toggle="popover" :title="item.FunctionName"
                                                         @@click="getFunction(item)">
                                                         {{item.FunctionMemo}}
                                                     </li>
-                                                </ul >
+                                                </ul>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
 
                                             <div style="border-bottom:1px solid #808080;height:145px; overflow-y:auto;">
-                                                <textarea style="width:100%; height:140px;">
+                                                <pre id="code" class="ace_editor" style="min-height:400px">
+                                                <textarea   class="ace_text-input">
                                                         
 {{selectcode.FunctionCode}}
                                                 </textarea>
+                                            </pre>
                                             </div>
                                         </div>
                                     </div>
-                                    <div   >
+                                    <div>
                                         <nav>
 
                                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -595,7 +598,7 @@
                                                 <a class="nav-item nav-link" id="nav-GetData-tab" data-toggle="tab" href="#nav-GetData" role="tab" aria-controls="nav-GetData" aria-selected="true">GetData</a>
                                             </div>
                                         </nav>
-                                        <div class="tab-content" id="nav-tabContent"  style=" height:380px; overflow:auto">
+                                        <div class="tab-content" id="nav-tabContent" style=" height:380px; overflow:auto">
                                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                                 <div class="row">
                                                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -626,12 +629,16 @@
                                             </div>
                                             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                                 <div>ProxyCode</div>
-                                                <textarea v-model="editingStep.ProxyCode" style=" width:100%; height:290px;"  ></textarea>
+                                              <pre id="proxycode" class="ace_editor"  style="min-height:400px">
+                                                    <textarea v-model="editingStep.ProxyCode"  class="ace_text-input"></textarea>
+                                                </pre>  
                                             </div>
                                             <div class="tab-pane fade" id="Text" role="tabpanel" aria-labelledby="nav-contact-tab">
                                                 <div>Text</div>
-                                                <textarea v-model="editingStep.OutPutText" style=" width:100%; height:290px;" ></textarea>
-                                            </div>
+                                                <pre id="textcode"  class="ace_editor"  style=" width:100%; min-height:400px"> 
+                                 <textarea v-model="editingStep.OutPutText"  class="ace_text-input"></textarea>
+                                                </pre>
+                                                </div>
                                             <div class="tab-pane fade" id="File" role="tabpanel" aria-labelledby="nav-contact-tab">
                                                 <div>File</div>
 
@@ -645,14 +652,14 @@
                                                 </div>
                                                 <div>
                                                     Sql
-                                                    <textarea v-model="editingStep.InParamter1" style=" width:100%;" rows="9"></textarea>
-                                                </div>
+                                                    <pre id="sql"  class="ace_editor"  style="min-height:400px">  <textarea v-model="editingStep.InParamter1"  class="ace_text-input" rows="9"></textarea>
+                                                 </pre></div>
                                             </div>
                                         </div>
 
-                                      </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -667,7 +674,7 @@
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-
+    <script src="https://cdn.bootcdn.net/ajax/libs/ace/1.4.11/ace.js"></script>
     <script src="~/js/vue.min.js"></script>
     <script>
         var registers = [];
@@ -683,15 +690,15 @@
             data: {
                 allmodules: allmodules,
                 compositkey: '',
-                urlkey:'',
+                urlkey: '',
                 actointype: "add",
-                isAddStepBtnDisabled:true,
+                isAddStepBtnDisabled: true,
                 editingStep: {},
                 editingTriger: {},
                 editingCompose: {},
                 selectedCompose: {},
                 trigers: trigers,
-                trigersCopy:[],
+                trigersCopy: [],
                 coms: registers,
                 comsCopy: [],
                 steps: step,
@@ -699,24 +706,24 @@
                 plugindlls: plugindlls,
                 selectcode: {},
                 types: types,
-                functionlist:[],
+                functionlist: [],
                 methods: Methods
             },
-            created: function(){
-                 $.ajax({
-                type: "get",
-                url: "/api/Fact/GetAllModuleNames",
-                dataType: "json",
-                //data: urlData,
-                async: true,
-                success: function (jsonResult) {
+            created: function () {
+                $.ajax({
+                    type: "get",
+                    url: "/api/Fact/GetAllModuleNames",
+                    dataType: "json",
+                    //data: urlData,
+                    async: true,
+                    success: function (jsonResult) {
 
-                    app.allmodules = jsonResult;
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
+                        app.allmodules = jsonResult;
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
             },
             filters: {
                 GetFlowStepType: function (value) {
@@ -773,28 +780,28 @@
                             rev = "Text";
                             break;
 
-                         case 13:
+                        case 13:
                             rev = "RazorText";
                             break;
-                         case 14:
+                        case 14:
                             rev = "RazorFile";
                             break;
-                         case 15:
+                        case 15:
                             rev = "TemplateText";
                             break;
-                         case 16:
+                        case 16:
                             rev = "TemplateFile";
                             break;
-                         case 17:
+                        case 17:
                             rev = "TemplateRazorText";
                             break;
-                         case 18:
+                        case 18:
                             rev = "ServerTransfer";
                             break;
-                          case 12:
+                        case 12:
                             rev = "Redirector";
                             break;
-                         case 19:
+                        case 19:
                             rev = "UrlRewriter";
                             break;
                         //case 12:
@@ -809,6 +816,7 @@
             methods: {
                 getFunction: function (item) {
                     this.selectcode = item;
+                    edit_code.setValue(item.FunctionCode);
                 },
                 getTypes: function (el, ty) {
                     var data = { dll: el, ty: ty };
@@ -995,6 +1003,25 @@
                     GetAllReflections();
                     GetAllPgulinsReflections();
                     $('#StepDetail').modal("show")
+                    if (app.editingStep.ProxyCode != null) {
+
+                        edit_proxycode.setValue(app.editingStep.ProxyCode);
+                    }
+                    else {
+                        edit_proxycode.setValue('');
+                    }
+                    if (app.editingStep.InParamter1 != null) {
+                        sql.setValue(app.editingStep.InParamter1);
+                    }
+                    else {
+                        sql.setValue('');
+                    }
+                    if (app.editingStep.OutPutText != null) {
+                        textcode.setValue(app.editingStep.OutPutText)
+                    }
+                    else {
+                        textcode.setValue('');
+                    }
                     //else {
                     //    app.editingStep.TypeLib = el.dll;
                     //    app.editingStep.TypeFullName = el.typename;
@@ -1028,6 +1055,9 @@
                         alert("errro");
                     }
                     var sdfe = app.editingStep;
+                    sdfe.ProxyCode = edit_proxycode.getValue();
+                    sdfe.OutPutText = edit_code.getValue();
+                    sdf.InParamter1 = sql.getValue();
                     sdfe.AComposityId = app.selectedCompose.Guid;
                     sdfe.ArgNames = $.trim(sdfe.ArgNames)
                     var addressurl = "ToInsertStep";
@@ -1061,6 +1091,25 @@
                     app.actointype = "edit";
                     GetAllReflections();
                     GetAllPgulinsReflections();
+                    if (app.editingStep.ProxyCode != null) {
+
+                        edit_proxycode.setValue(app.editingStep.ProxyCode);
+                    }
+                    else {
+                        edit_proxycode.setValue('');
+                    }
+                    if (app.editingStep.InParamter1 != null) {
+                        sql.setValue(app.editingStep.InParamter1);
+                    }
+                    else {
+                        sql.setValue('');
+                    }
+                    if (app.editingStep.OutPutText != null) {
+                        textcode.setValue(app.editingStep.OutPutText)
+                    }
+                    else {
+                        textcode.setValue('');
+                    }
                     $('#StepDetail').modal("show")
                 },
                 ToDelStep: function (el) {
@@ -1200,7 +1249,7 @@
                             console.log(e);
                         }
                     });
-                    
+
                 },
                 getmethod: function (el) {
                     $.ajax({
@@ -1209,7 +1258,7 @@
                         contentType: 'application/json',
                         dataType: "json",
                         data: {
-                            id: encodeURIComponent( el.dllfile), FullName: el.FullName
+                            id: encodeURIComponent(el.dllfile), FullName: el.FullName
                         },
                         async: true,
                         success: function (jsonResult) {
@@ -1231,7 +1280,7 @@
                 //data: urlData,
                 async: true,
                 success: function (jsonResult) {
-                   
+
                     for (var i = 0; i < jsonResult.length; i++) {
                         var oldvalue = jsonResult[i].HttpMethod;
                         var olds = oldvalue.split(',')
@@ -1278,7 +1327,7 @@
                 success: function (jsonResult) {
 
                     app.coms = jsonResult;
-                    app.comsCopy = app.coms ;
+                    app.comsCopy = app.coms;
 
                 },
                 error: function (e) {
@@ -1287,14 +1336,15 @@
             });
         }
         function GetAllFunctions() {
+            edit_code.setValue('');
             $.ajax({
                 type: "get",
                 url: "/api/Fact/GetAllFunctions",
                 dataType: "json",
                 //data: urlData,
                 async: true,
-                success: function (jsonResult) { 
-                    app.functionlist = jsonResult; 
+                success: function (jsonResult) {
+                    app.functionlist = jsonResult;
                 },
                 error: function (e) {
                     console.log(e);
@@ -1377,16 +1427,51 @@
             GetAllTrigers();
             GetAllFunctions();
         })
-        function newGuid()
-{
-    var guid = "";
-    for (var i = 1; i <= 32; i++){
-      var n = Math.floor(Math.random()*16.0).toString(16);
-      guid +=   n;
-      if((i==8)||(i==12)||(i==16)||(i==20))
-        guid += "-";
-    }
-    return guid;    
-} 
+
+     
+        
+        function initCode(id) {
+            //初始化对象
+           var  editor = ace.edit(id);
+
+            //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+            theme = "clouds"
+            language = "c_cpp"
+            editor.setTheme("ace/theme/" + theme);
+            editor.session.setMode("ace/mode/" + language);
+
+            //字体大小
+            editor.setFontSize(18);
+
+            //设置只读（true时只读，用于展示代码）
+            editor.setReadOnly(false);
+
+            //自动换行,设置为off关闭
+            editor.setOption("wrap", "free")
+
+            //启用提示菜单
+            ace.require("ace/ext/language_tools");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true
+            });
+            return editor;
+        }
+        var edit_proxycode=  initCode("proxycode"); 
+     var edit_code= initCode("code");
+      var textcode = initCode("textcode");
+       var sql = initCode("sql");
+    
+        function newGuid() {
+            var guid = "";
+            for (var i = 1; i <= 32; i++) {
+                var n = Math.floor(Math.random() * 16.0).toString(16);
+                guid += n;
+                if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                    guid += "-";
+            }
+            return guid;
+        }
     </script>
 }
