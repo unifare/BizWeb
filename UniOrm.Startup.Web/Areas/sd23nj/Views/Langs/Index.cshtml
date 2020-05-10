@@ -1,0 +1,546 @@
+﻿@{
+    Layout = "../Shared/_LayoutSimple.cshtml";
+    ViewData["Title"] = "Home Page";
+}
+@section css{
+    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+        .container {
+            padding: 0 15px;
+        }
+        .selectedRow{
+
+            background-color:goldenrod;
+        }
+         .unselectedRow{
+
+            background-color:#fff;
+        }
+        .modal-dialog {
+            max-width: 100%;
+            margin: 1.75rem auto;
+        }
+
+        .modal-content {
+            width: 100%;
+        }
+        .selectrow {
+            background-color: #f4ecec;
+        }
+        input[type=button]
+        {
+
+        }
+        
+         table tr td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+        }
+    </style>
+}
+
+
+
+
+
+<div id="app">
+    <div style="overflow:visible"> 
+        <div class="row">
+             
+            <div class="col-sm-4">
+
+                <div class="panel  panel-primary">
+                    <div class="panel-heading">Composity List</div>
+                    <div class="panel-body" style="max-height:100px; ">
+                        <div>
+                          <input type ="text" v-model="compositkey" @@change="searchComposite" />  <input type="button" value="新增" class="btn  btn-sm btn-primary" v-on:click="ToAddCompose()" />
+                        </div>
+                        <div style=" height:550px; overflow:auto;">
+                            <table id="comtab" class="table-bordered table"  style="white-space: nowrap; ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="width:70px" class=".text-truncate ">guid</th>
+                                        <th>name</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="el in coms" v-bind:class="{ selectrow: el.Name==selectedCompose.Name }">
+                                        <td style="width:100px">
+                                            <a   v-on:click="ToDelCompose(el)">删除</a>
+                                            <a v-on:click="ToSetupCompose(el)">设置</a>
+                                        </td>
+                                        <td style="width:70px" class=".text-truncate ">{{el.Guid}}</td>
+                                        <td>{{el.Name}}</td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5"> 
+                <div class="panel  panel-primary">
+                    <div class="panel-heading">Flow List</div>
+                    <div class="panel-body" style="max-height: 100px;">
+                        <div>
+                            <input  type="button" value="新增"      class="btn btn-primary " v-on:click="ToAddFlow( )" />
+                        </div>
+                        <div style=" width:100%; overflow :auto;">
+                            <table class="table-bordered table"  style="white-space: nowrap; ">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Lang</th>
+                                        <th>Value</th>
+                                        <th>addtime</th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr v-for="el in steps">
+                                        <td>
+                                            <a  v-on:click="ToDelStep(el)"  >删除</a>
+                                            <a  v-on:click="ToEditStep(el)" >修改</a>
+                                        </td>
+                                        <td>{{el.Lang|GetLangName}}</td>
+                                        <td>{{el.Value}}</td>
+                                        <td>{{el.AddTime}}</td> 
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div> 
+    <div class="modal fade" id="composeEntity" role="dialog">
+        <div class="temp-custom-modal-wrap">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content temp-custom-modal-content">
+                    <button type="button" class="close temp-custom-close-button" data-dismiss="modal">&times;</button>
+                    <div class="modal-body temp-custom-modal-body">
+                        <div class="temp-login-form-wrapper">
+                            <div class="row custom-row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 temp-form-column-wrap-image">
+                                    <div class=" temp-payment-column-wrap-image">
+                                        <div class="temp-form-inner-wrapper">
+                                            <h2>Composity</h2>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <div class="temp-form-column-wrap">
+                                        <h2>基本信息</h2>
+
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <span class="  ">
+
+                                                            <label class="temp_input_label">
+                                                                <span class="temp_input_label-content">名称</span>
+                                                            </label>
+                                                            <input class="temp_input_field" v-model="editingCompose.Name" type="text">
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <span class="  ">
+
+                                                            <label class="temp_input_label">
+                                                                <span class="temp_input_label-content">Guid</span>
+                                                            </label>
+                                                            <input class="temp_input_field" v-model="editingCompose.Guid" type="text">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <span class="  ">
+
+                                                            <label class="temp_input_label">
+                                                                <span class="temp_input_label-content">LangName</span>
+                                                            </label>
+                                                            <select v-model="editingCompose.LangName">
+                                                                <option value="zh">Simplified Chinese</option>
+                                                                <option value="tw">Traditional Chinese</option>
+                                                                <option value="en">English</option>
+
+                                                                <option value="ru">Russian</option>
+                                                                <option value="fr">French</option>
+                                                                <option value="sp">Spanish</option>
+
+                                                                <option value="ba">Bahasa</option>
+                                                                <option value="po">Portuguese</option>
+                                                                <option value="tu">Turkish</option>
+                                                                <option value="vi">Vietnamese</option>
+                                                            </select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <span class="  ">
+
+                                                            <label class="temp_input_label">
+                                                                <span class="temp_input_label-content">Value</span>
+                                                            </label>
+                                                            <textarea   class="temp_input_field" cols="50" v-model="editingCompose.Value">
+                                                            </textarea>
+                                                           
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="temp-login-button-wrap">
+                                                        <input class="btn btn-info temp-form-button" v-on:click="ToSaveCompose( )" type="button" value="保存" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="~/js/vue.min.js"></script>
+    <script>
+        var registers = [];
+        var trigers = [];
+        var step = [];
+        var plugindlls = [];
+        var dlls = [];
+        var types = [];
+        var Methods = [];
+        var allmodules = [];
+        var app = new Vue({
+            el: '#app',
+            data: {
+                allmodules: allmodules,
+                compositkey: '',
+                urlkey: '',
+                actointype: "add",
+                isAddStepBtnDisabled: true,
+                editLangName: '',
+                addFrom: 1,
+                editingStep: {},
+                editingTriger: {},
+                editingCompose: {},
+                selectedCompose: {},
+                trigers: trigers,
+                trigersCopy: [],
+                coms: registers,
+                comsCopy: [],
+                steps: step,
+                dlls: dlls,
+                plugindlls: plugindlls,
+                selectcode: {},
+                types: types,
+                functionlist: [],
+                methods: Methods
+            },
+            created: function () {
+
+            },
+            filters: {
+                GetLangName: function (value) {
+                    var rev = "简体中文";
+
+                    switch (value) {
+                        case 0:
+                            rev = "简体中文";
+                            break;
+                        case 1:
+                            rev = "繁体中文";
+                            break;
+                        case 2:
+                            rev = "English";
+                            break;
+                        case 3:
+                            rev = "Russian";
+                            break;
+                        case 4:
+                            rev = "French";
+                            break;
+                        case 5:
+                            rev = "Spanish";
+                            break;
+                        case 6:
+                            rev = "Bahasa";
+                            break;
+                        case 7:
+                            rev = "Portuguese";
+                            break;
+                        case 8:
+                            rev = "Turkish";
+                            break;
+                        case 9:
+                            rev = "Vietnamese";
+                            break;
+                        case 10:
+                            rev = "ElseIF";
+                            break;
+                        case 11:
+                            rev = "StaiticFile";
+                            break;
+                        case 12:
+                            rev = "Text";
+                            break;
+
+                        case 13:
+                            rev = "RazorText";
+                            break;
+                        case 14:
+                            rev = "RazorFile";
+                            break;
+                        case 15:
+                            rev = "TemplateText";
+                            break;
+                        case 16:
+                            rev = "TemplateFile";
+                            break;
+                        case 17:
+                            rev = "TemplateRazorText";
+                            break;
+                        case 18:
+                            rev = "ServerTransfer";
+                            break;
+                        case 12:
+                            rev = "Redirector";
+                            break;
+                        case 19:
+                            rev = "UrlRewriter";
+                            break;
+                        //case 12:
+                        //    rev = "GetData";
+                        //    break;
+                    }
+
+                    return rev;
+                },
+
+            },
+            methods: {
+
+                ToAddFlow: function () {
+
+                    app.ToAddCompose();
+                    app.addFrom = 2
+                    app.editingCompose.Name = app.editLangName;
+                },
+                ToEditStep: function (el) {
+                    app.ToEditCompose(  el); 
+                },
+                searchComposite: function () {
+                    if (this.compositkey == '') {
+                        this.coms = this.comsCopy;
+                    }
+                    else {
+                        this.coms = [];
+                        for (var i = 0; i < this.comsCopy.length; i++) {
+                            var co = this.comsCopy[i];
+                            if (co.Name != null) {
+                                if (co.Name.indexOf(this.compositkey) >= 0) {
+                                    this.coms.push(this.comsCopy[i]);
+                                }
+                            }
+                            else if (co.Description != null) {
+                                if (co.Description.indexOf(this.compositkey) >= 0) {
+                                    this.coms.push(this.comsCopy[i]);
+                                }
+                            }
+
+                        }
+                    }
+                },
+                ToDelCompose: function (el) {
+                    if (!confirm("delete this key?")) {
+                        return false
+                    }
+                    $.ajax({
+                        type: "delete",
+                        url: "DelAllLangs",
+                        dataType: 'json',
+                        data: { Name: el.Name },
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult.isok===true) {
+                                alert("  success");
+                                GetAllCompose(); 
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
+                ToSetupCompose: function (el) {
+                    app.selectedCompose = el;
+                    app.editLangName = el.Name;
+                    getAconSlowStepByComposid(el.Name)
+                    app.isAddStepBtnDisabled = false;
+                },
+                ToDelStep: function (el) {
+                    if (!confirm("delete this lang?")) {
+                        return false
+                    }
+                    $.ajax({
+                        type: "delete",
+                        url: "DelLangs",
+                        dataType: 'json',
+                        data: { Id: el.Id },  
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult.isok === true) {
+                                alert("  success");
+                                getAconSlowStepByComposid(app.editLangName);
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
+                ToSaveCompose: function () { 
+                    var el = app.editingCompose;
+                    var editname = el.Name; 
+                    var addressurl = "AddLangs";
+                    if (app.actointype != "add") {
+                        addressurl = "SaveLangs"; 
+                    }
+
+                    $.ajax({
+                        type: "post",
+                        url: addressurl,
+                        dataType: 'json', 
+                        data: {
+                            Id: el.Id, Name: el.Name, Value: el.Value, Guid: el.Guid, LangName: el.LangName
+                        },  
+                        success: function (jsonResult) {
+
+                            if (jsonResult.isok ===true) {
+                                alert("  success");
+                                app.editingCompose = { id: 0, Guid: newGuid(), Name: app.editLangName, Lang: 0, LangName: "zh", Value: "", IsSytem: false };
+                                if (app.addFrom == 2 && app.editLangName != '') {
+                                   getAconSlowStepByComposid(app.editLangName);
+                                }
+                                else if (app.addFrom == 1 ) {
+                                    GetAllCompose();
+                                }
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
+                ToAddCompose: function () {
+                    app.actointype = "add";
+                    app.addFrom = 1;
+                    app.editingCompose = { id: 0, Guid: newGuid(), Name: "",Lang:0, LangName: "zh", Value: "", IsSytem:false};
+                    $('#composeEntity').modal("show")
+                },
+                ToEditCompose: function (el) {
+                    app.editingCompose = el;
+                    app.editLangName = el.Name;
+                    app.actointype = "edit";
+                    $('#composeEntity').modal("show")
+
+                },
+            
+            }
+        })
+     
+        function getAconSlowStepByComposid(name) {
+            $.ajax({
+                type: "get",
+                url: "GetAllLangsByName",
+                dataType: "json",
+                data: {
+                    keyname: name
+                }, 
+                async: true,
+                success: function (jsonResult) { 
+                    app.steps = jsonResult;
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        }
+        function GetAllCompose() {
+            $.ajax({
+                type: "get",
+                url: "/sd23nj/Langs/GetAllLangs",
+                dataType: "json",
+                //data: urlData,
+                async: true,
+                success: function (jsonResult) {
+
+                    app.coms = jsonResult;
+                    app.comsCopy = app.coms ;
+
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        }
+      
+         
+        $(function () {
+            GetAllCompose(); 
+        })
+        function newGuid()
+{
+    var guid = "";
+    for (var i = 1; i <= 32; i++){
+      var n = Math.floor(Math.random()*16.0).toString(16);
+      guid +=   n;
+      if((i==8)||(i==12)||(i==16)||(i==20))
+        guid += "-";
+    }
+    return guid;    
+} 
+    </script>
+}

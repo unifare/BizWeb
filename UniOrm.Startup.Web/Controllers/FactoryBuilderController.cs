@@ -5,28 +5,27 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using UniOrm.Application;
+using UniOrm.Startup.Web.DynamicController;
 
 namespace UniOrm.Startup.Web.Controllers
 {
     [AllowAnonymous]
-    [AdminAuthorize]
+    
+    [Authorize]
     [UserAuthorize]
-
+    [AdminAuthorize]
     public class FactoryBuilderController : Controller
     {
-        //IGodWorker TypeMaker;
-        //public FactoryBuilderController(IGodWorker typeMaker)
-        //{
-        //    TypeMaker = typeMaker;
-        //}
+     
+        //IGodWorker TypeMaker; 
+        public FactoryBuilderController( )
+        {
+          
+        }
 
         public async Task<IActionResult> Index()
         {
-            //var ss = dbFactory.EFCore<pigcms_adma>().CreateDefaultInstance();
-
-            //var qlist = ss.From<pigcms_adma>();
-            //var allist = qlist.ToList<pigcms_adma>();
-           // await TypeMaker.Run(ControllerContext); 
+          
             return new EmptyResult();
         }
     }

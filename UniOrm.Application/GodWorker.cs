@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using SqlSugar;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+
 namespace UniOrm.Application
 {
     public class RutimeGlobal
@@ -61,7 +63,7 @@ namespace UniOrm.Application
             //ModuleManager = new DefaultModuleManager();
         }
 
-
+        [Authorize]
         public async Task Run(params object[] parameters)
         {
 
@@ -143,6 +145,7 @@ namespace UniOrm.Application
                      
                         if (s.IsUsingAuth.ToBool()   )
                         {
+                            
                             await httpContext.AuthenticateAsync();
                             if (httpContext.User.Identity.Name != s.UserName|| !httpContext.User.Identity.IsAuthenticated)
                             { 

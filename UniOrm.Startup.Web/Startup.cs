@@ -39,6 +39,7 @@ namespace UniOrm.Startup.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.ConfigureSite(env);
+
         }
     }
 }

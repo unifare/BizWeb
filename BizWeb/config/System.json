@@ -17,7 +17,7 @@
       "DBType": 0, //0  mysql,1 mssql, 2  sqlite, 4 postgresql
       "Name": "sys_mysql",
       "DefaultDbPrefixName": "uniorm_",
-      "ConnectionString": "Server=localhost;Port=3306;Database=ds_cms; User=ds_cms;Password=YxMCseRGMLGm24BB;Charset=utf8;"
+      "ConnectionString": "Server=localhost;Port=3306;Database=ds_cms; User=root;Password=root;Charset=utf8;"
       //"Server=localhost;Port=3306;Database=dddw; User=root;Password=root;"
 
     },
@@ -84,65 +84,65 @@
       }
 
     ],
-     "RazorNamesapace" :[
-    "UniOrm",
-    "UniOrm.Application" ,
-    "UniOrm.Common",
-    "UniOrm.Model" ,
-    "UniOrm.Startup.Web",
-    "System" ,
-    "System.Web",
-    "System.IO" ,
-    "System.Text",
-    "System.Text.Encodings" ,
-    "System.Text.RegularExpressions",
-    "System.Collections.Generic" ,
-    "System.Diagnostics",
-    "System.Linq" ,
-    "System.Security.Claims",
-    "System.Threading" ,
-    "System.Threading.Tasks",
-    "System.Reflection" ,
-    "System.Dynamic",
-    
-    "System.Diagnostics" ,
-    "System.Linq.Expressions",
-    
-    "System.Xml" ,
-    "System.Xml.Linq",
-    "System.Configuration" ,
-    "Npgsql",
-    "SqlKata.Compilers" ,
-    "SqlKata.Execution",
-    "SqlSugar" ,
-    "CSScriptLib",
-    "System.Data" ,
-    "System.Data.SqlClient",
-    
-    "System.Data.Common" ,
-    "System.Data.OleDb",
-    
-    "System.Globalization" ,
-    "System.Net",
-    
-    "System.Net.Http" ,
-    "System.Net.Http.Headers",
-    
-    "System.Net.Mail" ,
-    "System.Net.Security",
-    
-    "System.Net.Sockets" ,
-    "System.Net.WebSockets",
-    "System.Drawing" ,
-    "System.Drawing.Printing",
-    "Newtonsoft.Json" ,
-    "Newtonsoft.Json.Linq",
-    "System.Numerics" ,
-    "Microsoft.AspNetCore.Authentication",
-    
-    "Microsoft.AspNetCore.Authorization" ,
-    "Microsoft.Extensions.DependencyInjection",
-    "Microsoft.AspNetCore.Mvc" 
+    "RazorNamesapace": [
+      "UniOrm",
+      "UniOrm.Application",
+      "UniOrm.Common",
+      "UniOrm.Model",
+      "UniOrm.Startup.Web",
+      "System",
+      "System.Web",
+      "System.IO",
+      "System.Text",
+      "System.Text.Encodings",
+      "System.Text.RegularExpressions",
+      "System.Collections.Generic",
+      "System.Diagnostics",
+      "System.Linq",
+      "System.Security.Claims",
+      "System.Threading",
+      "System.Threading.Tasks",
+      "System.Reflection",
+      "System.Dynamic",
+
+      "System.Diagnostics",
+      "System.Linq.Expressions",
+
+      "System.Xml",
+      "System.Xml.Linq",
+      "System.Configuration",
+      "Npgsql",
+      "SqlKata.Compilers",
+      "SqlKata.Execution",
+      "SqlSugar",
+      "CSScriptLib",
+      "System.Data",
+      "System.Data.SqlClient",
+
+      "System.Data.Common",
+      "System.Data.OleDb",
+
+      "System.Globalization",
+      "System.Net",
+
+      "System.Net.Http",
+      "System.Net.Http.Headers",
+
+      "System.Net.Mail",
+      "System.Net.Security",
+
+      "System.Net.Sockets",
+      "System.Net.WebSockets",
+      "System.Drawing",
+      "System.Drawing.Printing",
+      "Newtonsoft.Json",
+      "Newtonsoft.Json.Linq",
+      "System.Numerics",
+      "Microsoft.AspNetCore.Authentication",
+
+      "Microsoft.AspNetCore.Authorization",
+      "Microsoft.Extensions.DependencyInjection",
+      "Microsoft.AspNetCore.Mvc"
     ],
     "SystemDictionaries": [
       {
@@ -205,14 +205,14 @@
       },
       {
         "KeyName": "IsUsingIdentityserver4",
-        "Value": "false",
+        "Value": "true",
         "IsSystem": true,
         "SystemDictionarytype": 0
 
       },
       {
         "KeyName": "IsUsingIdentityserverClient",
-        "Value": "false",
+        "Value": "true",
         "IsSystem": true,
         "SystemDictionarytype": 0
 
@@ -226,7 +226,7 @@
       },
       {
         "KeyName": "Identityserver4.url",
-        "Value": "http://oauth.66wave.com",
+        "Value": "http://oauth.66wave.com/",
         "IsSystem": true,
         "SystemDictionarytype": 0
       },
@@ -250,7 +250,7 @@
       },
       {
         "KeyName": "OauthClientConfig_scopes",
-        "Value": "UniNote_WebApi,openid,profile,offline_access,id4adminId_api",
+        "Value": "UniNote_WebApi,openid,profile,offline_access",
         "IsSystem": true,
         "SystemDictionarytype": 0
       },

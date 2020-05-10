@@ -17,7 +17,9 @@ namespace UniNote.WebClient
         public static void Main(string[] args)
         {
             Logger.LogInfo("Program", "Program is starting");
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+            
+            host.Run();
             //WebSetup.StartApp(args);
         }
         private static string[] ScanBack(string dlldir)

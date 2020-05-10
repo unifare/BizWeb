@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "UniNote.WebClient": {
+    "BizWeb": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

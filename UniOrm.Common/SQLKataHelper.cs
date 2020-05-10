@@ -6,11 +6,10 @@
  * description:	
  * ************************************
  */
-
+extern alias MySqlConnectorAlias;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.Sqlite;
-using MySql.Data.MySqlClient;
 using Npgsql;
 using SqlKata.Compilers;
 using SqlKata.Execution;
@@ -19,10 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-
-using PetaPoco.NetCore;
-
+using System.Text; 
+using PetaPoco.NetCore; 
 namespace UniOrm
 {
     public class SQLKataHelper
@@ -34,7 +31,7 @@ namespace UniOrm
 
         public static QueryFactory CreateSqlKata(string sqlcontypestr, string sqlconstring)
         {
-            IDbConnection connection = new MySqlConnection(sqlconstring);
+            IDbConnection connection = new MySqlConnectorAlias::MySql.Data.MySqlClient.MySqlConnection(sqlconstring);
             Compiler compiler = SQLKataHelper.MySqlCompiler;  //2
                                                               // var dttypesqlsugar = DbType.MySql;
             switch (sqlcontypestr)
@@ -70,7 +67,7 @@ namespace UniOrm
                     compiler = SQLKataHelper.SqliteCompiler;
                     break;
                 case 0:
-                     connection = new  MySqlConnection(sqlconstring);
+                     connection = new MySql.Data.MySqlClient.MySqlConnection(sqlconstring);
                      compiler = SQLKataHelper.MySqlCompiler;  //2
                     break;
                 case 4:
@@ -87,7 +84,7 @@ namespace UniOrm
     { 
         public static Database CreatePeta(string sqlcontypestr, string sqlconstring)
         {
-            IDbConnection connection = new MySqlConnection(sqlconstring);
+            IDbConnection connection = new MySqlConnectorAlias::MySql.Data.MySqlClient.MySqlConnection(sqlconstring);
      
                                                               // var dttypesqlsugar = DbType.MySql;
             switch (sqlcontypestr)
@@ -120,7 +117,7 @@ namespace UniOrm
                     connection = new SqliteConnection(sqlconstring); 
                     break;
                 case 0:
-                    connection = new MySqlConnection(sqlconstring); 
+                    connection = new MySqlConnectorAlias::MySql.Data.MySqlClient.MySqlConnection(sqlconstring); 
                     break;
                 case 4:
                     connection = new NpgsqlConnection(sqlconstring); 

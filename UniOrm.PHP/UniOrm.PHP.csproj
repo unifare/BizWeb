@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Peachpie.App" Version="0.9.950" />
     <PackageReference Include="Peachpie.AspNetCore.Web" Version="0.9.950" />
-    <PackageReference Include="Peachpie.CodeAnalysis" Version="0.9.950" />
+    <PackageReference Include="Peachpie.CodeAnalysis" Version="0.9.950" Alias="PhpCodeAnalysis"   />
     <PackageReference Include="Peachpie.Library.Graphics" Version="0.9.950" />
     <PackageReference Include="Peachpie.Library.MsSql" Version="0.9.950" />
     <PackageReference Include="Peachpie.Library.Network" Version="0.9.950" />
@@ -20,5 +20,16 @@
     <PackageReference Include="Peachpie.Library.XmlDom" Version="0.9.950" />
     <PackageReference Include="Peachpie.NETCore.Web" Version="0.9.0-CI01110" />
   </ItemGroup>
+  <Target Name="AddPackageAliases" BeforeTargets="ResolveReferences" Outputs="%(PackageReference.Identity)">
+    <PropertyGroup>
+      <AliasPackageReference>@(PackageReference->'%(Identity)')</AliasPackageReference>
+      <AliasName>@(PackageReference->'%(Alias)')</AliasName>
+    </PropertyGroup>
 
+    <ItemGroup>
+      <ReferencePath Condition="'%(FileName)'=='$(AliasPackageReference)'">
+        <Aliases>$(AliasName)</Aliases>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
 </Project>

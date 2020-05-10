@@ -5,24 +5,36 @@ using UniOrm.Application;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
+using UniOrm.Startup.Web.DynamicController;
+
 namespace UniOrm.Startup.Web
 {
     public class GlobalActionFilter : IAsyncActionFilter
     {
+        public static bool isBuild = false;
         private IHttpContextAccessor _accessor;
         IGodWorker TypeMaker;
-        public GlobalActionFilter(IGodWorker typeMaker, IHttpContextAccessor _accessor)
+        private readonly DynamicActionProvider _actionProvider;
+        private readonly DynamicChangeTokenProvider _dynamicChangeTokenProvider;
+        public GlobalActionFilter(IGodWorker typeMaker, IHttpContextAccessor _accessor, DynamicActionProvider dynamicActionProvider, DynamicChangeTokenProvider dynamicChangeToken)
         {
             TypeMaker = typeMaker;
+            _actionProvider = dynamicActionProvider;
+            _dynamicChangeTokenProvider = dynamicChangeToken;
         }
          
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+           
             //var factory = context.HttpContext.RequestServices.GetService<ILoggerFactory>();
             // var s = context.HttpContext.Request.Path;
             //var logger = factory.CreateLogger<GlobalActionFilter>(); 
-           await ExcuteFilter(context,next); 
-            // logger.LogWarning("全局ActionFilter执行之后");
+            await ExcuteFilter(context,next);
+            if (!isBuild)
+            {
+                WebSetup.BuildAllDynamicActions(_actionProvider, _dynamicChangeTokenProvider);
+                isBuild = true;
+            }
         }
 
         //public async Task OnActionExecutingAsync(ActionExecutingContext context)

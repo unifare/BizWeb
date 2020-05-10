@@ -1,0 +1,780 @@
+﻿@{
+    Layout = "../Shared/_KindEditorVueLayout.cshtml";
+    ViewData["Title"] = "文件管理";
+}
+
+@section css{
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+
+        table.tb_table {
+            border: 1px solid #ccc;
+            padding: 0;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+            table.tb_table td,
+            table.tb_table th {
+                height: 30px;
+                border: 1px solid #ccc;
+                background: #fff;
+                font-size: 15px;
+                padding: 3px 3px 3px 8px;
+            }
+
+        table th:first-child {
+            width: 30px;
+        }
+
+        .tb_container,
+        .st {
+            width: 1000px;
+            margin: 10px auto 0;
+            font-size: 13px;
+            font-family: 'Microsoft YaHei'
+        }
+
+            .tb_container .search {
+                font-size: 15px;
+                padding: 4px;
+            }
+
+            .tb_container .add {
+                padding: 5px 15px;
+            }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 6;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+            .overlay td:first-child {
+                width: 66px;
+            }
+
+            .overlay .con {
+                position: absolute;
+                width: 1200px;
+                min-height: 300px;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+                /*margin-top: -150px;*/
+                padding: 20px;
+            }
+    </style>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .vue-defualtpager {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+            .vue-defualtpager li {
+                list-style: none;
+            }
+
+            .vue-defualtpager a {
+                border: 1px solid #ddd;
+                text-decoration: none;
+                float: left;
+                padding: 6px 12px;
+                color: #337ab7;
+                cursor: pointer
+            }
+
+                .vue-defualtpager a:hover {
+                    background-color: #eee;
+                }
+
+                .vue-defualtpager a .banclick {
+                    cursor: not-allowed;
+                }
+
+            .vue-defualtpager .active a {
+                color: #fff;
+                cursor: default;
+                background-color: #337ab7;
+                border-color: #337ab7;
+            }
+
+            .vue-defualtpager i {
+                font-style: normal;
+                color: #d44950;
+                margin: 0px 4px;
+                font-size: 12px;
+            }
+
+            .vue-defualtpager .jumpbox .jumppage {
+                border: 1px solid #ddd;
+                margin-left: 40px;
+                height: 33px;
+                width: 40px;
+                float: left;
+            }
+
+            .vue-defualtpager .jumpbox .jumpbtn {
+                cursor: pointer;
+                margin-left: 10px;
+            }
+
+                .vue-defualtpager .jumpbox .jumpbtn:active {
+                    color: #337ab7;
+                }
+    </style>
+}
+
+<div class="tb_container" id="app">
+    <h1>当前目录：{{curentdirPath}}</h1>
+    <div>
+        <input type="text" placeholder="search" @@input="search" list="cars" class="search">
+        <datalist id="cars">
+            <option v-for="item in searchlist" :value="item"></option>
+        </datalist>
+        <input type="button" class="add" @@click="addfile" value="新增文件" />  
+        <input type="button" class="add" @@click="addDir" value="新增文件夹"> <a class="btn" @@click="gotoTemplate">模板目录</a>
+    </div>
+    <div>
+        <table class="tb_table">
+            <tr>
+                <td style="width:50px;"><input type="checkbox" @@click="checkAll" v-model="totalBoxcChecked"></td>
+                <th style="width:50px;">id</th>
+                <th style="width:50%">文件名</th>
+                <th>是否目录</th>
+                <th>是否文本</th>
+                <th>操作</th>
+            </tr>
+            <tr v-cloak v-for="(item, index) of slist">
+                <td><input type="checkbox" v-model="checkedList" :value="item.id"></td>
+                <td>{{item.Id}}</td>
+                <td>
+                    <a v-if="!item.IsDirectry&&item.IsTextFile" href="javascript:;" @@click="EditFile(item,index)">{{item.Name}}</a>
+                    <a v-else href="javascript:;" @@click="enterDir(item)" style="color:burlywood">
+                        {{item.Name}}
+                    </a>
+                </td>
+                <td>{{item.IsDirectry}}</td>
+                <td>{{item.IsTextFile}}</td>
+                <td>
+                    <a v-if="item.IsZipFile==true" href="javascript:;" @@click="openZipDirDlg(item)">解压|</a>
+                    <a v-if="item.IsDirectry==true||item.IsTextFile==false" href="javascript:;" @@click="openModifyDirDlg(index,item)">修改|</a>
+                    <a href="javascript:;" @@click="del(index)">删除</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="page-break" class="vue-defualtpager">
+        <ul>
+            <li v-if="pageCurrent>1">
+                <a v-on:click="pageCurrent--,pageClick()">上一页</a>
+            </li>
+            <li v-if="pageCurrent==1">
+                <a class="banclick">上一页</a>
+            </li>
+            <li v-for="item in indexs" v-bind:class="{'active':pageCurrent==item}">
+                <a v-on:click="btnClick(item), pageClick()">{{item}}</a>
+            </li>
+            <li v-if="pageCurrent!=pageAll">
+                <a v-on:click="pageCurrent++,pageClick()">下一页</a>
+            </li>
+            <li v-if="pageCurrent==pageAll">
+                <a class="banclick">下一页</a>
+            </li>
+            <li><a>共<i>{{pageAll}}</i>页</a></li>
+            <li class="jumpbox">
+                <input type="number" class="jumppage" />
+                <a class="jumpbtn" v-on:click="pageSkip()">跳转</a>
+            </li>
+        </ul>
+    </div>
+    @*<script id="container" name="content" type="text/plain" style="display:none;">
+        </script>*@
+    <!----//子组件调用父级方法  v-on:子组件自定义事件名（必须小写，我。。。。。）="父级的方法名（可以大小写）" 还要在子组件的scripts里的方法里写  cancelDlg() {
+         v-on:subDlgSave="parentSave"这个不会成功。因为  subDlgSave 有大写。坑啊。。。
+                    this.$emit('subchange');  //发送 子组件自定义事件到上面绑定的 父级的方法  ，，，，，太绕了
+                },  麻烦啊 -->
+    <dlgmodel :s_action="action" :sublist='selectedlist' :s_curentdir_path="curentdirPath" :subisactive="isActive" v-cloak v-on:subchange="changeOverlay" @@comsave="parentSave" v-on:subDlgSave="parentSave"></dlgmodel>
+    <dlg_unzip_model :s_curentdir_path="curentdirPath"
+                     :isshow_unzip_model="isShowUnzipdlg"
+                     :filepath="selectedlist.RelatedPath"
+                     :unzipdirpath="selectedlist.RelatedPath"
+                     v-cloak></dlg_unzip_model>
+
+
+
+</div>
+
+
+
+@section Scripts{
+
+    <script type="text/x-template" id="modify_model">
+        <div class="overlay" v-show="subisactive">
+            <div class="con">
+                <h2 class="title">新增 | 修改</h2>
+                <div class="content">
+                    <table class="tb_table">
+                        <tr>
+                            <td>当前目录</td>
+                            <td>{{s_curentdir_path}} </td>
+                        </tr>
+                        <tr>
+                            <td>文件(夹)名 </td>
+                            <td><input type="text" style="width:500px;" v-model="modifylist.Name"><span v-if="s_action=='add'"><input type="checkbox" @@click="changevalue(modifylist)" v-model="modifylist.IsDirectry" value="0">是否文件夹<input type="checkbox" @@click="changevalue(modifylist)" v-model="modifylist.IsTextFile" value="0">是否文本</span></td>
+                        </tr>
+                        <tr>
+                            <td>文件内容</td>
+                            <td id="txt_contentid">
+                                <pre id="txtActiveInfo" class="ace_editor" style="min-height:400px"><textarea id="tesw" class="ace_text-input">
+#include <cstdio>
+int main(){
+    int n,m;
+    scanf("%d %d",&n,&m);
+    printf("%d",n+m);
+    return 0;
+}
+        </textarea>
+</pre>
+                            </td>
+                        </tr>
+                        <tr v-if="s_action=='add'">
+                            <td>上传</td>
+                            <td>
+                                <input type="file" id="dllfile" name="dllfile" /> <input type="button" value="uploader" v-on:click="uploaderdll()" />
+                            </td>
+                        </tr>
+                    </table>
+                    <p>
+                        <input type="button" class="btn btn-default" @@click="cancelDlg" value="取消">
+                        <input type="button" class="btn btn-primary" @@click="component_save" value="保存">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="unzip_model">
+        <div class="overlay" v-show="isshow_unzip_model">
+            <div class="con">
+                <h2 class="title">解压</h2>
+                <div class="content">
+                    <table class="tb_table">
+                        <tr>
+                            <td>文件路径</td>
+                            <td>{{filepath}}</td>
+                        </tr>
+                        <tr>
+                            <td>解压在目录 </td>
+                            <td>
+                                <input type="text" id="unzipDir" v-model="outputdir" style="width:600px;">
+                                <input type="button" class="btn btn-primary" @@click="excute_unzip" value="执行">
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <p>
+                        <input type="button" class="btn btn-default" @@click="cancelDlg" value="取消">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+        var ue;
+        Vue.component('dlgmodel', {
+            props: ['sublist', 'subisactive',"s_curentdir_path" ,"s_action" ],
+            template: '#modify_model',
+            //template: `<div> sdlkfsdf'
+            //    </div>`,
+            computed: {
+                modifylist() {
+                    return this.sublist;
+                }
+            },
+            methods: {
+                  uploaderdll () {
+                    var formData = new FormData();
+                    var allifels = document.getElementById("dllfile").files;
+                    var dd = allifels.length;
+                    for (var i =0; i < dd; i++) {
+                        formData.append("dllfile" + i, allifels[i]);
+                    }
+                    //formData.append("dirName", this.curentdirPath);
+                    $.ajax({
+                        url: "UploadFile?dirName="+encodeURIComponent(this.s_curentdir_path),
+                        type: "POST",
+                        data: formData,
+                        /**
+                        *必须false才会自动加上正确的Content-Type
+                        */
+                        contentType: false,
+                        /**
+                        * 必须false才会避开jQuery对 formdata 的默认处理
+                        * XMLHttpRequest会对 formdata 进行正确的处理
+                        */
+                        processData: false,
+                        success: function (data) {
+                            if (data.isok == true) {
+                                alert("上传成功！");
+                            }
+
+                        },
+                        error: function () {
+                            alert("上传失败！");
+                        }
+                    });
+                },
+                testadd() {
+                    UE.getEditor('container').setContent("lsdf<sdklfjsld>slkdfjsldkfjsd)");
+                },
+                cancelDlg() {
+                    //$emit意思是发送自己的事件到 父控件 ，这里就是 v-cloak v-on:subchange="changeOverlay"中的changeOverlay，changeOverlay是父级的方法名
+                    this.$emit('subchange');
+                },
+                component_save() {
+                    //alert(UE.getEditor('container').getContent());
+                    this.$emit('comsave',this.sublist);  ///comsave 必须小写 必须小写 必须小写  必须小写 必须小写 必须小写 必须小写 必须小写
+                },
+                changevalue(el) {
+                    if (el.IsTextFile) {
+
+                    }
+                }
+            }
+        });
+          Vue.component('dlg_unzip_model', {
+            props: [  'isshow_unzip_model',"s_curentdir_path" ,"filepath",    ],
+            template: '#unzip_model',
+            //template: `<div> sdlkfsdf'
+            //    </div>`,
+            computed: {
+                outputdir() {
+                    var path = this.filepath;
+                    if (path !=undefined ) {
+                        return path.substr(0,path.lastIndexOf('.'));
+                    }
+                    return "";
+                }
+
+            },
+            methods: {
+                excute_unzip() {
+
+                    var unzipDir = $("#unzipDir").val();
+                    var data = { refilepath:this.filepath, distDir:unzipDir }
+                      $.post("UnzipFile", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                alert("解压成功")
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                        });
+
+                },
+
+                cancelDlg() {
+                    //$emit意思是发送自己的事件到 父控件 ，这里就是 v-cloak v-on:subchange="changeOverlay"中的changeOverlay，changeOverlay是父级的方法名
+                    this.$emit('subchange');
+                }
+
+            }
+        });
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isActive: false,
+                isShowUnzipdlg:false,
+                curentdirPath: "/",
+                selected: -1,
+                action: "file",
+                selectedlist: {},
+                slist: [],
+                searchlist: [],
+                pageCurrent: 1,
+                pageAll: 20,
+                totalBoxcChecked: false, //是否全选
+                checkedList: [], //双向数据绑定的数组，我是用的id
+                data: []
+            },
+            created() {
+                this.getfiles("/");
+            },
+            mounted() { //mounted 是vue生命周期里 渲染完组件后的事件
+                initCode("txtActiveInfo");
+            },
+            computed: {
+                indexs() {
+                    var left = 1;
+                    var right = this.pageAll;
+                    var arr = [];
+                    if (this.pageAll >= 7) {
+                        if (this.pageCurrent > 4 && this.pageCurrent < this.pageAll - 3) {
+                            left = this.pageCurrent - 3;
+                            right = this.pageCurrent + 3;
+                        } else if (this.pageCurrent <= 4) {
+                            left = 1;
+                            right = 7;
+                        } else {
+                            left = this.pageAll - 6;
+                            right = this.pageAll;
+                        }
+                    }
+                    while (left <= right) {
+                        arr.push(left);
+                        left++;
+                    }
+                    return arr;
+                }
+            },
+            methods: {
+                gotoTemplate() {
+                    this.curentdirPath = "config/UploadPage";
+                    this.getfiles(this.curentdirPath);
+                },
+                enterDir(el) {
+                    this.curentdirPath = el.RelatedPath;
+                    this.getfiles(el.RelatedPath);
+                },
+                checkAll() {
+                    if (this.totalBoxcChecked) {
+                        this.checkedList = [];
+                    } else {
+                        this.data.forEach((item) => {
+                            if (this.checkedList.indexOf(item.id) == -1) {
+                                this.checkedList.push(item.id)
+                            }
+                        })
+                    }
+                },
+                btnClick(num) {
+                    if (num != this.pageCurrent) {
+                        this.pageCurrent = num;
+                    }
+                },
+                pageClick() {
+                    console.log('现在是' + this.pageCurrent + '页')
+                },
+                pageSkip() {
+                    var maxPage = this.pageAll;
+                    var skipPage = Number(document.getElementsByClassName("jumppage")[0].value);
+                    console.log(typeof skipPage);
+                    if (!skipPage) {
+                        alert("请输入跳转页码");
+                        return;
+                    } else if (skipPage < 1 || skipPage > maxPage) {
+                        alert("您输入的页码超过页数范围了！");
+                        return;
+                    } else {
+                        //this.pageCurrent=skipPage;
+                        this.btnClick(skipPage);
+                        this.pageClick();
+                    }
+                },
+                EditFile(el,index) {
+                    this.selectedlist = el;
+                    this.action = "file"
+                    this.selected = index;
+                    app.changeOverlay();
+                    //$("#txtActiveInfo").show();
+
+                        $.get("GetFileContent?rePath=" + encodeURIComponent(el.RelatedPath)).done(function (jsonResult) {
+                            var con = jsonResult.content;
+
+                            editor.setValue(con);
+                            //setTimeout(function () {
+                            //    ue.execCommand('insertHtml', con);
+                            //    //ue.setContent(con);
+                            //}, 1000);
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            // console.log(e);
+                        });
+
+
+
+                },
+                // 修改数据
+                openModifyDirDlg(index, el) {
+                    this.action= "dir",
+                    this.selected = index;
+                    this.selectedlist = this.data[index];
+
+                    this.changeOverlay();
+                },
+                // 点击保存按钮
+                parentSave(arr) {
+                    if (this.action == "add") {
+                        if (arr.IsTextFile == true) {
+                            arr.IsDirectry = false;
+                             
+                            var fdirname = app.curentdirPath;
+
+                            var newtext = editor.getValue( ); //editor1.html(); //editor1.html(con);
+                            var data = {
+                                redir: fdirname,
+                                filepathname: this.selectedlist.Name, 
+                                context: newtext
+                            };
+
+                            $.post("CreateFile", data).done(function (jsonResult) {
+                                if (jsonResult.isok == true) {
+                                    Vue.set(app.data, app.selected, arr);
+                                    app.selected = -1;
+                                }
+
+                            }).fail(function (e) {
+                                console.log(e);
+                            }).always(function (e) {
+                                console.log(e);
+                            });
+                        }
+                        if (arr.IsDirectry == true) {
+                            var fdirname = app.curentdirPath +'/'+ this.selectedlist.Name;
+                            var data = {
+                                redir: fdirname
+                            };
+                            $.post("CreateDir", data).done(function (jsonResult) {
+                                if (jsonResult.isok == true) {
+                                    Vue.set(app.data, app.selected, arr);
+                                    app.selected = -1;
+                                }
+
+                            }).fail(function (e) {
+                              
+                            }).always(function (e) { 
+                                app.getfiles(app.curentdirPath);
+                            });
+                        }
+
+
+
+                    }
+                    else if (this.action == "file"){
+                        var fname = this.curentdirPath;// this.selectedlist.RelatedPath;
+
+                        var newtext = editor.getValue();//.html( ); //editor1.html(con);
+                        var data = {
+                            path: fname,
+                            newfilename: this.selectedlist.Name,
+                            isdir: this.selectedlist.IsDirectry,
+                            istext:this. selectedlist.IsTextFile,
+                            context: newtext
+                        };
+                         
+                        $.post("SaveFile", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                Vue.set(app.data, app.selected, arr);
+                                app.selected = -1;
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.getfiles(app.curentdirPath);
+                        });
+
+                    }
+                    else if (this.action == "dir") {
+                          var fname = this.selectedlist.RelatedPath;
+
+                          var data =   { path: fname, newfilename:this.selectedlist.Name };
+                          $.post("RenameDir", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                Vue.set(app.data, app.selected, arr);
+                                app.selected = -1;
+                                 app.setSlist(app.data);
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+                    }
+
+                    //} else {
+                    //    this.list.push(arr);
+                    //}
+
+                   // this.setSlist(this.data);
+                    this.changeOverlay();
+                },
+                add: function () {
+                    //this.selectedlist = {
+                    //    username: '',
+                    //    email: '',
+                    //    sex: '男',
+                    //    province: '北京市',
+                    //    hobby: []
+                    //};
+                    //this.curentdirPath = "/";
+                    this.action="add"
+                    this.isActive = true;
+                },
+                addfile: function () {
+                    this.selectedlist = {
+                        IsTextFile: true,
+                        IsDirectry:false  
+                    };
+                    //editor1.readonly(false);
+                    editor.setValue(con); //editor1.html(''); 
+                    this.isActive = true;
+                },
+                addDir: function () {
+                    this.selectedlist = {
+                        IsTextFile: false,
+                        IsDirectry: true
+                    };
+                    //$("#txtActiveInfo").hide();
+                    
+                    this.action = "add"
+                    this.isActive = true;
+                },
+                openZipDirDlg(el) {
+                    this.selectedlist = el;
+                    this.isShowUnzipdlg = true;
+                },
+                // delete list in index location
+                del(index) {
+                    var model =  app.data[index];
+
+                    var data = { path: model.RelatedPath ,isdir:model.IsDirectry };
+                    if (confirm("Is delete file or directory?")) {
+                        $.post("DelFileOrDir", data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                app.data.splice(index, 1);
+                                app.setSlist(app.data);
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            console.log(e);
+                        });
+
+                    }
+
+
+                },
+                changeOverlay() {
+                    if (this.action == "add") {
+                        this.selected = -1;
+                    }
+
+                    this.isActive = !this.isActive;
+                    this.getfiles(app.curentdirPath);
+                },
+                // 获取需要渲染到页面中的数据
+                setSlist(arr) {
+                    this.slist = JSON.parse(JSON.stringify(arr));
+                },
+                getfiles(dir) {
+
+                    $.get("GetAllFiles?dir=" + dir).done(function (jsonResult) {
+                        app.data = jsonResult.list;
+                        app.setSlist(app.data);
+                        app.pageAll = 1;
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                        console.log(e);
+                    });
+                },
+                // 搜索
+                search(e) {
+                    var v = e.target.value,
+                        self = this;
+                    self.searchlist = [];
+                    if (v) {
+                        var ss = [];
+                        // 过滤需要的数据
+                        this.data.forEach(function (item) {
+                            if (item.username.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.username) == -1) {
+                                    self.searchlist.push(item.username);
+                                }
+                                ss.push(item);
+                            } else if (item.email.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.email) == -1) {
+                                    self.searchlist.push(item.email);
+                                }
+                                ss.push(item);
+                            }
+                        });
+                        this.setSlist(ss); // 将过滤后的数据给了slist
+                    } else {
+                        // 没有搜索内容，则展示全部数据
+                        this.setSlist(this.data);
+                    }
+                }
+            },
+            watch: {
+                pageCurrent: function (newValue, oldValue) {
+                    console.log(arguments);
+                },
+                checkedList() {
+                    if (this.checkedList.length == this.data.length) {
+                        this.totalBoxcChecked = true;
+                    } else {
+                        this.totalBoxcChecked = false;
+                    }
+                }
+            }
+        })
+        //ue = UE.getEditor('container', {
+        //    initialFrameHeight: 250
+    KindEditor.options.filterMode = false;
+    var editor1;
+        var editor;
+
+        function initCode(id,lang) {
+            //初始化对象
+            editor = ace.edit(id);
+
+            //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+            theme = "clouds"
+            language = "c_cpp"
+            editor.setTheme("ace/theme/" + theme);
+            editor.session.setMode("ace/mode/" + language);
+
+            //字体大小
+            editor.setFontSize(18);
+
+            //设置只读（true时只读，用于展示代码）
+            editor.setReadOnly(false);
+
+            //自动换行,设置为off关闭
+            editor.setOption("wrap", "free")
+
+            //启用提示菜单
+            ace.require("ace/ext/language_tools");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true
+            });
+        }
+    </script>
+}

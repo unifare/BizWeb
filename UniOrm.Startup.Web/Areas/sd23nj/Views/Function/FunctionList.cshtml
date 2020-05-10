@@ -1,0 +1,665 @@
+﻿@{
+    Layout = "../Shared/_KindEditorVueLayout.cshtml";
+    ViewData["Title"] = "文件管理";
+}
+
+@section css{
+    <style type="text/css">
+        [v-cloak] {
+            display: none
+        }
+        table tr td {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            -moz-text-overflow: ellipsis;
+            -webkit-text-overflow: ellipsis;
+        }
+
+        #datatb td {
+            max-width: 100px;
+        }
+        table.tb_table {
+            border: 1px solid #ccc;
+            padding: 0;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+            table.tb_table td,
+            table.tb_table th {
+                height: 30px;
+                border: 1px solid #ccc;
+                background: #fff;
+                font-size: 15px;
+                padding: 3px 3px 3px 8px;
+            }
+
+        table th:first-child {
+            width: 30px;
+        }
+
+        .tb_container,
+        .st {
+            width: 1000px;
+            margin: 10px auto 0;
+            font-size: 13px;
+            font-family: 'Microsoft YaHei'
+        }
+
+            .tb_container .search {
+                font-size: 15px;
+                padding: 4px;
+            }
+
+            .tb_container .add {
+                padding: 5px 15px;
+            }
+        .showoverlay {
+            display: block !important;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 6;
+            background: rgba(0, 0, 0, 0.7);
+        }
+            .overlay td:first-child {
+                width: 66px;
+            }
+
+            .overlay .con {
+                position: absolute;
+                width: 1200px;
+                min-height: 300px;
+                background: #fff;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+                /*margin-top: -150px;*/
+                padding: 20px;
+            }
+    </style>
+
+    <style>
+        /*分页*/
+        .page-bar {
+            margin: 40px auto;
+            margin-top: 150px;
+        }
+
+        ul, li {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        li {
+            list-style: none
+        }
+
+        .page-bar li:first-child > a {
+            margin-left: 0px
+        }
+
+        .page-bar a {
+            border: 1px solid #ddd;
+            text-decoration: none;
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #5D6062;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+            .page-bar a:hover {
+                background-color: #eee;
+            }
+
+            .page-bar a.banclick {
+                cursor: not-allowed;
+            }
+
+        .page-bar .active a {
+            color: #fff;
+            cursor: default;
+            background-color: #E96463;
+            border-color: #E96463;
+        }
+
+        .page-bar i {
+            font-style: normal;
+            color: #d44950;
+            margin: 0px 4px;
+            font-size: 12px;
+        }
+    </style>
+}
+
+<div class="tb_container" id="app">
+    <div>
+        <input type="text" placeholder="search" @@change="search"   v-model="searchkey" list="cars" class="search">
+
+        <input type="button" class="add" @@click="addfile" value="新增页面源码" />
+    </div>
+    <div>
+        <table class="tb_table">
+            <tr>
+                <td style="width:50px;"><input type="checkbox"></td>
+                <th style="width:50px;">id</th>
+                <th>名称</th>
+                <th > 备注</th>
+                <th style="width:50%">代码</th>
+                <th>操作</th>
+            </tr>
+            <template v-for="(item, index) in dataList ">
+                <tr>
+                    <td><input type="checkbox" :value="item.id"></td>
+                    <td>{{item.Id}}</td>
+                    <td>
+                        {{item.FunctionName}}
+                    </td>
+                    <td>
+                        {{item.FunctionMemo}}
+                    </td>
+                    <td>{{item.FunctionCode}}</td>
+                    <td>
+                        <a href="javascript:;" @@click="showedit(index,item)">修改</a>
+                        <a href="javascript:;" @@click="delitem(item.Id)">删除</a>
+                    </td>
+                </tr>
+            </template>
+
+        </table>
+    </div>
+    <div id="page-break" class="vue-defualtpager">
+        <!--分页-->
+        <div class="page-bar">
+            <ul>
+                <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+                <li v-if="cur==1"><a class="banclick">上一页</a></li>
+                <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+                    <a v-on:click="btnClick(index)">{{ index }}</a>
+                </li>
+                <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+                <li v-if="cur == all"><a class="banclick">下一页</a></li>
+                <li><a>共<i>{{all}}</i>页</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="overlay" v-bind:class="{showoverlay:isshowDlg}">
+        <div class="con">
+            <div>
+                <h2 class="title">新增 | 修改</h2>
+                <div>
+                    当前名称 :     {{editmodel.Name}}
+                </div>
+                <div class="content" style="max-height:500px; overflow:auto;">
+                    <table class="tb_table table table-bordered">
+                        <tr>
+                            <td>名称</td>
+                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.FunctionName" /></td>
+
+
+                        </tr>
+                        <tr>
+                            <td>备注</td>
+                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.FunctionMemo" /></td>
+
+
+                        </tr>
+                        <tr>
+                            <td>引用Dll</td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.ReferanceList" /></td>
+
+
+                        </tr>
+                        <tr>
+                            <td>命名空间</td>
+                            <td>
+                                <input type="text" style="width:360px;" class="form-control" v-model="editmodel.FunctionNameSpace" />
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                代码
+                            </td>
+
+                            <td>
+                                <table >
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                <pre id="textcode" class="ace_editor" style=" width:800px; min-height:400px">  
+                                                    <textarea   v-model="editmodel.FunctionCode"  class="ace_text-input" ></textarea>
+                                                </pre>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="height:460px; overflow:scroll">
+                                                <p> Uni Url2</p>
+                                                <p> Uni Form2</p>
+                                                <p> string Url(string key) </p>
+                                                <p> string UrlQuery(string key)</p>
+                                                <p> string GetForm(string key)</p>
+                                                <p>
+                                                    dynamic FormToOjbect(  )
+                                                </p>
+
+                                                <p>
+                                                    HttpRequest Request
+                                                </p>
+                                                <p>
+                                                    HttpResponse Respone
+                                                </p>
+                                                <p>
+                                                    void SetCookies(string key, string value, int minutes = 30)
+                                                </p>
+                                                <p>
+                                                    string GetCookies(string key)
+                                                </p>
+                                                <p>
+                                                    void DeleteCookies(string key)
+                                                </p>
+                                                <p>
+                                                    Dictionary&lt;string,object&gt; FormToDic( string tablename)
+
+                                                </p>
+                                                <p>
+                                                    Dictionary&lt;string, object&gt; QueryToDic(string tableKey)
+                                                </p>
+                                                <p>
+                                                    void  Auth()
+                                                </p>
+                                                <p>
+                                                    bool IsAuth()
+                                                </p>
+                                                <p>
+                                                    object ReTrueJson(object obj)
+                                                </p>
+                                                <p>
+                                                    object ReFalseJson(object obj)
+                                                </p>
+                                                <p>
+                                                    int InsertQuery(string tableKey)
+                                                </p>
+                                                <p>
+                                                    string Session(string key)
+                                                </p>
+                                                <p>
+                                                    void Session(string key, string value)
+                                                </p>
+
+                                                <p>bool HasPro(dynamic data, string propertyname)</p>
+                                                <p>
+                                                    string V(string key)
+                                                </p>
+                                                <p>
+                                                    string L(string key)
+                                                </p>
+                                                <p>
+                                                    string L(string key, int lang)
+                                                </p>
+                                                <p>
+                                                    string L(string key, string langName)
+                                                </p>
+                                                <p>
+                                                    string Include(string RelativefilePath)
+                                                </p>
+                                                <p>
+
+                                                    dynamic  NewObj()
+
+                                                </p>
+                                                <p>
+
+                                                    List&lt;dynamic&gt; GetData(string sql, object args)
+
+                                                </p>
+                                                <p>
+
+                                                    Sql Sql( string sql , params object[] args)
+
+                                                </p>
+                                                <p>
+
+                                                    Query DataObj( string tableName ,
+                                                    string orderby = null,
+                                                    List&lt;dynamic&gt;
+                                                    oargs = null,
+                                                    object where = null )
+
+                                                </p>
+                                                <p>
+
+                                                    Query Data(string tableName,
+                                                    string orderby = null,
+                                                    List&lt;dynamic&gt;
+                                                    oargs = null,
+                                                    params object[] where
+                                                    )
+
+                                                </p>
+                                                <p>
+
+                                                    Query Data(string tableName,
+                                                    string orderby = null,
+                                                    List&lt;dynamic&gt;
+                                                    oargs = null,
+                                                    params object[] where
+                                                    )
+
+                                                </p>
+                                                <p>
+
+                                                    Query Data(string tableName,
+                                                    string orderby = null,
+                                                    List&lt;dynamic&gt;
+                                                    oargs = null,
+                                                    params object[] where
+                                                    )
+
+                                                </p>
+                                                <p>
+
+                                                    Db
+
+                                                </p>
+                                                <p>
+
+                                                    Kata
+
+                                                </p>
+                                                <p>
+
+                                                    Form
+
+                                                </p>
+                                                <p>
+
+                                                    Form
+
+                                                </p>
+
+                                                <p>
+                                                    int Insert(string tablenmae,object inserObject)
+                                                </p>
+                                                <p>
+                                                    IQueryCollection Query
+                                                </p>
+                                                <p>
+                                                    dynamic R(string key)
+                                                </p>
+                                                <p>
+                                                    Rand(int min, int max)
+                                                </p>
+                                                <p>
+                                                    object F(string funcName,object arags)
+                                                </p>
+                                                <p>
+                                                    Image ImageFromFile(string relativePath)
+                                                </p>
+                                                <p>
+                                                    object R2I(object DynaObject)
+                                                </p>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            
+                            </td>
+
+
+                        </tr>
+
+                    </table>
+
+                </div>
+            </div>
+            <p>
+                <input type="button" class="btn btn-default" @@click="cancldlg" value="取消">
+                <input type="button" class="btn btn-primary" @@click="savedlg" value="保存">
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+     
+    <script type="text/javascript">
+        var ue;
+        var editor1;
+        var app = new Vue({
+            el: '#app',
+            data: {
+                ///分页 start
+                all: 1, //总页数
+                cur: 1,//当前页码
+                totalPage: 5,//当前条数
+                pagesize:30,
+                ///分页 end
+
+                searchkey:'',
+                action:"add",
+                isshowDlg: false,
+                editmodel: { FunctionName: '', FunctionCode: '', Id: 0, NnameSpaces: '', referencelist:'' ,FunctionMemo:'' },
+                emptyitem: { FunctionName: '', FunctionCode: '', Id: 0, NnameSpaces: '', referencelist: '', FunctionMemo:'' },
+                dataList: [],
+                dataList_copy: []
+            },
+            created() {
+                this.Init( );
+            },
+            mounted() { //mounted 是vue生命周期里 渲染完组件后的事件
+            
+            },
+            computed: {
+                //分页
+                indexs: function () {
+                    var left = 1;
+                    var right = this.all;
+                    var ar = [];
+                    if (this.all >= 5) {
+                        if (this.cur > 3 && this.cur < this.all - 2) {
+                            left = this.cur - 2
+                            right = this.cur + 2
+                        } else {
+                            if (this.cur <= 3) {
+                                left = 1
+                                right = 5
+                            } else {
+                                right = this.all
+                                left = this.all - 4
+                            }
+                        }
+                    }
+                    while (left <= right) {
+                        ar.push(left)
+                        left++
+                    }
+                    return ar
+                }
+            },
+            methods: {
+                 
+                //分页start
+                btnClick: function (data) {//页码点击事件
+                    if (data != this.cur) {
+                        this.cur = data
+                    }
+                    //根据点击页数请求数据
+                    this.Init();
+                },
+                pageClick: function () { 
+                    this.Init();
+                },
+                //分页 end
+
+                delitem(id) {
+                    if (!confirm("is Delete Item:" + id)) {
+                        return false;
+                    }
+                    var data = { Id: id }
+                    $.post("DelItem", data).done(function (jsonResult) {
+                        if (jsonResult.isok == true) { 
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                        app.Init();
+                    });
+                },
+
+                savedlg() {
+                    this.editmodel.FunctionCode = edit_textcode.getValue();
+                    if (this.action == "edit") {
+                        var data = {
+                            Id: this.editmodel.Id,
+                            FunctionCode: this.editmodel.FunctionCode,
+                            NnameSpaces: this.editmodel.NnameSpaces,
+                            ReferanceList: this.editmodel.ReferanceList,
+                            FunctionMemo: this.editmodel.FunctionMemo
+                        }
+                        $.post("UpdateItem",data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) { 
+                                app.isshowDlg = false;
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.Init();
+                        });
+                    }
+                    else if (this.action == "add") { 
+                        var data =  this.editmodel;
+                        $.post("AddItem",data).done(function (jsonResult) {
+                            if (jsonResult.isok == true) {
+                                app.isshowDlg = false;
+                            }
+
+                        }).fail(function (e) {
+                            console.log(e);
+                        }).always(function (e) {
+                            app.Init();
+                        });
+                    }
+                },
+                cancldlg() {
+                    this.isshowDlg = false;
+                },
+                addfile() {
+                    this.action = "add";
+                    this.isshowDlg = true;
+                    this.editmodel = this.emptyitem;
+                    edit_textcode.setValue('');
+                },
+                showedit(index,el) {
+                    this.action = "edit";
+                    this.isshowDlg = true;
+                    this.editmodel = el;
+                    if (this.editmodel.FunctionCode == null) {
+                        edit_textcode.setValue('');
+                    }
+                    else {
+                        edit_textcode.setValue(this.editmodel.FunctionCode );
+                    }
+                 
+                },
+                Init()
+                {
+                    $.get("GetAllLIst", { pageindex: this.cur, pagesize: this.pagesize }).done(function (jsonResult) {
+                        if (jsonResult.isok == true) {
+                            app.dataList = jsonResult.data; 
+                            app.dataList_copy = app.dataList;
+                            this.all = jsonResult.num;//总页数  
+                        }
+
+                    }).fail(function (e) {
+                        console.log(e);
+                    }).always(function (e) {
+                    });
+                },
+              
+                // 搜索
+                search(e) {
+                    if (this.searchkey == '') {
+                         app.dataList = app.dataList_copy;
+                    }
+                    else {
+                        app.dataList = this.searchCommon(app.dataList, app.dataList_copy, this.searchkey, ["FunctionName", "FunctionCode"]);
+                    }
+                },
+                       //通用字符搜索
+              searchCommon(displayList, totalList, searchkey, searchfields) {
+                    displayList =[];
+                    for(var i = 0; i<totalList.length; i++) {
+                        var co = totalList[i];
+                        for (var j = 0; j < searchfields.length; j++) {
+                            if (co[searchfields[j]] != null) {
+                                if (co[searchfields[j]].indexOf(searchkey) >= 0) {
+                                   
+                                    displayList.push(co);
+                                    break;
+                                }
+                            }
+                        }
+                  }
+                  return displayList;
+                }
+            },
+            watch: {
+              
+            }
+        }) 
+
+        function initCode(id) {
+            //初始化对象
+            var editor = ace.edit(id);
+
+            //设置风格和语言（更多风格和语言，请到github上相应目录查看）
+            theme = "clouds"
+            language = "c_cpp"
+            editor.setTheme("ace/theme/" + theme);
+            editor.session.setMode("ace/mode/" + language);
+
+            //字体大小
+            editor.setFontSize(18);
+
+            //设置只读（true时只读，用于展示代码）
+            editor.setReadOnly(false);
+
+            //自动换行,设置为off关闭
+            editor.setOption("wrap", "free")
+
+            //启用提示菜单
+            ace.require("ace/ext/language_tools");
+            editor.setOptions({
+                enableBasicAutocompletion: true,
+                enableSnippets: true,
+                enableLiveAutocompletion: true
+            });
+            return editor;
+        }
+        var edit_textcode = initCode("textcode"); 
+    </script>
+}

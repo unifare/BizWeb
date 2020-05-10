@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <MvcRazorCompileOnBuild>false</MvcRazorCompileOnBuild>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,12 +17,135 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Areas\sd23nj\Views\Admin\adminfooter.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Admin\AllCon.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Admin\console.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Admin\Index.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Admin\Signin.cshtml" />
+    <None Remove="Areas\sd23nj\Views\AFile\FileMng.cshtml" />
+    <None Remove="Areas\sd23nj\Views\AFile\GetUrl.cshtml" />
+    <None Remove="Areas\sd23nj\Views\DAction\DActionList.cshtml" />
+    <None Remove="Areas\sd23nj\Views\DbForm\DataMng.cshtml" />
+    <None Remove="Areas\sd23nj\Views\DbForm\Index.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Dictionary\Index.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Function\FunctionList.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Html\Index.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Langs\Index.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\xadminlayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_AdminBaseLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_AdminLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_AdminLayuiLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_AdminLayuiSimpaleLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_JqGridLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_KindEditorVueLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_Layout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_LayoutSimple.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_UEditorLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_UEditorVueLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\Shared\_VueLayout.cshtml" />
+    <None Remove="Areas\sd23nj\Views\_ViewImports.cshtml" />
+    <None Remove="Areas\sd23nj\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Areas\sd23nj\Views\AFile\GetUrl.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Areas\sd23nj\Views\Admin\adminfooter.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Admin\AllCon.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Admin\console.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Admin\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Admin\Signin.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\AFile\FileMng.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\DAction\DActionList.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\DbForm\DataMng.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\DbForm\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Dictionary\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Function\FunctionList.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Html\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Langs\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\xadminlayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_AdminBaseLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_AdminLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_AdminLayuiLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_AdminLayuiSimpaleLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_JqGridLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_KindEditorVueLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_Layout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_LayoutSimple.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_UEditorLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_UEditorVueLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\Shared\_VueLayout.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\sd23nj\Views\_ViewStart.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="IdentityModel" Version="4.2.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Lib.AspNetCore.Mvc.JqGrid.Core" Version="3.0.0" />
     <PackageReference Include="Lib.AspNetCore.Mvc.JqGrid.Helper" Version="3.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="MediatRExt" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
@@ -26,5 +155,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UniOrm.Application\UniOrm.Application.csproj" />
     <ProjectReference Include="..\UniOrm.PHP\UniOrm.PHP.csproj" />
-  </ItemGroup>  
+  </ItemGroup>
+
+ 
 </Project>

@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using SqlKata;
 using SqlKata.Execution;
 using SqlKata.Extensions;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 namespace UniOrm
 {
@@ -46,7 +47,7 @@ namespace UniOrm
         public static DefaultModuleManager ModuleManager { get; set; } = new DefaultModuleManager();
         public static List<LocalLangs> Langs = new List<LocalLangs>();
         private static AppConfig _AppConfig;
-
+        public const string AreaName = "sd23nj";
         private static string _appBaseDir = string.Empty;
         public static string AppBaseDir
         {
@@ -241,6 +242,7 @@ namespace UniOrm
                 m.ConfigureSite(app, env);
             }
         }
+    
         public static void ConfigureRouter(IRouteBuilder routeBuilder)
         {
             var allModules = ModuleManager.RegistedModules;
@@ -248,6 +250,12 @@ namespace UniOrm
             {
                 m.ConfigureRouter(routeBuilder);
             }
+        }
+        public static string ToSourceCode(AConMvcClass systemHtml)
+        {
+          return systemHtml.UsingNameSpance + "\r\n" + systemHtml.ClassAttrs + "\r\n" +
+                      " public partial class " + systemHtml.ClassName + "Controller\r\n{ \r\n" + systemHtml.ActionCode + "\r\n}";
+
         }
 
         public static List<dynamic> GetData(  string ssql, object  inParamters)

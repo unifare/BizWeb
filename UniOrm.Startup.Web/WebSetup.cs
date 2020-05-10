@@ -25,15 +25,15 @@ using NetCoreCMS.Framework.Core.App;
 using Microsoft.AspNetCore;
 using System.Threading;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using UniOrm.Common.Middlewares;
-
-using UEditor.Core;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using System.Reflection;
+using Microsoft.Extensions.DependencyInjection.Extensions; 
+using Microsoft.Extensions.Hosting; 
+using Microsoft.AspNetCore.Mvc.TagHelpers;  
 using Microsoft.OpenApi.Models;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using UniOrm.Startup.Web.DynamicController;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using UniOrm.Model;
 
 namespace UniOrm.Startup.Web
 {
@@ -83,6 +83,13 @@ namespace UniOrm.Startup.Web
             var builder = new ContainerBuilder();
             var tempcontainer = builder.Build();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<ICompiler, Compiler>()
+               .AddSingleton<DynamicActionProvider>()
+               .AddSingleton<DynamicChangeTokenProvider>()
+               .AddSingleton<IActionDescriptorProvider>(provider => provider.GetRequiredService<DynamicActionProvider>())
+               .AddSingleton<IActionDescriptorChangeProvider>(provider => provider.GetRequiredService<DynamicChangeTokenProvider>());
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -150,7 +157,7 @@ namespace UniOrm.Startup.Web
                 });
             }
 
-            SetupIdentity(services, appConfig, signingkey, backendfoldername, AuthorizeCookiesName, OdicCookiesName, identityserver4url, Identityserver4ApiResouceKey, idsr4_ClientId, idsr4_ClientSecret, OauthClientConfig_scopes, IsUsingIdentityserverClient, IsUsingIdentityserver4, IsUsingLocalIndentity);
+            SetupIdentity(services, appConfig, signingkey, backendfoldername, AuthorizeCookiesName, OdicCookiesName, identityserver4url, Identityserver4ApiResouceKey, idsr4_ClientId, idsr4_ClientSecret, OauthClientConfig_scopes, IsUsingIdentityserverClient, IsUsingIdentityserver4, IsUsingLocalIndentity, idsr4_ReponseType);
             if (isAllowCros)
             {
                 services.AddCors(options =>
@@ -181,6 +188,7 @@ namespace UniOrm.Startup.Web
                 if (IsUsingCmsGlobalRouterFilter)
                 {
                     o.Filters.Add<GlobalActionFilter>();
+                    o.Filters.Add<WorkAuthorzation>();
                 }
             })
             .AddRazorRuntimeCompilation()
@@ -227,11 +235,36 @@ namespace UniOrm.Startup.Web
 
             APP.ApplicationServices = services.BuildServiceProvider();
             APP.SetServiceProvider();
-
+            
             return we;
         }
 
-        private static void SetupIdentity(IServiceCollection services, AppConfig appConfig, string signingkey, string backendfoldername, string AuthorizeCookiesName, string OdicCookiesName, string identityserver4url, string Identityserver4ApiResouceKey, string idsr4_ClientId, string idsr4_ClientSecret, string OauthClientConfig_scopes, bool IsUsingIdentityserverClient, bool IsUsingIdentityserver4, bool IsUsingLocalIndentity)
+        public static void BuildAllDynamicActions(DynamicActionProvider dynamicActionProvider, DynamicChangeTokenProvider dynamicChangeToken)
+        {
+             HandelBuildAllDynamicActions(  dynamicActionProvider,   dynamicChangeToken);
+             
+        }
+
+        private static void HandelBuildAllDynamicActions(DynamicActionProvider dynamicActionProvider, DynamicChangeTokenProvider dynamicChangeToken)
+        {
+
+            var allactios = DB.UniClient.Queryable<AConMvcClass>().Where(p => p.IsEanable != null && p.IsEanable == true).ToList();
+            try
+            {
+                foreach (var c in allactios)
+                {
+                    dynamicActionProvider.AddControllers(APPCommon.ToSourceCode(c));
+                }
+                dynamicChangeToken.NotifyChanges();
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        private static void SetupIdentity(IServiceCollection services, AppConfig appConfig, string signingkey, string backendfoldername, string AuthorizeCookiesName, string OdicCookiesName, string identityserver4url, string Identityserver4ApiResouceKey, string idsr4_ClientId, string idsr4_ClientSecret, string OauthClientConfig_scopes, bool IsUsingIdentityserverClient, bool IsUsingIdentityserver4, bool IsUsingLocalIndentity ,string idsr4_ReponseType)
         {
             if (IsUsingLocalIndentity)
             {
@@ -255,8 +288,8 @@ namespace UniOrm.Startup.Web
                     option.LoginPath = new PathString("/" + backendfoldername + "/Admin/Signin");
                     option.AccessDeniedPath = new PathString("/Error/Forbidden");
                 });
-                
-                    s.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+               
+                s.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     if (IsUsingIdentityserver4)
                     {
@@ -313,14 +346,14 @@ namespace UniOrm.Startup.Web
                     .AddCookie(AuthorizeCookiesName)
                     // 配置执行OpenID Connect协议的处理程序
 
-                    .AddOAuth(OdicCookiesName, options =>
+                    .AddOpenIdConnect(OdicCookiesName, options =>
                     {
                         // 
                         options.SignInScheme = AuthorizeCookiesName;
                         // 表明我们信任IdentityServer客户端
-                        options.AuthorizationEndpoint = identityserver4url;
+                        options.Authority = identityserver4url;
                         // 表示我们不需要 Https
-                        // options.RequireHttpsMetadata = false;
+                        options.RequireHttpsMetadata = false;
                         // 用于在cookie中保留来自IdentityServer的 token，因为以后可能会用
                         options.SaveTokens = true;
                         try
@@ -328,8 +361,8 @@ namespace UniOrm.Startup.Web
                             options.ClientId = idsr4_ClientId; // "mvc_client";
                             options.ClientSecret = idsr4_ClientSecret;
                             options.CallbackPath = "/public/callback.html";
-                            options.TokenEndpoint = "/Admin/Signin";
-                            //options.ResponseType = idsr4_ReponseType;
+                            //options.TokenEndpoint = "/Admin/Signin";
+                            options.ResponseType = idsr4_ReponseType;
                         }
                         catch (Exception exp)
                         {
@@ -346,6 +379,8 @@ namespace UniOrm.Startup.Web
                  ;
 
             }
+
+
         }
 
         //public static string GetDicstring(AppConfig appConfig, string key)
@@ -435,8 +470,8 @@ namespace UniOrm.Startup.Web
                endpoints.MapRazorPages();
             });
 
- 
 
+           // BuildAllDynamicActions();
         }
 
         private static void CreatUserSpaceDirectory(IApplicationBuilder app)

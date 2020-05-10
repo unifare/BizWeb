@@ -1,0 +1,34 @@
+﻿<Root>
+
+  <Layouts >
+    <Layout  name="Index"   Uuid="EColposcope_Index" >
+      <Section Name="Header" Type="reference" ReferUuid="EColposcope_Header" Uuid="EColposcope_Index_Header"  Authorize="-1" >
+
+      </Section>
+      <Section Name="Body" Type="dynamic"  Uuid="EColposcope_Index_Body"  Authorize="-1" >
+
+      </Section>
+      <Section Name="Footer" Type="dynamic"  Uuid="EColposcope_Index_Footer"  Authorize="-1" >
+
+      </Section>
+    </Layout>
+  </Layouts>
+  <Pages>
+    <Page Name="patientAdd.aspx"  Uuid="patientAdd" LayoutUuid="EColposcope_Index" >
+      <CheckRights>
+        <CheckRightPoint  Name="SchedulePatient"  Uuid="patientAdd"  IsEnable="true" > </CheckRightPoint>
+      </CheckRights>
+    </Page>
+  </Pages>
+  <Sections>
+    <Section Name="Header"  Uuid="EColposcope_Header" >
+      <Menu Name="Menu" Type="direct"  Uuid="EColposcope_Header_Menu1"  DisplayText="信息录入" Href="patientAdd.aspx?menu=信息录入"  Authorize="-1" >
+
+      </Menu>
+      <Menu Name="Menu" Type="direct"  Uuid="EColposcope_Header_Menu2"  DisplayText="信息管理" Href="default.aspx?menu=信息录入"  Authorize="-1" ></Menu>
+      <Menu Name="Menu" Type="direct"  Uuid="EColposcope_Header_Menu3"  DisplayText="统计&amp;质控" Href="statisticsCustom.aspx?menu=统计%26质控"  Authorize="-1" ></Menu>
+      <Menu Name="Menu" Type="direct"  Uuid="EColposcope_Header_Menu4"  DisplayText="随访管理" Href="followNotify.aspx?menu=随访管理"  Authorize="-1" ></Menu>
+
+    </Section>
+  </Sections>
+</Root>
