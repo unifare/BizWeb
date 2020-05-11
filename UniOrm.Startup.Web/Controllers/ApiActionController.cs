@@ -32,9 +32,9 @@ namespace UniOrm.Startup.Web.Controllers
             [FromServices] DynamicChangeTokenProvider tokenProvider)
         {
             try
-            {
-                actionProvider.AddControllers(source);
-                tokenProvider.NotifyChanges();
+            { 
+                //actionProvider.AddControllers(source);
+                //tokenProvider.NotifyChanges();
                 return new { isok = true };
             }
             catch (Exception ex)

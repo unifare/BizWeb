@@ -34,6 +34,7 @@ using UniOrm.Startup.Web.DynamicController;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using UniOrm.Model;
+using UniOrm.Common.ReflectionMagic;
 
 namespace UniOrm.Startup.Web
 {
@@ -253,7 +254,7 @@ namespace UniOrm.Startup.Web
             {
                 foreach (var c in allactios)
                 {
-                    dynamicActionProvider.AddControllers(APPCommon.ToSourceCode(c));
+                    dynamicActionProvider.AddControllers( AConMvcCompileClass.ToCompileClass(c) );
                 }
                 dynamicChangeToken.NotifyChanges();
             }

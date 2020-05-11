@@ -14,14 +14,14 @@ namespace UniOrm.Startup.Web.DynamicController
 {
     public class Compiler : ICompiler
     {
-        public Assembly Compile(string text, params Assembly[] referencedAssemblies)
+        public Assembly Compile(string guid,string text, params Assembly[] referencedAssemblies)
         {
             //return CSScript.Evaluator.ReferenceAssembly(Assembly.GetExecutingAssembly()).CompileCode(text,new CompileInfo() { RootClass = "tet", PreferLoadingFromFile=true });
 
             var references = referencedAssemblies.Select(it => MSCodeAnalysis::Microsoft.CodeAnalysis.MetadataReference
         .CreateFromFile(it.Location));
             var options = new CSharpCompilationOptions(MSCodeAnalysis::Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary);
-            var assemblyName = "_" + Guid.NewGuid().ToString("D");
+            var assemblyName = guid;// "_" + Guid.NewGuid().ToString("D");
             var syntaxTrees = new MSCodeAnalysis::Microsoft.CodeAnalysis.SyntaxTree[] { CSharpSyntaxTree.ParseText(text) };
             var compilation = CSharpCompilation.Create(
                assemblyName, syntaxTrees, references, options);

@@ -12,6 +12,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using UniOrm.Model;
+using UniOrm.Common.ReflectionMagic;
 
 namespace UniOrm.Startup.Web.DynamicController
 {
@@ -37,7 +39,7 @@ namespace UniOrm.Startup.Web.DynamicController
     public class DynamicActionProvider : IActionDescriptorProvider
     {
         private readonly List<ControllerActionDescriptor> _actions;
-        private readonly Func<string, IEnumerable<ControllerActionDescriptor>> _creator;
+        private readonly Func<AConMvcCompileClass, IEnumerable<ControllerActionDescriptor>> _creator;
 
         public  static Assembly CoreAssembly = Assembly.Load(new AssemblyName("Microsoft.AspNetCore.Mvc.Core"));
 
@@ -78,12 +80,12 @@ namespace UniOrm.Startup.Web.DynamicController
             _actions = new List<ControllerActionDescriptor>();
             _creator = CreateActionDescrptors;
 
-            IEnumerable<ControllerActionDescriptor> CreateActionDescrptors(string sourceCode)
+            IEnumerable<ControllerActionDescriptor> CreateActionDescrptors(AConMvcCompileClass mvcclass )
             {
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(p=>p.IsDynamic==false
                 &&p.IsFullyTrusted==true&&p.ReflectionOnly==false && !string.IsNullOrEmpty(p.Location)) ;
              
-                var assembly = compiler.Compile(sourceCode, assemblies.ToArray() );
+                var assembly = compiler.Compile(mvcclass.Guid, mvcclass.AllSourceCode  , assemblies.ToArray() );
                 var controllerTypes = assembly.GetTypes().Where(it => IsController(it));
                 var applicationModel = CreateApplicationModel(controllerTypes);
 
@@ -123,23 +125,60 @@ namespace UniOrm.Startup.Web.DynamicController
                 context.Results.Add(action);
             }
         }
-        public void AddControllers( string sourceCode)
+
+
+        public void RemoveController(AConMvcCompileClass sourceCode)
         {
-            var ss = _creator(sourceCode);
-          
-            foreach (var a in ss)
+            var oldactions = _actions.Where(p => p.ControllerName.ToLower() == sourceCode.ClassName.ToLower());
+            if (oldactions != null)
             {
-                var oldaction = _actions.FirstOrDefault(p => p.ActionName == a.ActionName && p.ControllerName == a.ControllerName);
-                if( oldaction!=null)
-                {
-                    _actions[_actions.IndexOf(oldaction)] = a;
-                }
-                else
-                {
-                    _actions.Add(  a);
-                }
+                var allinex = new List<int>();
                 
-            } 
+                foreach (var oa in oldactions)
+                {
+                    var oldaction = _actions.FirstOrDefault(p => p.ActionName == oa.ActionName && p.ControllerName == oa.ControllerName);
+                    if( oldaction!=null)
+                    {
+                        allinex.Add(_actions.IndexOf(oldaction));
+                    } 
+                }
+                var i = 0;
+                foreach (var index in allinex)
+                {
+                    if(index - i< _actions.Count)
+                    {
+                        _actions.RemoveAt(index-i);
+                    } 
+                    i++;
+                }
+            }
+        }
+ 
+
+       public void AddControllers(AConMvcCompileClass sourceCode)
+        {
+            var ss = _creator(  sourceCode);
+            //_actions.AddRange(ss);
+            if (ss != null && ss.Count() > 0)
+            {
+                foreach (var a in ss)
+                {
+                    var oldactions = _actions.Where(p => p.ActionName == a.ActionName && p.ControllerName == a.ControllerName);
+                    if (oldactions != null)
+                    {
+                        foreach (var oa in oldactions)
+                        {
+                            _actions.Remove(oa);
+                        }
+                        _actions.Add(a);
+                    }
+                    else
+                    {
+                        _actions.Add(a);
+                    }
+
+                }
+            }
 
         }
     }

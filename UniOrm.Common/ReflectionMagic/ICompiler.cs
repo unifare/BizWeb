@@ -8,6 +8,6 @@ namespace UniOrm.Startup.Web.DynamicController
 {
     public interface ICompiler
     {
-        Assembly Compile(string text, params Assembly[] referencedAssemblies);
+        Assembly Compile(string guid,string text, params Assembly[] referencedAssemblies);
     }
 }

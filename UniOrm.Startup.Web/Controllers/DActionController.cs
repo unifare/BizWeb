@@ -9,6 +9,7 @@ using SqlSugar;
 using UniOrm.Model;
 using UniOrm;
 using UniOrm.Startup.Web.DynamicController;
+using UniOrm.Common.ReflectionMagic;
 
 namespace UniOrm.Startup.Web.Controllers
 {
@@ -36,20 +37,28 @@ namespace UniOrm.Startup.Web.Controllers
         }
         public async Task<IActionResult> UpdateItem([FromBody]AConMvcClass systemHtml)
         {
-
-            var result = await DbFactory.Queryable<AConMvcClass>().Where(p => p.Id == systemHtml.Id).FirstAsync();
-            if(result != null)
+            if (string.IsNullOrEmpty(systemHtml.Guid))
             {
+                systemHtml.Guid = Guid.NewGuid().ToString("D");
+            } 
+            var aConMvcCompileClass = AConMvcCompileClass.ToCompileClass(systemHtml);
+            var result = await DbFactory.Queryable<AConMvcClass>().Where(p => p.Id == systemHtml.Id).FirstAsync();
+            if (result != null)
+            {
+
+                _actionProvider.RemoveController(aConMvcCompileClass);
+                _dynamicChangeTokenProvider.NotifyChanges();
+
                 result = systemHtml;
             }
-           var reint= await  DbFactory.Updateable(result).ExecuteCommandAsync();
+
+            var reint = await DbFactory.Updateable(result).ExecuteCommandAsync();
             if (systemHtml.IsEanable.ToBool() == true)
             {
                 try
                 {
 
-                    var source = APPCommon.ToSourceCode(systemHtml);
-                    _actionProvider.AddControllers(source);
+                    _actionProvider.AddControllers(aConMvcCompileClass);
                     _dynamicChangeTokenProvider.NotifyChanges();
                     return Json(new { isok = true });
                 }
@@ -58,21 +67,32 @@ namespace UniOrm.Startup.Web.Controllers
                     return Json(new { isok = false, err = ex.Message });
                 }
             }
-            return Json(new { isok = reint>=0  });
+            return Json(new { isok = reint >= 0 });
         }
 
         public async Task<IActionResult> AddItem(
           [FromBody]AConMvcClass systemHtml   )
         {
             systemHtml.Addtime = DateTime.Now;
+
+            if(string.IsNullOrEmpty( systemHtml.Guid))
+            {
+                systemHtml.Guid = Guid.NewGuid().ToString("D");
+            }
+
+            var oldmvc=  DbFactory.Queryable<AConMvcClass>().Where(p =>  p.ClassName.ToLower() == systemHtml.ClassName.ToLower()).FirstAsync();
+            if( oldmvc!=null)
+            {
+                return Json(new { isok = false, err = $"has the same class {systemHtml.ClassName }"  });
+            }
+
             var reint = await DbFactory.Insertable(systemHtml).ExecuteCommandAsync();
             if( systemHtml.IsEanable.ToBool()==true )
             {
                 try
-                {
-                   
-                    var source = APPCommon.ToSourceCode(systemHtml);
-                    _actionProvider.AddControllers(source);
+                { 
+                    var aConMvcCompileClass = AConMvcCompileClass. ToCompileClass(systemHtml); 
+                    _actionProvider.AddControllers(aConMvcCompileClass);
                     _dynamicChangeTokenProvider.NotifyChanges();
                     return Json(new { isok = true });
                 }
@@ -84,7 +104,37 @@ namespace UniOrm.Startup.Web.Controllers
             return Json(new { isok = reint > 0 });
         }
 
-       
+        private static AConMvcCompileClass ToCompileClass(AConMvcClass systemHtml, string source)
+        {
+            return new AConMvcCompileClass()
+            {
+                Guid = systemHtml.Guid,
+                ActionCode = systemHtml.ActionCode
+             ,
+                AllSourceCode = source
+             ,
+                Addtime = systemHtml.Addtime
+             ,
+                ClassAttrs = systemHtml.ClassAttrs
+             ,
+                ClassName = systemHtml.ClassName
+             ,
+                ExReferenceName = systemHtml.ExReferenceName
+             ,
+                IsEanable = systemHtml.IsEanable
+             ,
+                Name = systemHtml.Name
+             ,
+                Id = systemHtml.Id
+             ,
+                UrlRule = systemHtml.UrlRule
+             ,
+                UsingNameSpance = systemHtml.UsingNameSpance
+             ,
+                VersionNum = systemHtml.VersionNum
+            };
+        }
+
 
         public async Task<IActionResult> DelItem(long Id)
         { 
