@@ -375,9 +375,9 @@
                           var data =   { path: fname, newfilename:this.selectedlist.Name };
                           $.post("RenameDir", data).done(function (jsonResult) {
                             if (jsonResult.isok == true) {
-                                Vue.set(app.data, app.selected, arr);
+                              //  Vue.set(app.data, app.selected, arr);
                                 app.selected = -1;
-                                 app.setSlist(app.data);
+                                app.setSlist(app.data);
                             }
 
                         }).fail(function (e) {

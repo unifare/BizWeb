@@ -278,19 +278,19 @@ namespace UniOrm
                 Build();
         }
 
-        public static async Task<ContentResult> View(string templateKey, object model=null ,ExpandoObject viewBag=null)
+        public static async Task<string> RenderRazorKey(string templateKey, object model = null, ExpandoObject viewBag = null)
         {
             var engine = Razorengine;
             string result = string.Empty;
-            if (model!=null  )
+            if (model != null)
             {
-                if(viewBag!=null )
+                if (viewBag != null)
                 {
-                      result = await engine.CompileRenderAsync(templateKey, model, viewBag);
+                    result = await engine.CompileRenderAsync(templateKey, model, viewBag);
                 }
                 else
                 {
-                      result = await engine.CompileRenderAsync(templateKey, model);
+                    result = await engine.CompileRenderAsync(templateKey, model);
                 }
             }
             else
@@ -298,10 +298,17 @@ namespace UniOrm
                 result = await engine.CompileRenderAsync(templateKey, new { });
             }
 
+            return result;
+        }
+
+
+
+        public static async Task<ContentResult> View(string templateKey, object model=null ,ExpandoObject viewBag=null)
+        { 
             
             return new ContentResult()
             {
-                Content = result,
+                Content = await RenderRazorKey(templateKey, model, viewBag),
                 ContentType = "text/html",
                 StatusCode = 200
             }; ;

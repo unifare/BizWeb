@@ -16,7 +16,7 @@ using UniOrm;
 using UniOrm.Model;
 using RazorLight;
 using CSScriptLib;
-using System.Security.Claims; 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -59,7 +59,7 @@ namespace UniOrm.Application
             DbFactory = dbFactory;
             CodeService = codeService;
             Config = config;
-            appConfig= config.GetSection("App").Get<AppConfig>();
+            appConfig = config.GetSection("App").Get<AppConfig>();
             //ModuleManager = new DefaultModuleManager();
         }
 
@@ -70,7 +70,7 @@ namespace UniOrm.Application
             var st = new System.Diagnostics.StackTrace();
             var lastMethod = st.GetFrame(1).GetMethod();
             //var appconfigstring = Config.GetValue<AppConfig>("App").AppConfigs;
- 
+
             if (appConfig.AppType == "aspnetcore")
             {
 
@@ -105,7 +105,7 @@ namespace UniOrm.Application
                     newrunmodel.ComposeTemplate = FindComposeTemplet(cons.Templateid);
                 }
 
-                await RunComposity(parameters[0].GetHashCode(), httpContext,newrunmodel, DbFactory, CodeService, Config);
+                await RunComposity(parameters[0].GetHashCode(), httpContext, newrunmodel, DbFactory, CodeService, Config);
 
 
             }
@@ -135,26 +135,26 @@ namespace UniOrm.Application
                 }
                 //Manager.RuntimeModels.Add(newrunmodel);
                 else
-                { 
+                {
                     var steps = FindSteps(cons.Guid, codeService);
 
                     foreach (var s in steps)
                     {
                         object rebject = null;
-                        object DynaObject = null; 
-                     
-                        if (s.IsUsingAuth.ToBool()   )
+                        object DynaObject = null;
+
+                        if (s.IsUsingAuth.ToBool())
                         {
-                            
+
                             await httpContext.AuthenticateAsync();
-                            if (httpContext.User.Identity.Name != s.UserName|| !httpContext.User.Identity.IsAuthenticated)
-                            { 
+                            if (httpContext.User.Identity.Name != s.UserName || !httpContext.User.Identity.IsAuthenticated)
+                            {
                                 APPCommon.ResponseUnAuth((ActionExecutingContext)newrunmodel.Res["__actioncontext"], s.LoginUrl);
-                                 
+
                                 return;
                             }
                         }
-                        
+
                         var cacheKey = string.Concat(cons.Guid, "_", s.ExcuteType, "_", s.FlowStepType, "_", s.Guid, "_", s.ArgNames);
                         object stepResult = APP.RuntimeCache.GetOrCreate(cacheKey, entry =>
                           {
@@ -236,7 +236,7 @@ namespace UniOrm.Application
                                                 {
                                                     string dllbase = AppDomain.CurrentDomain.BaseDirectory;
 
-                                                } 
+                                                }
                                                 rebject = runcode.Script.RunAsync(newrunmodel.Res).Result.ReturnValue;
                                                 Logger.LogInfo(LoggerName, $"AComposityId id {s.AComposityId} ,step {s.StepOrder}, Declare: result {rebject}  ");
                                             }
@@ -291,11 +291,22 @@ namespace UniOrm.Application
                                             Logger.LogInfo(LoggerName, $"DealTheFunction: result {DynaObject}  ");
                                         }
                                         break;
+                                    case FlowStepType.RazorKey:
+                                        try
+                                        {
+                                            rebject = stepResult = await HandleRazorKey(newrunmodel, s);
+
+                                        }
+                                        catch (Exception exp)
+                                        {
+                                            Logger.LogError(logName, $"parser RazorText wrong: {exp.Message}-------{LoggerHelper.GetExceptionString(exp)}");
+                                        }
+                                        break;
                                     case FlowStepType.RazorText:
                                         try
                                         {
                                             rebject = stepResult = await HandleRazorText(newrunmodel, s, httpContext, s.ProxyCode);
-                                           
+
                                         }
                                         catch (Exception exp)
                                         {
@@ -328,7 +339,7 @@ namespace UniOrm.Application
                                 }
                             }
                         }
-                       
+
                         if (!string.IsNullOrEmpty(s.StorePoolKey) && rebject != null)
                         {
                             newrunmodel.SetComposityResourceValue(s.StorePoolKey, rebject);
@@ -342,7 +353,7 @@ namespace UniOrm.Application
             }
         }
 
-        private static object DealTheFunction(RuntimeStepModel newrunmodel, AConFlowStep s ,HttpContext httpContext)
+        private static object DealTheFunction(RuntimeStepModel newrunmodel, AConFlowStep s, HttpContext httpContext)
         {
             object rebject;
             var defaultNamespace = @"using UniOrm;
@@ -414,11 +425,29 @@ using Microsoft.AspNetCore.Mvc;";
 
             var runobj = CSScript.Evaluator.ReferenceAssembly(Assembly.GetExecutingAssembly())
                  .CreateDelegate(allcode);
-            newrunmodel.Funtions.Add(s.StorePoolKey, runobj); 
+            newrunmodel.Funtions.Add(s.StorePoolKey, runobj);
             var pagetool = newrunmodel.Res["__page"] as RazorTool;
-            pagetool.Funs = newrunmodel.Funtions; 
+            pagetool.Funs = newrunmodel.Funtions;
             rebject = runobj(newrunmodel);
             return rebject;
+        }
+        private static async Task<string> HandleRazorKey(RuntimeStepModel newrunmodel, AConFlowStep s  )
+        { 
+            dynamic modelArg = null;
+            var module = APPCommon.ModuleManager.GetModule(null, s.ModuleName);
+            if (module == null)
+            {
+
+                modelArg = new { Step = s, Module = new { }, Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
+
+            }
+            else
+            {
+
+                modelArg = new { Step = s, Module = module.AsDynamic(), Item = newrunmodel.Res, Funs = newrunmodel.Funtions };
+
+            }
+            return await APPCommon.RenderRazorKey(s.ProxyCode, modelArg);
         }
 
         private static async Task<string> HandleRazorText(RuntimeStepModel newrunmodel, AConFlowStep s, HttpContext httpContext, string template)
@@ -427,11 +456,7 @@ using Microsoft.AspNetCore.Mvc;";
             string stepResult = "";
 
             StringBuilder stringbuilder = UsingNameSpace(s, engine);
-            var objParams = new List<object>();
-            if (!string.IsNullOrEmpty(s.ArgNames))
-            {
-                objParams = newrunmodel.GetPoolResuce(s.ArgNames.Split(','));
-            }
+     
             dynamic modelArg = null;
             var module = APPCommon.ModuleManager.GetModule(null, s.ModuleName);
             if (module == null)
@@ -542,7 +567,7 @@ using Microsoft.AspNetCore.Mvc;";
 
         private static object HandleGetData(HttpContext httpContext, RuntimeStepModel newrunmodel, ISqlSugarClient dbFactory, AConFlowStep s)
         {
-            object dynaObject=null;
+            object dynaObject = null;
             //var objParams2 = new List<object>();
             //if (!string.IsNullOrEmpty(s.ArgNames))
             //{
@@ -569,14 +594,14 @@ using Microsoft.AspNetCore.Mvc;";
                     dynaObject = newrunmodel.Resuce(s.ArgNames);
                 }
             }
-         
+
             //if (objParams2 == null || objParams2.Count == 0)
             //{
             //    dynaObject = APP.GetData( s.InParamter1);
             //}
             //else
             //{
-            dynaObject = APP.GetData( s.InParamter1, dynaObject);
+            dynaObject = APP.GetData(s.InParamter1, dynaObject);
             //}
 
             return dynaObject;
@@ -609,7 +634,7 @@ using Microsoft.AspNetCore.Mvc;";
                     var nextRnmodel = new RuntimeStepModel(config)
                     {
                         ParentRuntimeModel = newrunmodel,
-                        Res= newrunmodel.Res,
+                        Res = newrunmodel.Res,
                         ComposeEntity = nextcon,
                         HashCode = nextcon.GetHash()
                     };
@@ -653,7 +678,8 @@ using Microsoft.AspNetCore.Mvc;";
                     cons = new ComposeEntity()
                     {
                         Name = allname,
-                        RunMode = RunMode.Coding, Guid = appconfig.StartUpCompoistyID
+                        RunMode = RunMode.Coding,
+                        Guid = appconfig.StartUpCompoistyID
                     };
                     var reint = CodeService.InsertCode(cons);
                     APP.Composeentitys.Add(cons);

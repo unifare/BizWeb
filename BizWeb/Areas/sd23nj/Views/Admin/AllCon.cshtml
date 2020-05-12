@@ -536,6 +536,10 @@
                                                                     <option value="12">Text</option>
                                                                     <option value="13">RazorText</option>
                                                                     <option value="14">RazorFile</option>
+                                                                    <option value="15">RazorKey</option>
+                                                                    <option value="16">ServerTransfer</option>
+                                                                    <option value="17">Redirector</option>,
+                                                                    ,
                                                                 </select>
                                                             </span>
                                                         </div>
@@ -787,21 +791,16 @@
                             rev = "RazorFile";
                             break;
                         case 15:
-                            rev = "TemplateText";
+                            rev = "RazorKey";
                             break;
+                    
                         case 16:
-                            rev = "TemplateFile";
-                            break;
-                        case 17:
-                            rev = "TemplateRazorText";
-                            break;
-                        case 18:
                             rev = "ServerTransfer";
                             break;
-                        case 12:
+                        case 17:
                             rev = "Redirector";
                             break;
-                        case 19:
+                        case 18:
                             rev = "UrlRewriter";
                             break;
                         //case 12:
