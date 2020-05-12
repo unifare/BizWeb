@@ -358,7 +358,7 @@ namespace UniOrm.Startup.Web.Controllers
             //        APP.Razorengine.Handler.Cache.Remove(ss.Name);
             //    }
             //}
-            APP.InitRazorEngine();
+            APPCommon.InitRazorEngine();
             return 0;
         }
         [HttpPost]

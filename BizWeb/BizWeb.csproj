@@ -56,7 +56,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\sd23nj\Views\" />
     <Folder Include="config\moduleConfig\" />
+    <Folder Include="config\template\default\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
 

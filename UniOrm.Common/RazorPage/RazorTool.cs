@@ -71,6 +71,13 @@ namespace UniOrm
             HttpContext = factory.HttpContext;
         }
 
+        public static bool IsPropertyExist(dynamic data, string propertyname)
+        {
+            if (data is ExpandoObject)
+                return ((IDictionary<string, object>)data).ContainsKey(propertyname);
+            return data.GetType().GetProperty(propertyname) != null;
+        }
+
         public bool HasPro(dynamic data, string propertyname)
         {
             if (data is ExpandoObject)

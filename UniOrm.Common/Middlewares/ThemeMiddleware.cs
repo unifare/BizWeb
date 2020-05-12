@@ -21,7 +21,7 @@ namespace UniOrm.Common.Middlewares
         }
         public Task Invoke(HttpContext context)
         {
-            var folder = _configuration.GetSection("theme").Value;
+            var folder = _configuration.GetValue<string>("APP:AppTheme");
             context.Request.HttpContext.Items[ThemeViewLocationExpander.ThemeKey] = folder ?? "";
             return _next(context);
         }

@@ -26,6 +26,9 @@ using SqlKata;
 using SqlKata.Execution;
 using SqlKata.Extensions;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using RazorLight;
+using UniOrm.Common.RazorPage;
+using System.Dynamic;
 
 namespace UniOrm
 {
@@ -251,10 +254,81 @@ namespace UniOrm
                 m.ConfigureRouter(routeBuilder);
             }
         }
+        private static RazorLightEngine razorengine = null;
+
+        public static RazorLightEngine Razorengine
+        {
+            get
+            {
+                if (razorengine == null)
+                {
+                    InitRazorEngine();
+                }
+                return razorengine;
+            }
+        }
+
+        public static void InitRazorEngine()
+        {
+            var project = new UniRazorProject();
+            razorengine = new RazorLightEngineBuilder()
+                .AddDefaultNamespaces(APPCommon.AppConfig.RazorNamesapace.ToArray())
+                .UseProject(project)
+                .UseMemoryCachingProvider().
+                Build();
+        }
+
+        public static async Task<ContentResult> View(string templateKey, object model=null ,ExpandoObject viewBag=null)
+        {
+            var engine = Razorengine;
+            string result = string.Empty;
+            if (model!=null  )
+            {
+                if(viewBag!=null )
+                {
+                      result = await engine.CompileRenderAsync(templateKey, model, viewBag);
+                }
+                else
+                {
+                      result = await engine.CompileRenderAsync(templateKey, model);
+                }
+            }
+            else
+            {
+                result = await engine.CompileRenderAsync(templateKey, new { });
+            }
+
+            
+            return new ContentResult()
+            {
+                Content = result,
+                ContentType = "text/html",
+                StatusCode = 200
+            }; ;
+        }
+
         public static string ToSourceCode(AConMvcClass systemHtml)
         {
-          return systemHtml.UsingNameSpance + "\r\n" + systemHtml.ClassAttrs + "\r\n" +
-                      " public partial class " + systemHtml.ClassName + "Controller\r\n{ \r\n" + systemHtml.ActionCode + "\r\n}";
+            var strinbuilder = systemHtml.UsingNameSpance + "\r\n" + systemHtml.ClassAttrs + "\r\n" +
+                        " public partial class ";
+            if (systemHtml.IsSelfDefine == true)
+            {
+                strinbuilder += systemHtml.ClassName;
+            }
+            else
+            {
+                strinbuilder += systemHtml.ClassName + "Controller";
+
+                if (!string.IsNullOrEmpty(systemHtml.InhiredClass))
+                {
+                    strinbuilder += ":" + systemHtml.InhiredClass;
+                }
+                else if (systemHtml.IsController == true)
+                {
+                    strinbuilder += ": Microsoft.AspNetCore.Mvc.Controller";
+                }
+            }
+            return strinbuilder += "\r\n{ \r\n" + systemHtml.ActionCode + "\r\n}";
 
         }
 

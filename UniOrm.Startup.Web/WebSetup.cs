@@ -35,6 +35,9 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using UniOrm.Model;
 using UniOrm.Common.ReflectionMagic;
+using UniOrm.Common.Middlewares;
+using Microsoft.AspNetCore.Mvc.Razor;
+using UniOrm.Startup.Web.Views;
 
 namespace UniOrm.Startup.Web
 {
@@ -44,7 +47,7 @@ namespace UniOrm.Startup.Web
         private static Thread starterThread = new Thread(StartApp);
         private const string LoggerName = "WebSetup";
 
-
+        public static IConfiguration Configuration = null;
 
         public static void StartApp(object argsObj)
         {
@@ -72,6 +75,7 @@ namespace UniOrm.Startup.Web
         }
         public static void Startup(this IConfiguration configuration)
         {
+            Configuration = configuration;
             APP.Startup(configuration);
         }
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -182,6 +186,10 @@ namespace UniOrm.Startup.Web
             }
             // _ = services.AddMvc(o =>    _是什么 IMvcBuiler
             services.AddRazorPages();
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Add(new TemplateViewLocationExpander(Configuration));
+            });
             services.AddControllersWithViews(o =>
             {
                 o.Filters.Add<WorkAuthorzation>(); // 添加身份验证过滤器
@@ -449,7 +457,7 @@ namespace UniOrm.Startup.Web
             app.UseSession();
 
             APPCommon.ConfigureSite(app, env);
-            //app.UseTheme();//启用theme中间件
+             app.UseTheme();//启用theme中间件
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapControllerRoute(

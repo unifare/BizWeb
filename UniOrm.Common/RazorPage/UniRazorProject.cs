@@ -55,11 +55,14 @@ namespace UniOrm.Common.RazorPage
                     var stringbuilder = new StringBuilder(); 
                     stringbuilder.AppendLine("\r\n@{ DisableEncoding = true;  ");
 
-                    stringbuilder.AppendLine("\r\n var Page = new RazorTool();  ");
-                    stringbuilder.AppendLine("\r\n Page.Step=Model.Step; ");
-                    stringbuilder.AppendLine("\r\n Page.ResouceInfos=Model.Item as Dictionary<string, object>; ");
-                    stringbuilder.AppendLine("\r\n Page.Funs=Model.Funs as Dictionary<string, MethodDelegate>; ");
-                    stringbuilder.AppendLine("\r\n  }");
+                    stringbuilder.AppendLine("\r\n      var Page = new UniOrm.RazorTool();  ");
+                    stringbuilder.AppendLine("\r\n      if( UniOrm.RazorTool.IsPropertyExist( Model,\"Item\")){");
+                    stringbuilder.AppendLine("\r\n          Page.ResouceInfos=Model.Item as System.Collections.Generic.Dictionary<string, object>; ");
+                    stringbuilder.AppendLine("\r\n      }");
+                    stringbuilder.AppendLine("\r\n      if( UniOrm.RazorTool.IsPropertyExist( Model,\"Funs\")){");
+                    stringbuilder.AppendLine("\r\n          Page.Funs=Model.Funs as System.Collections.Generic.Dictionary<string, MethodDelegate>; ");
+                    stringbuilder.AppendLine("\r\n      }");
+                    stringbuilder.AppendLine("\r\n }");
                     _usingNameSpace = stringbuilder.ToString();
                 }
                 return _usingNameSpace;

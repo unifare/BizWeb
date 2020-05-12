@@ -22,6 +22,12 @@ namespace UniOrm.Model
 
         public string Name { get; set; }
 
+        public bool? IsController { get; set; } = true;
+
+        public bool? IsSelfDefine { get; set; } = false;
+
+        public string InhiredClass { get; set; }
+
         public string UsingNameSpance {get;set;}
 
         public string ExReferenceName { get; set; }

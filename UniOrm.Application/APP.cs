@@ -112,29 +112,15 @@ namespace UniOrm
                 APPCommon.ModuleManager = value;
             }
         }
-        private static RazorLightEngine razorengine = null;
-        
-        public static RazorLightEngine Razorengine
+       public static RazorLightEngine Razorengine
         {
             get
             {
-                if (razorengine == null)
-                {
-                    InitRazorEngine();
-                }
-                return razorengine;
+              
+                return APPCommon.Razorengine;
             }
         }
 
-        public static void InitRazorEngine()
-        {
-            var project = new UniRazorProject();
-            razorengine = new RazorLightEngineBuilder()
-                .AddDefaultNamespaces(APPCommon.AppConfig.RazorNamesapace.ToArray())
-                .UseProject(project)
-                .UseMemoryCachingProvider().
-                Build();
-        }
 
         public static Dictionary<string, MethodInfo> MethodInfos
         {

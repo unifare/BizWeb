@@ -208,36 +208,58 @@
             <div>
                 <h2 class="title">新增 | 修改</h2>
                 <div>
-                    当前名称 :     {{editmodel.Name}}
+                    当前名称 :{{editmodel.Name}}
                 </div>
                 <div class="content" style="max-height:500px; overflow:auto;">
                     <table class="tb_table table table-bordered">
                         <tr>
-                            <td>名称</td>
-                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.Name" /></td>
+                            <td style="width:150px;">名称</td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.Name" /></td>
 
+                        </tr>
+                        <tr>
+                            <td>Guid</td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.Guid" /></td>
+
+                        </tr>
+                        <tr>
+                            <td>IsController</td>
+                            <td><input type="checkbox" style="width:360px;" class="form-control" v-model="editmodel.IsController" /></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>IsSelfDefine</td>
+                            <td><input type="checkbox" style="width:360px;" class="form-control" v-model="editmodel.IsSelfDefine" /></td>
+
+                        </tr>
+                        <tr>
+                            <td>InhiredClass</td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.InhiredClass" /></td>
 
                         </tr>
                         <tr>
                             <td>版本号</td>
-                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.VersionNum" /></td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.VersionNum" /></td>
 
 
                         </tr>
                         <tr>
                             <td>类名</td>
-                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.ClassName" /></td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.ClassName" /></td>
 
                         </tr>
                         <tr>
                             <td>URL</td>
-                            <td>    <input type="text" style="width:360px;" class="form-control" v-model="editmodel.UrlRule" /></td>
+                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.UrlRule" /></td>
 
                         </tr>
                         <tr>
                             <td>ClassAttrs</td>
-                            <td><input type="text" style="width:360px;" class="form-control" v-model="editmodel.ClassAttrs" />
+                            <td>
+                                <input type="text" style="width:360px;" class="form-control" v-model="editmodel.ClassAttrs" />
                             </td>
+
                         </tr>
                         <tr>
                             <td>是否启用</td>
@@ -250,12 +272,12 @@
                             <td>引用Dll</td>
                             <td>
                                 <textarea style="width:360px;" class="form-control" v-model="editmodel.ExReferenceName"> </textarea>
-                            </td> 
+                            </td>
                         </tr>
                         <tr>
                             <td>命名空间</td>
                             <td>
-                                <textarea  style="width:360px;" class="form-control" v-model="editmodel.UsingNameSpance" >
+                                <textarea style="width:360px;" class="form-control" v-model="editmodel.UsingNameSpance">
                                 </textarea>
                             </td>
                         </tr>
@@ -488,8 +510,8 @@
                 searchkey:'',
                 action:"add",
                 isshowDlg: false,
-                editmodel: { Id: 0, VersionNum: '', Name: '', UsingNameSpance: '', ExReferenceName: '', ActionCode: '', ClassName: '', UrlRule: '', ClassAttrs: '', AdtionAttrs: '', Addtime:null },
-                emptyitem: { Id: 0, VersionNum: '', Name: '', UsingNameSpance: '', ExReferenceName: '', ActionCode: '', ClassName: '', UrlRule: '', ClassAttrs: '', AdtionAttrs: '', Addtime: null },
+                editmodel: { Id: 0, VersionNum: '', Name: '', Guid: '', IsController: true, IsSelfDefine: false, InhiredClass:"", UsingNameSpance: '', ExReferenceName: '', ActionCode: '', ClassName: '', UrlRule: '', ClassAttrs: '', AdtionAttrs: '', Addtime:null },
+                emptyitem: { Id: 0, VersionNum: '', Name: '', Guid: '', IsController: true, IsSelfDefine: false, InhiredClass: "",UsingNameSpance: '', ExReferenceName: '', ActionCode: '', ClassName: '', UrlRule: '', ClassAttrs: '', AdtionAttrs: '', Addtime: null },
                 dataList: [],
                 dataList_copy: []
             },

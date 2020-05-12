@@ -3,7 +3,7 @@
   "App": {
     "AppType": "aspnetcore",
     "AppName": "Default",
-    "AppTheme": "Aro",
+    "AppTheme": "config/template/default",
     "AppTmpl": "Default",
     "DefaultDbPrefixName": "uniorm_",
     "ModuleConfigDir": "./",
