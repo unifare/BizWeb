@@ -63,7 +63,29 @@ namespace UniOrm.Core
 
         public bool SetComposityResourceValue(string key, object value)
         {
+            if (key.Contains(","))
+            {
+                var allkeys = key.Split(',');
 
+                foreach (var k in allkeys)
+                {
+                    var objkeyval = k.Split(':');
+                    if (value.HasProperty(objkeyval[1]))
+                    {
+                        SetSingelPool(objkeyval[0], value.GetPropertyValue(objkeyval[1]));
+                    }
+                }
+            }
+            else
+            {
+                SetSingelPool(key, value);
+            }
+
+            return true;
+        }
+
+        private void SetSingelPool(string key, object value)
+        {
             if (!Res.ContainsKey(key))
             {
                 Res.Add(key, value);
@@ -72,8 +94,8 @@ namespace UniOrm.Core
             {
                 Res[key] = value;
             }
-            return true;
         }
+
         public object Resuce(string argNames)
         {
             if (!Res.ContainsKey(argNames))

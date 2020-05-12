@@ -264,7 +264,6 @@ namespace UniOrm.Application
                                             {
                                                 if (methodsub.IsStatic)
                                                 {
-
                                                     DynaObject = methodsub.Invoke(null, objParams.ToArray());
                                                 }
                                                 else

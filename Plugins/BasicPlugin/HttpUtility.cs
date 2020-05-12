@@ -20,7 +20,7 @@ namespace BasicPlugin
         private static readonly string LoggerName = "HttpUtility";
         static ConcurrentBag<RegexEn> regexEns = new ConcurrentBag<RegexEn>();
    
-        public static string GetIsTriger(List<dynamic> assrules, HttpContext context  )
+        public static object GetIsTriger(List<dynamic> assrules, HttpContext context  )
         { 
             var url= context.Request.Path.Value;
             var method = context.Request.Method;
@@ -47,19 +47,19 @@ namespace BasicPlugin
                         else
                         {
                             reg = exsUrlrule.Regex;
-                        }
-                        var ismach = reg.IsMatch(url);
-                        if (ismach)
-                        {
+                        } 
+                        var maches = reg.Matches(url);
+                        if (maches.Count>0)
+                        { 
                             Logger.LogInfo(LoggerName, $"url: {url} ,medth: {method} ComposityId :{TrigerRow.ComposityId}");
-                            return TrigerRow.ComposityId;
+                            return new { comid = TrigerRow.ComposityId, sections = maches };
                         }
                     }
                 }
             }
 
             Logger.LogDebug(LoggerName, $"url: {url} ,medth: {method} not found");
-            return "";
+            return new { comid = ""  };
         }
   
         public static object GetRequestUrl(HttpContext context)

@@ -112,7 +112,7 @@ namespace UniOrm.Model
         public string TypeFullName { get; set; }
         public string DllDirName { get; set; }
         public string MethodName { get; set; }
-        public string StorePoolKey { get; set; }
+        public string StorePoolKey { get; set; } 
         public string ArgNames { get; set; }
         public string InParamter1 { get; set; }
         public string InParamter2 { get; set; }

@@ -346,6 +346,7 @@ namespace UniOrm.DataMigrationiHistrory
                 StepOrder = 0,
                 InParamter1 = "select * from  " + WholeTableName("TrigerRuleInfo"),
                 StorePoolKey = "allrules",
+            
                 //StoreValueType = typeof(List<ComposeEntity>).FullName
             };
             Insert.IntoTable(WholeTableName("AConFlowStep")).Row(ste);

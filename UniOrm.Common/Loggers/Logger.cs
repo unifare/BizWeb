@@ -99,7 +99,7 @@ namespace UniOrm
             ILog logger = GetLogger(loggerName);
             if (logger != null)
             {
-                logger.InfoFormat(msg, args);
+                logger.Info(msg);
             }
         }
 
@@ -109,7 +109,7 @@ namespace UniOrm
             ILog logger = GetLogger(loggerName);
             if (logger != null)
             {
-                logger.DebugFormat(msg, args);
+                logger.Debug(msg);
             }
         }
 

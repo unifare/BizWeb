@@ -20,6 +20,7 @@ using PetaPoco.NetCore;
 using System.Dynamic;
 using System.Collections;
 using SqlKata;
+using System.Text.RegularExpressions;
 
 namespace UniOrm
 {
@@ -602,6 +603,11 @@ namespace UniOrm
         public string Url(string key)
         {
             return HttpContext.Request.Query[key];
+        }
+
+        public string Router(int order)
+        {
+            return R("_sections")[order].Value;
         }
 
 
