@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text; 
-using PetaPoco.NetCore; 
+using PetaPoco.NetCore;
+using MySqlConnectorAlias::MySql.Data.MySqlClient;
+
 namespace UniOrm
 {
     public class SQLKataHelper
@@ -67,7 +69,7 @@ namespace UniOrm
                     compiler = SQLKataHelper.SqliteCompiler;
                     break;
                 case 0:
-                     connection = new MySql.Data.MySqlClient.MySqlConnection(sqlconstring);
+                     connection = new MySqlConnection(sqlconstring);
                      compiler = SQLKataHelper.MySqlCompiler;  //2
                     break;
                 case 4:

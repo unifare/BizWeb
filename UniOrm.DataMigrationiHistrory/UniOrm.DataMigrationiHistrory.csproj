@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentMigrator.Runner" Version="3.2.1" />
-    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.1" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.2.11" />
+    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.2.11" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>
 

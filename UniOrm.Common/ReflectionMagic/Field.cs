@@ -9,7 +9,10 @@ namespace UniOrm
     internal class Field : IProperty
     {
         private readonly FieldInfo _fieldInfo;
+        public Field()
+        {
 
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Field"/> class wrapping the specified field.
         /// </summary>

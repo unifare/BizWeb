@@ -44,7 +44,7 @@ namespace ADBee
                     services.AddDbContext<ADSystemDbContext>(options => options.UseNpgsql(ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
                     break;
                 case DbType.MySql:
-                    services.AddDbContext<ADSystemDbContext>(options => options.UseMySql(ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly)));
+                    services.AddDbContext<ADSystemDbContext>(options => options.UseMySql(ConnectionString,ServerVersion.AutoDetect(ConnectionString),  sql => sql.MigrationsAssembly(migrationsAssembly)));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(databaseProvider), $@"The value needs to be one of {string.Join(", ", Enum.GetNames(typeof(DbType)))}.");

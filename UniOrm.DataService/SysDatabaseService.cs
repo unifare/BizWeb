@@ -174,6 +174,8 @@ namespace UniOrm.Model.DataService
             {
                 oneobject = new List<T>();
             }
+
+            //oneobject = Db.Ado.SqlQuery<T>("select * from " + typeof(T).Name);
             return oneobject;
         }
 

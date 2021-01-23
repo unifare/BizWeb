@@ -162,7 +162,15 @@ namespace UniOrm.Startup.Web
                     });
                 });
             }
-
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Adult1", policy =>
+            //        {
+            //        });
+            //    options.AddPolicy("Adult2", policy =>
+            //    {
+            //    });
+            //});
             SetupIdentity(services, appConfig, signingkey, backendfoldername, AuthorizeCookiesName, OdicCookiesName, identityserver4url, Identityserver4ApiResouceKey, idsr4_ClientId, idsr4_ClientSecret, OauthClientConfig_scopes, IsUsingIdentityserverClient, IsUsingIdentityserver4, IsUsingLocalIndentity, idsr4_ReponseType);
             if (isAllowCros)
             {
@@ -186,7 +194,10 @@ namespace UniOrm.Startup.Web
                 });
             }
             // _ = services.AddMvc(o =>    _是什么 IMvcBuiler
-            services.AddRazorPages();
+            services.AddRazorPages(c =>
+            {
+                // c.
+            });
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationExpanders.Add(new TemplateViewLocationExpander(Configuration));
@@ -236,16 +247,16 @@ namespace UniOrm.Startup.Web
                 //m.PopulateFeature(feature);
                 //services.AddSingleton(feature.Controllers.Select(t => t.AsType()).ToArray());
             })
-            .InitializeTagHelper<FormTagHelper>((helper, context) => helper.Antiforgery = false); 
+            .InitializeTagHelper<FormTagHelper>((helper, context) => helper.Antiforgery = false);
             var asses = AppDomain.CurrentDomain.GetAssemblies();
             var we = services.InitAutofac(asses);
             appConfig.ResultDictionary = appConfig.ResultDictionary;
 
-            // APPCommon.Builder.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
+           // APPCommon.Builder.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
 
             APP.ApplicationServices = services.BuildServiceProvider();
             APP.SetServiceProvider();
-            
+
             return we;
         }
 

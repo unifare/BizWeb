@@ -6,10 +6,14 @@ namespace UniOrm
     /// <summary>
     /// Provides an mechanism to access properties through the <see cref="IProperty"/> abstraction.
     /// </summary>
-    internal class Property : IProperty
+    public class Property : IProperty
     {
         private readonly PropertyInfo _propertyInfo;
 
+        public Property()
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class wrapping the specified property.
         /// </summary>

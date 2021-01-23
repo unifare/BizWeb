@@ -74,14 +74,14 @@ namespace UniOrm.Application
             }
             services.AddAutofac();
             var builder = APP.Builder;
-            APP.RegisterAutofacModule(new AutofacModule()); 
+            //APP.RegisterAutofacModule(new AutofacModule()); 
             APP.RegisterAutofacModuleTypes();
             APP.RegisterAutofacAssemblies(modulesAssembly);
             builder.Register<ISqlSugarClient>(c => DB.UniClient);
 
             builder.Populate(services);
 
-            var container = builder.Build();
+           var container = builder.Build();
 
             ///////////using /////////////////////
              
