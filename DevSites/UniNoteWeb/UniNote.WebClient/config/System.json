@@ -11,11 +11,10 @@
     "StartUpCompoistyID": "D506C9B6-AC0C-421A-BD6F-BD94A92DA418",
     "UsingDBConfig": {
       "OrmName": "EFCore",
-      "DBType": 0, //0  mysql ,1 mssql 2  sqlite 4 postgresql
-      "Name": "sys_mysql",
+      "DBType": 2, //0  mysql,1 mssql, 2  sqlite, 4 postgresql
+      "Name": "sys_default",
       "DefaultDbPrefixName": "uniorm_",
-      "ConnectionString": "Server=localhost;Port=3306;Database=ds_cms; User=ds_cms;Password=YxMCseRGMLGm24BB;Charset=utf8;"
-      //"Server=localhost;Port=3306;Database=dddw; User=root;Password=root;"
+      "ConnectionString": "Data Source = ./config/aconstate.db"
 
     },
     "Connectionstrings": [

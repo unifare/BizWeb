@@ -82,8 +82,15 @@ namespace UniOrm.Startup.Web.Controllers
             var istest = false;
 
             var db = GetSqlSugarClient(sqlcontypestr, sqlconstring, out istest);
-            var dbtablist=  db.DbMaintenance.GetTableInfoList(false) ;
-            return new JsonResult(new { isok = true,   data = dbtablist });
+            try
+            {
+                var dbtablist = db.DbMaintenance.GetTableInfoList(false);
+                return new JsonResult(new { isok = true, data = dbtablist });
+            }
+            catch(Exception ex)
+            {
+                return new JsonResult(new { isok = false, data = new List<string>() });
+            }
            
         }
         //public IActionResult CreateNewTable(string cmd, string sqlconnestring)
@@ -113,7 +120,7 @@ namespace UniOrm.Startup.Web.Controllers
                     dttypesqlsugar = DbType.MySql;
                     break;
                 case "sqlserver":
-                    dttypesqlsugar = DbType.MySql;
+                    dttypesqlsugar = DbType.SqlServer;
                     break;
                 case "测试数据":
                     istest = true;

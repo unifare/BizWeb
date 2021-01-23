@@ -263,71 +263,7 @@
 
         </div>
 
-
-        <div class="overlay" v-bind:class="{moreshow:isshowMoreDlg}">
-            <div class="con">
-                <div>
-                    <h2 class="title">新增 | 修改</h2>
-                    <div>
-                        当前表 :  <input type="text" v-model="editbname" />   说明<input type="text" v-model="tableDescription" />
-                    </div>
-                    <div class="content" style="max-height:500px; overflow:auto;">
-                        <table class="tb_table table table-bordered">
-                            <tr>
-                                <td></td>
-                                <td>列名</td>
-                                <td>类型</td>
-                                <td>长度</td>
-                                <td>null</td>
-                                <td style="width:50px">主键</td>
-                                <td style="width:50px">自增</td>
-                                @*<td>说明</td>*@
-                                <td>值</td>
-                            </tr>
-                            <tr v-for="(columndef, index) in edittbcolmnDefinits">
-                                <td><a @@click="deltbrow(index)" v-if="!(columndef.DbColumnName=='id'||columndef.DbColumnName=='Id'||columndef.DbColumnName=='ID')">删除</a></td>
-                                <td> <input type="text" v-model="columndef.DbColumnName" />   </td>
-                                <td>
-                                    <input type="text" v-model="columndef.DataType" />
-                                </td>
-                                <td>
-                                    <input type="text" style="width:60px;" v-model="columndef.Length" />
-                                    金位<input type="text" style="width:60px;" v-model="columndef.DecimalDigits" />
-                                </td>
-                                <td>
-                                    空<input type="radio" v-bind:name="'runoob2-' + index" value="true" v-model="columndef.IsNullable">
-                                    不为空<input type="radio" v-bind:name="'runoob2-' + index" value="false" v-model="columndef.IsNullable">
-                                </td>
-                                <td style="width:50px">
-                                    <input v-model="columndef.IsPrimarykey" value="true" type="radio" v-bind:name="'primakey-' + index" />
-                                </td>
-                                <td style="width:50px">
-                                    <input v-model="columndef.IsIdentity" value="true" type="radio" v-bind:name="'indentiykey-' + index" />
-                                </td>
-
-                                <td>
-                                    <textarea v-model="columndef.DefaultValue" style="width:300px; height:60px;"></textarea>
-                                </td>
-
-                            </tr>
-
-                        </table>
-
-                    </div>
-                </div>
-                <p>
-                    <div style="display:inline;float:left;">
-                        <input type="button" value="添加字段" @@click="addtbcolumn" />
-                    </div>
-                    <div style="display:inline;float:right;">
-                        <input type="button" class="btn btn-default" @@click="cancltbdlg" value="取消">
-                        <input type="button" class="btn btn-primary" @@click="savetbdlg" value="保存">
-                    </div>
-
-                </p>
-            </div>
-
-        </div>
+ 
 
 
     </div>
@@ -465,8 +401,8 @@
                 selecteddb(newstr, oldstr) {
                     if (newstr != '') {
                         if (newstr != oldstr) {
-
-
+                            app.selecteddb = newstr;
+                            getdatatablelist();
                         }
                     }
                 },

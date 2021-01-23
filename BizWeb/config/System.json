@@ -14,10 +14,10 @@
     "AdminAreas": "sd23nj",
     "UsingDBConfig": {
       "OrmName": "EFCore",
-      "DBType": 0, //0  mysql,1 mssql, 2  sqlite, 4 postgresql
-      "Name": "sys_mysql",
+      "DBType": 2, //0  mysql,1 mssql, 2  sqlite, 4 postgresql
+      "Name": "sys_default",
       "DefaultDbPrefixName": "uniorm_",
-      "ConnectionString": "Server=localhost;Port=3306;Database=ds_cms; User=root;Password=root;Charset=utf8;"
+      "ConnectionString": "Data Source = ./config/aconstate.db"
       //"Server=localhost;Port=3306;Database=dddw; User=root;Password=root;"
 
     },
@@ -219,7 +219,7 @@
       },
       {
         "KeyName": "Identityserver4.ApiResouceKey",
-        "Value": "UniNote_localApi",
+        "Value": "BBC",
         "IsSystem": true,
         "SystemDictionarytype": 0
 
@@ -250,7 +250,7 @@
       },
       {
         "KeyName": "OauthClientConfig_scopes",
-        "Value": "UniNote_WebApi,openid,profile,offline_access",
+        "Value": "BBC,openid,profile,offline_access",
         "IsSystem": true,
         "SystemDictionarytype": 0
       },

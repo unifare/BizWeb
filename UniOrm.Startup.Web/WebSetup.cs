@@ -94,7 +94,7 @@ namespace UniOrm.Startup.Web
                .AddSingleton<IActionDescriptorProvider>(provider => provider.GetRequiredService<DynamicActionProvider>())
                .AddSingleton<IActionDescriptorChangeProvider>(provider => provider.GetRequiredService<DynamicChangeTokenProvider>());
 
-
+          
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -104,6 +104,7 @@ namespace UniOrm.Startup.Web
             services.AddSession(o =>
             {
                 o.IdleTimeout = TimeSpan.FromSeconds(60 * 60);
+                o.Cookie.HttpOnly = true;
             });
 
             // 配置授权
@@ -435,12 +436,11 @@ namespace UniOrm.Startup.Web
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
-            //app.UsePhp(new PhpRequestOptions() { RootPath = APPCommon.UserUploadBaseDir }) ;
+            app.UsePhp(new PhpRequestOptions() { RootPath = APPCommon.UserUploadBaseDir, ScriptAssembliesName = new string[] { "UniOrm.PHP" } }) ;
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseSession();
+            app.UseAuthorization(); 
             var isAllowCros = Convert.ToBoolean(appConfig.GetDicstring("isAllowCros"));
             if (isAllowCros)
             {

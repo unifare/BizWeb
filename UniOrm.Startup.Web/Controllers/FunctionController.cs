@@ -8,12 +8,14 @@ using Microsoft.Extensions.Logging;
 using SqlSugar;
 using UniOrm.Model;
 using UniOrm;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UniOrm.Startup.Web.Controllers
 {
     [Area(APPCommon.AreaName)]
     [Route(APPCommon.AreaName +"/[controller]/[action]")]
     [AdminAuthorize]
+    [Authorize]
     public partial class FunctionController : Controller
     {
         private readonly ILogger<AconFunction> _logger;

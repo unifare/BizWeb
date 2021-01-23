@@ -58,7 +58,7 @@
   <ItemGroup>
     <Folder Include="Areas\sd23nj\Views\" />
     <Folder Include="config\moduleConfig\" />
-    <Folder Include="config\template\default\" />
+    <Folder Include="config\template\default\Funcs\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
 
@@ -1007,6 +1007,12 @@
     <Content Update="config\System.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config\aconstate_classical.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
