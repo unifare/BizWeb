@@ -155,7 +155,7 @@ namespace UniOrm.Model.DataService
             return new QueryResult();
         }
 
-        public List<T> GetSimpleCode<T>(object simplequery) where T : class, new()
+        public List<T> GetSimpleCode<T>(object simplequery=null) where T : class, new()
         { 
             var oneobject = new List<T>();
             var basequery = Db.Queryable<T>();

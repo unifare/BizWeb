@@ -33,7 +33,7 @@ namespace UniOrm.Startup.Web.Controllers
         [HttpGet]
         public IEnumerable<ComposeEntity> GetAllCompose()
         {
-            var allpos = m_codeService.GetSimpleCode<ComposeEntity>(new { IsBuildIn = true });
+            var allpos = m_codeService.GetSimpleCode<ComposeEntity>();
             return allpos;
         }
 
