@@ -13,12 +13,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Autofac;
+using Microsoft.Extensions.Options; 
 using static IdentityModel.OidcConstants;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Autofac;
 
 namespace UniOrm.ShopExPlugin
 {
@@ -64,20 +64,20 @@ namespace UniOrm.ShopExPlugin
             return new List<string>();
         }
 
-        public override List<Autofac.Module> GetAutofacModules()
-        {
-            return new List<Autofac.Module>();
-        }
+        //public override List<Autofac.Module> GetAutofacModules()
+        //{
+        //    return new List<Autofac.Module>();
+        //}
 
 
 
         public override void RegisterAutofacTypes()
         {
-            Builder.RegisterInstance< ShopExModule>(this); 
+            Resover.Container.Register< ShopExModule>(p=>this); 
          
         }
 
-        public override void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
             app.UseStaticFiles(new StaticFileOptions

@@ -27,7 +27,7 @@ namespace ADBee
         public IConfiguration Configuration { get; }
 
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             Logger.LogInfo("Startup", "ConfigureServices is starting");
 
@@ -51,16 +51,16 @@ namespace ADBee
             }
 
 
-            var serv = services.ConfigureServices();
+             services.ConfigureServices();
 
 
        
             Logger.LogInfo("Startup", "ConfigureServices is end");
             // ApplicationStartUp.EnsureDaContext(typeof(MigrationVersion1).Assembly);
-            return serv;
+            
         }
 
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
         {
             Logger.LogInfo("Startup", "Configure is starting");
             app.ConfigureSite(env);

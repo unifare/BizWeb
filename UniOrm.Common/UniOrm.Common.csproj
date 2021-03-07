@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="ConfigBuilder.cs" />
@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="CS-Script.Core" Version="1.4.4-NET5-RC4" />
     <PackageReference Include="Fasterflect.Netstandard" Version="1.0.9" />
     <PackageReference Include="FluentMigrator" Version="3.2.11" />
@@ -50,6 +49,8 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.2" />
     <PackageReference Include="PetaPoco.NetCore" Version="1.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
+    <PackageReference Include="SimpleInjector" Version="5.3.0" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc" Version="5.2.0" />
     <PackageReference Include="SqlKata" Version="2.2.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.2.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.2.2" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,22 +21,24 @@ namespace UniOrm.Startup.Web
 
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; } 
+
+      
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
 
-            var serv = services.ConfigureServices();
+             services.ConfigureServices( );
            // ApplicationStartUp.EnsureDaContext(typeof(DataMigrationiHistrory.Init).Assembly);
-            return serv;
+            //return serv;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.ConfigureSite(env);
 

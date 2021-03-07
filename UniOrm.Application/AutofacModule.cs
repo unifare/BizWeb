@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using UniOrm.Common;
 using UniOrm.Model.DataService;
+using SqlSugar;
 
 namespace UniOrm.Application
 {
@@ -14,6 +15,7 @@ namespace UniOrm.Application
 
         protected override void Load(ContainerBuilder builder)
         {
+            builder.Register<ISqlSugarClient>(p => DB.UniClient);
             //var infrastructureAssembly = typeof(AggregateRoot).GetTypeInfo().Assembly;
             //var domainAssembly = typeof(CreateSite).GetTypeInfo().Assembly;
             var ICodeServiceAssembly = typeof(ISysDatabaseService).Assembly; 
@@ -23,16 +25,16 @@ namespace UniOrm.Application
             builder.RegisterAssemblyTypes(CommonAssembly).AsImplementedInterfaces();
 
             //register configer
-             
+          
             var pa = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar + "System.json");
             
             //builder.RegisterAssemblyTypes(domainAssembly).AsClosedTypesOf(typeof(IEventHandler<>)); 
             //builder.RegisterAssemblyTypes(domainAssembly).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(ICodeServiceAssembly).AsImplementedInterfaces();
             builder.RegisterAssemblyTypes(ExAssembly).AsImplementedInterfaces();
-            builder.Register(p => new MemoryCache(Options.Create(new MemoryCacheOptions()))).As<IMemoryCache>(); 
-        
-
+            builder.Register(p => new MemoryCache(Options.Create(new MemoryCacheOptions()))).As<IMemoryCache>();
+            // builder.Register< RuntimeCache> RuntimeCache
+            APPCommon.Resover.Container = builder;
             //builder.RegisterInstance<SqlSugarClient>(new SqlSugarClient(new ConnectionConfig() {
             //    ConnectionString = AConStateStartUp.sysconstring,
             //    DbType = DbType.Sqlite,

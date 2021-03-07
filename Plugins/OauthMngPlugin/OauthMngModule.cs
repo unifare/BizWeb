@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Autofac;
+using Microsoft.Extensions.Options; 
 using static IdentityModel.OidcConstants;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.FileProviders;
@@ -68,33 +67,37 @@ namespace OauthMngPlugin
             return new List<string>();
         }
 
-        public override List<Autofac.Module> GetAutofacModules()
-        {
-            return new List<Autofac.Module>();
-        }
+        //public override List<Autofac.Module> GetAutofacModules()
+        //{
+        //    return new List<Autofac.Module>();
+        //}
 
 
 
         public override void RegisterAutofacTypes()
         {
-            Builder.RegisterInstance<OauthMngPlugin.OauthMngModule>(this);
+            //using (var scope = APP.Resover.Resovertot.BeginLifetimeScope())
+            //{
+            //    var service = scope.Resolve<IService>();
+            //}
+            //APP.Resover.Resovertot.regi<OauthMngPlugin.OauthMngModule>(this);
 
-            OauthClient = new OauthClientModel();
-            OauthClient.ClientId = Configuration["OauthMngModule:OidcSwaggerUIClientId"];
-            OauthClient.IdentityUrl = Configuration["OauthMngModule:IdentityServerBaseUrl"];
-            OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
-            OauthClient.IdentityUrl = Configuration["OauthMngModule:IdentityServerBaseUrl"];
-            OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
-            OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
-            OauthClient.ClientSecret = Configuration["OauthMngModule:idsr4_ClientSecret"];
-            OauthClient.Scope = Configuration["OauthMngModule:OauthClientConfig_scopes"];
-            OauthClient.UserName = Configuration["OauthMngModule:idsr4_username"];
-            OauthClient.Password = Configuration["OauthMngModule:idsr4_password"];
-            OauthClient.GrantType = GrantTypes.Password;
-            //OauthClient = Configuration["OauthMngModule:OidcApiName"];
+            //OauthClient = new OauthClientModel();
+            //OauthClient.ClientId = Configuration["OauthMngModule:OidcSwaggerUIClientId"];
+            //OauthClient.IdentityUrl = Configuration["OauthMngModule:IdentityServerBaseUrl"];
+            //OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
+            //OauthClient.IdentityUrl = Configuration["OauthMngModule:IdentityServerBaseUrl"];
+            //OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
+            //OauthClient.ReponseType = Configuration["OauthMngModule:idsr4_ReponseType"];
+            //OauthClient.ClientSecret = Configuration["OauthMngModule:idsr4_ClientSecret"];
+            //OauthClient.Scope = Configuration["OauthMngModule:OauthClientConfig_scopes"];
+            //OauthClient.UserName = Configuration["OauthMngModule:idsr4_username"];
+            //OauthClient.Password = Configuration["OauthMngModule:idsr4_password"];
+            //OauthClient.GrantType = GrantTypes.Password;
+            ////OauthClient = Configuration["OauthMngModule:OidcApiName"];
         }
 
-        public override void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
             app.UseStaticFiles(new StaticFileOptions

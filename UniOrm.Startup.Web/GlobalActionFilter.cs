@@ -32,7 +32,7 @@ namespace UniOrm.Startup.Web
             await ExcuteFilter(context,next);
             if (!isBuild)
             {
-                WebSetup.BuildAllDynamicActions(_actionProvider, _dynamicChangeTokenProvider);
+                WebSetupExtension.BuildAllDynamicActions(_actionProvider, _dynamicChangeTokenProvider);
                 isBuild = true;
             }
         }

@@ -29,10 +29,7 @@ namespace UniOrm.Common
             //Client = new HttpClient();
         }
         AppConfig AppConfig { get; set; }
-        public AuthorizeHelper(IConfiguration   config)
-        {
-            AppConfig = config.GetSection("App").Get<AppConfig>();   //config.GetValue<AppConfig>("App");
-        }
+         
         public async Task<TokenResponse> LoginToIds4Async(HttpContext httpContext, string usename, string password, string refreshToken = null)
         {
             var identityserver4url = AppConfig.GetDicstring("Identityserver4.url");

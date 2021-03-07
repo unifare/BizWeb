@@ -1,10 +1,11 @@
-﻿using Autofac;
+﻿
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders; 
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,20 +55,20 @@ namespace WebEditorPlugins
             return new List<string>();
         }
 
-        public override List<Autofac.Module> GetAutofacModules()
-        {
-            return new List<Autofac.Module>();
-        }
+        //public override List<Autofac.Module> GetAutofacModules()
+        //{
+        //    return new List<Autofac.Module>();
+        //}
 
 
 
         public override void RegisterAutofacTypes()
         {
-            Builder.RegisterInstance<WebEditorModule>(this); 
+            Resover.Container.Register<WebEditorModule>(p=>this); 
         
         }
 
-        public override void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles(new StaticFileOptions
             {

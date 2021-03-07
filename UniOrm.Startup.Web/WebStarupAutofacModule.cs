@@ -1,18 +1,18 @@
-﻿using Autofac;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using UniOrm.Common;
 
 namespace UniOrm.Startup.Web
 {
-    public class WebStarupAutofacModule : Module
+    public class WebStarupAutofacModule : Microsoft.AspNetCore.Http.IMiddleware
     {
-        protected override void Load(ContainerBuilder builder)
+      
+        public Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            builder.RegisterInstance<IAuthorizeHelper>(new AuthorizeHelper());
-            base.Load(builder);
-
+            return  next(context);
         }
     }
 }

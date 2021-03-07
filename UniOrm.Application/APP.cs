@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using UniOrm;
-using UniOrm.Common;
-using Autofac;
+using UniOrm.Common; 
 using System.IO;
 using System.Collections.Concurrent;
 using UniOrm.Model;
@@ -22,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using RazorLight;
 using RazorLight.Razor;
 using UniOrm.Common.RazorPage;
+using Autofac;
 
 namespace UniOrm
 {
@@ -51,19 +51,15 @@ namespace UniOrm
             }
         }
         public static RuntimeCache RuntimeCache;
-        public static ContainerBuilder Builder
+        public static  Resover Resover
         {
             get
             {
-                return APPCommon.Builder;
-            }
-            set
-            {
-                APPCommon.Builder = value;
-            }
+                return APPCommon.Resover;
+            } 
         }
 
-        public static IResover Container;
+       // public static IResover Container;
         public static Dictionary<string, Assembly> Dlls
         {
             get
@@ -154,7 +150,13 @@ namespace UniOrm
                 password = strResult.Replace("-", "");
 
             }
-            return Container.Resolve<ISysDatabaseService>().GetDefaultUser(username, password);
+            using (var scope = Resover.Resovertot.BeginLifetimeScope())
+            {
+                // Resolve services from a scope that is a child
+                // of the root container.
+                return scope.Resolve<ISysDatabaseService>().GetDefaultUser(username, password); ;
+ 
+            } 
         }
       
 
@@ -167,7 +169,11 @@ namespace UniOrm
                 password = strResult.Replace("-", "");
 
             }
-            return Container.Resolve<ISysDatabaseService>().GetAdminUser(username, password);
+            using (var scope = Resover.Resovertot.BeginLifetimeScope())
+            {
+                return scope.Resolve<ISysDatabaseService>().GetAdminUser(username, password);
+            }
+           
         }
         public static string GetDicstring(string key)
         {
@@ -178,22 +184,18 @@ namespace UniOrm
             }
             return string.Empty;
         }
-        public static IGodWorker GetWorker()
-        {
-            return Container.Resolve<IGodWorker>();
-        }
+        //public static IGodWorker GetWorker()
+        //{
+        //    return Resover.Container.GetInstance<IGodWorker>();
+        //}
 
 
 
-        public static void RegisterAutofacModule(Autofac.Module moudle)
-        {
-
-            APPCommon.RegisterAutofacModule(moudle);
-        }
+     
 
         public static void RegisterAutofacAssemblies(IEnumerable<Assembly> modulesAssembly)
         {
-            APPCommon.RegisterAutofacAssemblies(modulesAssembly); 
+            //APPCommon.RegisterAutofacAssemblies(modulesAssembly); 
         }
         public static void RegisterAutofacModuleTypes()
         {
@@ -201,14 +203,15 @@ namespace UniOrm
             foreach (var m in allModules)
             {
                 m.RegisterAutofacTypes();
-                var mms = m.GetAutofacModules();
-                foreach (var item in mms)
-                {
-                    Builder.RegisterModule(item);
-                }
+                //var mms = m.GetAutofacModules();
+                //foreach (var item in mms)
+                //{
+                //    Builder.RegisterModule(item);
+                //}
             }
             //loger
         }
+       
 
 
         public static void ClearCache()
@@ -255,11 +258,11 @@ namespace UniOrm
             var allModules = ModuleManager.RegistedModules;
             foreach (var m in allModules)
             {
-                var mms = m.GetAutofacModules();
-                foreach (var item in mms)
-                {
-                    Builder.RegisterModule(item);
-                }
+                //var mms = m.GetAutofacModules();
+                //foreach (var item in mms)
+                //{
+                //    Builder.RegisterModule(item);
+                //}
             }
         }
 

@@ -18,7 +18,7 @@ namespace UniOrm.Startup.Web
             string referer = Request.Headers["Referer"].ToString();
             if (referer.EndsWith("/SetupHome/CreateAdmin"))
             {
-                await WebSetup.RestartAppAsync();
+                await WebSetupExtension.RestartAppAsync();
             }
             return View();
         }

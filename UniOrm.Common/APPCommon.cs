@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using UniOrm;
-using UniOrm.Common;
-using Autofac;
+using UniOrm.Common; 
 using System.IO;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
@@ -29,16 +28,15 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using RazorLight;
 using UniOrm.Common.RazorPage;
 using System.Dynamic;
-
+using SimpleInjector;
 namespace UniOrm
 {
     public partial class APPCommon
     {
         public static HttpClient Client { get; set; } = new HttpClient();
         public static IConfiguration Configuration { get; set; }
-        public static ServiceProvider ApplicationServices;
-        public static ContainerBuilder Builder = new ContainerBuilder();
-        public static IResover Container;
+        public static ServiceProvider ApplicationServices; 
+        public static Resover Resover=new Resover();
         public static Dictionary<string, Assembly> Dlls = new Dictionary<string, Assembly>();
         public static List<string> DynamicReferenceDlls = new List<string>();
         public static Dictionary<string, Type> Types = new Dictionary<string, Type>();
@@ -155,19 +153,32 @@ namespace UniOrm
 
         }
 
-        public static void RegisterAutofacModule(Autofac.Module moudle)
-        {
+        //public static void RegisterAutofacModule(Autofac.Module moudle)
+        //{
+        //    Resover.r
+        //    //app.UseMiddleware<CustomMiddleware1>(container);
+        //    Builder.RegisterModule(moudle);
+        //    RegisterAutofacModule
 
-            Builder.RegisterModule(moudle);
-        }
+        //}
 
         public static void RegisterAutofacAssemblies(IEnumerable<Assembly> modulesAssembly)
         {
             if (modulesAssembly != null)
             {
-                foreach (var m in modulesAssembly)
+                foreach (var assembly in modulesAssembly)
                 {
-                    Builder.RegisterAssemblyModules(m);
+                    
+                    //var registrations =
+                    //    from type in assembly.GetExportedTypes() 
+                    //    from service in type.GetInterfaces()
+                    //    select new { service, implementation = type };
+
+                    //foreach (var reg in registrations)
+                    //{
+                    //    Resover.Container.Register(reg.service, reg.implementation, Lifestyle.Transient);
+                    //}
+                     
                 }
             }
         }
@@ -237,7 +248,7 @@ namespace UniOrm
             return method;
         }
 
-        public static void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public static void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var allModules = ModuleManager.RegistedModules;
             foreach (var m in allModules)

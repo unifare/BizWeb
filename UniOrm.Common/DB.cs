@@ -51,7 +51,7 @@ namespace UniOrm.Common
             {
                 var configapp = APPCommon.AppConfig.UsingDBConfig;
                 var config = GetConfig(configapp);
-
+                config.InitKeyType = InitKeyType.SystemTable;
                 config.DbType = configapp.DBType;
                 return new SqlSugarClient(config);
             }

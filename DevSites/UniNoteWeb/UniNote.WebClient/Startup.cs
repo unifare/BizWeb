@@ -25,16 +25,16 @@ namespace UniNote
         public IConfiguration Configuration { get; }
 
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             Logger.LogInfo("Startup", "ConfigureServices is starting");
-            var serv = services.ConfigureServices();
+              services.ConfigureServices();
             Logger.LogInfo("Startup", "ConfigureServices is end");
             // ApplicationStartUp.EnsureDaContext(typeof(MigrationVersion1).Assembly);
-            return serv;
+            //return serv;
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {  
             Logger.LogInfo("Startup", "Configure is starting");
             app.ConfigureSite(env);

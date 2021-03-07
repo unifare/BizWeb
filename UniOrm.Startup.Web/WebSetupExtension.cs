@@ -12,8 +12,7 @@ using Newtonsoft.Json.Serialization;
 using UniOrm;
 using UniOrm.Application;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Swashbuckle.AspNetCore.Swagger;
-using Autofac;
+using Swashbuckle.AspNetCore.Swagger; 
 using Microsoft.IdentityModel.Tokens;
 using UniOrm.Core;
 using System.Linq;
@@ -38,10 +37,10 @@ using UniOrm.Common.ReflectionMagic;
 using UniOrm.Common.Middlewares;
 using Microsoft.AspNetCore.Mvc.Razor;
 using UniOrm.Startup.Web.Views;
-
+using SimpleInjector;
 namespace UniOrm.Startup.Web
 {
-    public static class WebSetup
+    public static class WebSetupExtension
     {
         private static IWebHost nccWebHost;
         private static Thread starterThread = new Thread(StartApp);
@@ -78,15 +77,14 @@ namespace UniOrm.Startup.Web
             Configuration = configuration;
             APP.Startup(configuration);
         }
+    
         // This method gets called by the runtime. Use this method to add services to the container.
-        public static IServiceProvider ConfigureServices(this IServiceCollection services)
+        public static void ConfigureServices(this IServiceCollection services )
         {
-
+          
             APP.ConfigureSiteAllModulesServices(services);
-            services.AddMediatR(typeof(WebSetup).Assembly);
-
-            var builder = new ContainerBuilder();
-            var tempcontainer = builder.Build();
+            services.AddMediatR(typeof(WebSetupExtension).Assembly); 
+           
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ICompiler, Compiler>()
                .AddSingleton<DynamicActionProvider>()
@@ -248,16 +246,15 @@ namespace UniOrm.Startup.Web
                 //services.AddSingleton(feature.Controllers.Select(t => t.AsType()).ToArray());
             })
             .InitializeTagHelper<FormTagHelper>((helper, context) => helper.Antiforgery = false);
+            
+       
             var asses = AppDomain.CurrentDomain.GetAssemblies();
-            var we = services.InitAutofac(asses);
+           // services.AddControllers().AddControllersAsServices(); //控制器当做实例创建
+          //  services.InitAutofac(asses);
+            // APPCommon.Builder.RegisterType<IHttpContextAccessor, HttpContextAccessor>(); 
             appConfig.ResultDictionary = appConfig.ResultDictionary;
-
-           // APPCommon.Builder.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
-
             APP.ApplicationServices = services.BuildServiceProvider();
             APP.SetServiceProvider();
-
-            return we;
         }
 
         public static void BuildAllDynamicActions(DynamicActionProvider dynamicActionProvider, DynamicChangeTokenProvider dynamicChangeToken)
@@ -418,9 +415,9 @@ namespace UniOrm.Startup.Web
         {
             Application.DbMigrationHelper.EnsureDaContext(APPCommon.AppConfig.UsingDBConfig);
         }
-        public static void ConfigureSite(this IApplicationBuilder app, IHostingEnvironment env)
+        public static void ConfigureSite(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-
+            //app.UseSimpleInjector(APPCommon.Resover.Container);
             app.UseDeveloperExceptionPage();
             var appConfig = APPCommon.AppConfig;
             var UserDefaultStaticalDir = appConfig.GetDicstring("UserDefaultStaticalDir");
@@ -490,7 +487,7 @@ namespace UniOrm.Startup.Web
                endpoints.MapRazorPages();
             });
 
-
+           // APPCommon.Resover.Container.Verify();
            // BuildAllDynamicActions();
         }
 

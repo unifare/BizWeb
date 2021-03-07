@@ -1,8 +1,5 @@
-﻿using Autofac;
-using Microsoft.Extensions.DependencyInjection;
-using Autofac.Extensions.DependencyInjection;
-using Autofac.Extensions;
-using Autofac.Builder;
+﻿ 
+using Microsoft.Extensions.DependencyInjection; 
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +12,7 @@ using UniOrm;
 using UniOrm.Common; 
 using UniOrm.DataMigrationiHistrory;
 using SqlSugar;
+using Autofac;
 
 namespace UniOrm.Application
 {
@@ -66,33 +64,34 @@ namespace UniOrm.Application
         }
        
       
-        public static IServiceProvider InitAutofac(this IServiceCollection services, IEnumerable<Assembly> modulesAssembly)
+        public static IServiceProvider InitAutofac(this IServiceCollection services,   IEnumerable<Assembly> modulesAssembly)
         {
             if (s_isInit)
             {
                 return autofacServiceProvider;
             }
-            services.AddAutofac();
-            var builder = APP.Builder;
-            //APP.RegisterAutofacModule(new AutofacModule()); 
+            //services.AddAutofac(); 
+            //APP.Resover.RegistAutofacModule();
+
             APP.RegisterAutofacModuleTypes();
-            APP.RegisterAutofacAssemblies(modulesAssembly);
-            builder.Register<ISqlSugarClient>(c => DB.UniClient);
+            //APP.RegisterAutofacAssemblies(modulesAssembly);
 
-            builder.Populate(services);
 
-           var container = builder.Build();
+
+
 
             ///////////using /////////////////////
-             
-         
-            var memoryCache = container.Resolve<IMemoryCache>();
-            APP.RuntimeCache = new RuntimeCache(memoryCache);
-            autofacServiceProvider = container.Resolve<IServiceProvider>();
-            var systemResover = new AutofacResover() { Container = container };
-            builder.RegisterInstance<IResover>(systemResover);
+            using (var scope = APP.Resover.Resovertot.BeginLifetimeScope())
+            {
+                var memoryCache = scope.Resolve<IMemoryCache>();
+                APP.RuntimeCache = new RuntimeCache(memoryCache);
+                autofacServiceProvider = scope.Resolve<IServiceProvider>();
+                //var systemResover = new AutofacResover() { Container = container };
+                //APP.Builder.RegisterInstance<IResover>(systemResover); 
+            }
+           
 
-            APP.Container = systemResover;
+            //  APP.Container = systemResover;
             return autofacServiceProvider;
         }
     }

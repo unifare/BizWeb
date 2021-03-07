@@ -16,6 +16,7 @@ namespace UniOrm.Model.DataService
         public SysDatabaseService(SqlSugar.ISqlSugarClient db )
         {
             Db = db;
+
         }
 
        

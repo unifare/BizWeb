@@ -1,4 +1,4 @@
-﻿using Autofac;
+﻿ 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
@@ -12,9 +12,8 @@ using UniOrm.Common;
 namespace UniOrm.Common
 {
     public interface IModule
-    {
-        ContainerBuilder Builder { get; }
-        IResover Container { get; }
+    { 
+        Resover Resover { get; }
         string DllPath { get; set; }
         string ModuleName { get; }
         string ModuleStaticPath { get; } 
@@ -37,7 +36,7 @@ namespace UniOrm.Common
 
         void SetServiceProvider(ServiceProvider serviceProvider);
 
-        List<Module> GetAutofacModules();
+        //List<Module> GetAutofacModules();
 
         void RegisterAutofacTypes();
         //RequireItemCollection RequireItems { get; set; }
@@ -45,7 +44,7 @@ namespace UniOrm.Common
         //DbMigrationUnit ModuleMigrationUnit { get; set; }
 
         void ConfigureSiteServices(IServiceCollection services);
-        void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env);
+        void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env);
         void ConfigureRouter(IRouteBuilder routeBuilder);
     }
 }

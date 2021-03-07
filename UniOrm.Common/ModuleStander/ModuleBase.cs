@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using UniOrm;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Autofac;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
@@ -21,21 +21,13 @@ namespace UniOrm.Common
     public abstract class ModuleBase : IModule
     {
         private readonly string LoggerName = "ModuleBase";
-        public virtual ContainerBuilder Builder
+      
+        public virtual Resover Resover
         {
 
             get
             {
-                return APPCommon.Builder;
-            }
-
-        }
-        public virtual IResover Container
-        {
-
-            get
-            {
-                return APPCommon.Container;
+                return APPCommon.Resover;
             }
 
         }
@@ -87,7 +79,7 @@ namespace UniOrm.Common
             return APPCommon.AppConfig;
         }
 
-        public abstract List<Autofac.Module> GetAutofacModules();
+     
 
         public virtual string GetDBTablePrefixConfig()
         {
@@ -156,7 +148,7 @@ namespace UniOrm.Common
         }
 
         public abstract AppConfig ModuleAppConfig { get; set; }
-        public virtual void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public virtual void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseStaticFiles(new StaticFileOptions
             {

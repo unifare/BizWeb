@@ -71,10 +71,10 @@ namespace AlipayPlugin
             return new List<string>();    
         }
 
-        public override List<Autofac. Module> GetAutofacModules()
-        {
-            return new List<Autofac.Module>();
-        }
+        //public override List<Autofac. Module> GetAutofacModules()
+        //{
+        //    return new List<Autofac.Module>();
+        //}
         public override void RegisterAutofacTypes()
         {
 
@@ -103,7 +103,7 @@ namespace AlipayPlugin
             //});
         }
 
-        public override void ConfigureSite(IApplicationBuilder app, IHostingEnvironment env)
+        public override void ConfigureSite(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
         }
