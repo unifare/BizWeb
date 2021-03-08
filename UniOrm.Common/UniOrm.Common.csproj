@@ -11,10 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Config\System_default.json" />
     <None Remove="Logger.conf" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Config\system_default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Logger.conf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -22,6 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="CS-Script.Core" Version="1.4.4-NET5-RC4" />
     <PackageReference Include="Fasterflect.Netstandard" Version="1.0.9" />
     <PackageReference Include="FluentMigrator" Version="3.2.11" />

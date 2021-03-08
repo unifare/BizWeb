@@ -38,31 +38,52 @@ using UniOrm.Common.Middlewares;
 using Microsoft.AspNetCore.Mvc.Razor;
 using UniOrm.Startup.Web.Views;
 using SimpleInjector;
+using UniOrm.Common.Core;
+using Autofac.Extensions.DependencyInjection;
+
 namespace UniOrm.Startup.Web
 {
-    public static class WebSetupExtension
+    public static class WebSetup
     {
         private static IWebHost nccWebHost;
-        private static Thread starterThread = new Thread(StartApp);
+        //private static Thread starterThread = new Thread(StartApp);
         private const string LoggerName = "WebSetup";
 
         public static IConfiguration Configuration = null;
 
-        public static void StartApp(object argsObj)
+        public static void StartApp(string[] argsObj)
         {
-            BuildWebHost((string[])argsObj).Run();
+            CoreManager.ResgiteCore();
+            var fun = CoreManager.Resolver<IFunction>();
+           // var startup= CoreManager.Container.GetInstance(CoreManager.StartupInterface.InterfaceType);
+            UniOrm.ApplicationManager.Load().Start(argsObj, CreateWebHostBuilder);
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        private static string[] ScanBack(string dlldir)
         {
-
-            nccWebHost = WebHost.CreateDefaultBuilder(args)
-                 .UseContentRoot(Directory.GetCurrentDirectory())
-                 .UseStartup<Startup>() 
-                 .Build();
-            return nccWebHost;
+            return Directory.GetFiles(dlldir, "*.json");
         }
+        public static IHostBuilder CreateWebHostBuilder(string[] args)
+        {
+           var ee= Type.GetType(CoreManager.StartupInterface.ImplementTypeName);
+            var webHostBuilder = Host.CreateDefaultBuilder(args)
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //这里是Autofac的引用声明
+               .ConfigureWebHostDefaults(webBuilder =>
+               {
+                   webBuilder.ConfigureAppConfiguration(builder =>
+                   {
+                       builder.AddJsonFile("config/System.json");
+                       var alljsons = ScanBack(AppDomain.CurrentDomain.BaseDirectory);
+                       foreach (var json in alljsons)
+                       {
+                           builder.AddJsonFile(json);
+                       }
 
+                   }).UseStartup (ee);
+               });
+
+            return webHostBuilder;
+        }
         public static async Task RestartAppAsync()
         {
             await NetCoreCmsHost.StopAppAsync(nccWebHost);
@@ -83,7 +104,7 @@ namespace UniOrm.Startup.Web
         {
           
             APP.ConfigureSiteAllModulesServices(services);
-            services.AddMediatR(typeof(WebSetupExtension).Assembly); 
+            services.AddMediatR(typeof(WebSetup).Assembly); 
            
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ICompiler, Compiler>()

@@ -19,7 +19,7 @@ namespace UniOrm
 
         public string AppType { get; set; }
         public string ModuleConfigDir { get; set; } = "./";
-        public string AppName { get; set; } 
+        public string AppName { get; set; }
         public string AdminAreas { get; set; } = "sd23nj";
         public string UserSpaceDir { get; set; } = "config/UploadPage";
         public string AppTheme { get; set; } = "Aro";
@@ -42,14 +42,14 @@ namespace UniOrm
                 return DB.UniClient;
             }
 
-        } 
+        }
 
         public void LoadDBDictionary()
-        { 
+        {
             SystemDictionaries.AddRange(Db.Queryable<SystemDictionary>().ToList());
         }
 
-       
+
         public string GetDicstring(string key)
         {
             var item = SystemDictionaries.FirstOrDefault(p => p.KeyName == key);
@@ -60,6 +60,19 @@ namespace UniOrm
             return string.Empty;
         }
     }
-
-
+    public class InterfaceInfo
+    {
+        public string LifeTime { get; set; }
+        public Type InterfaceType { get; set; }
+        public string Name { get; set; }
+        public string InterfaceTypeName { get; set; }
+        public string ImplementTypeName { get; set; }
+        public Type ImplementType { get; set; }
+    }
+    public class AppConfigSystem : AppConfig
+    {
+        public string StarupKey { get; set; }
+        public List<InterfaceInfo> Interfaces { get; set; }
+       
+    }
 }

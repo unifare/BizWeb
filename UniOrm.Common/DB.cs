@@ -45,6 +45,8 @@ namespace UniOrm.Common
             }
         }
 
+       
+
         public static SqlSugarClient UniClient
         {
             get

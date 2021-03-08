@@ -1,47 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using UniOrm.Application;
+using UniOrm.Common;
 using UniOrm.Startup.Web;
+using Autofac.Extensions.DependencyInjection;
 namespace UniOrm.Startup.Web
 {
-    public class Startup
+    public class Startup : UniOrm.Common.Core.IStartUp
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            Logger.LogInfo("Startup", "Startup is starting");
             Configuration = configuration;
-
+            Configuration.Startup();
         }
 
-        public IConfiguration Configuration { get; } 
+        public IConfiguration Configuration { get; }
+        public void ConfigureContainer(ContainerBuilder containerBuilder)
+        {
+            //APPCommon.Resover.Container
+            containerBuilder.RegisterModule<AutofacModule>();
 
-      
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        }
+        public ILifetimeScope AutofacContainer { get; private set; }
         public void ConfigureServices(IServiceCollection services)
         {
+            Logger.LogInfo("Startup", "ConfigureServices is starting");
+            services.ConfigureServices();
+            Logger.LogInfo("Startup", "ConfigureServices is end");
+            // ApplicationStartUp.EnsureDaContext(typeof(MigrationVersion1).Assembly);
 
-             services.ConfigureServices( );
-           // ApplicationStartUp.EnsureDaContext(typeof(DataMigrationiHistrory.Init).Assembly);
-            //return serv;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
-            app.ConfigureSite(env);
+            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
+
+            var memoryCache = this.AutofacContainer.Resolve<IMemoryCache>();
+            APP.RuntimeCache = new RuntimeCache(memoryCache);
+            //autofacServiceProvider = scope.Resolve<IServiceProvider>();
+            //var systemResover = new AutofacResover() { Container = container };
+            //APP.Builder.RegisterInstance<IResover>(systemResover); 
+
+            Logger.LogInfo("Startup", "Configure is starting");
+            app.ConfigureSite(env);
+            Logger.LogInfo("Startup", "Configure is end");
         }
+
     }
 }

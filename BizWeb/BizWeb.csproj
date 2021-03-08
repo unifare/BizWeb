@@ -37,10 +37,10 @@
     <Compile Remove="Controllers\HomeController.cs" />
     <Compile Remove="Controllers\HtmlController.cs" />
     <Compile Remove="Controllers\LangsController.cs" />
+    <Compile Remove="Startup.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
   </ItemGroup>

@@ -20,34 +20,10 @@ namespace UniNote.WebClient
         {
             Logger.LogInfo("Program", "Program is starting");
             //var host = CreateWebHostBuilder(args).Build();
-            UniOrm.ApplicationManager.Load().Start(args, CreateWebHostBuilder);
-            
+
+            UniOrm.Startup.Web.WebSetup.StartApp(args);
             //WebSetup.StartApp(args);
         }
-        private static string[] ScanBack(string dlldir)
-        {
-            return Directory.GetFiles(dlldir, "*.json");
-        }
-        public static IHostBuilder CreateWebHostBuilder(string[] args)
-        {
-
-            var webHostBuilder = Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //这里是Autofac的引用声明
-               .ConfigureWebHostDefaults(webBuilder =>
-               {
-                   webBuilder .ConfigureAppConfiguration(builder =>
-                   {
-                       builder.AddJsonFile("config/System.json");
-                       var alljsons = ScanBack(AppDomain.CurrentDomain.BaseDirectory);
-                       foreach (var json in alljsons)
-                       {
-                           builder.AddJsonFile(json);
-                       }
-
-                   }).UseStartup<Startup>();
-               });
-            
-            return webHostBuilder;
-        }
+      
     }
 }
