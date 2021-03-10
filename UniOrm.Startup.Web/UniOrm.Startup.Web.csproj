@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <MvcRazorCompileOnBuild>false</MvcRazorCompileOnBuild>
-    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
-    <RazorCompileOnBuild>false</RazorCompileOnBuild>
-    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorCompileOnBuild>true</MvcRazorCompileOnBuild>
+    <MvcRazorCompileOnPublish>true</MvcRazorCompileOnPublish>
+    <RazorCompileOnBuild>true</RazorCompileOnBuild>
+    <RazorCompileOnPublish>true</RazorCompileOnPublish>
+	  
   </PropertyGroup>
 
   <ItemGroup>

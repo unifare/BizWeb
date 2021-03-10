@@ -37,7 +37,6 @@
     <Compile Remove="Controllers\HomeController.cs" />
     <Compile Remove="Controllers\HtmlController.cs" />
     <Compile Remove="Controllers\LangsController.cs" />
-    <Compile Remove="Startup.cs" />
   </ItemGroup>
 
   <ItemGroup>

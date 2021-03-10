@@ -67,6 +67,7 @@ namespace UniOrm.Startup.Web
         {
            var ee= Type.GetType(CoreManager.StartupInterface.ImplementTypeName);
             var webHostBuilder = Host.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //这里是Autofac的引用声明
                .ConfigureWebHostDefaults(webBuilder =>
                {

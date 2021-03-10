@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using UniOrm.Application;
-using UniOrm.Common;
+using UniOrm;
 using UniOrm.Startup.Web;
+using static IdentityModel.OidcConstants;
+using Microsoft.Extensions.Hosting;
+using Autofac;
+using Microsoft.Extensions.Caching.Memory;
+using UniOrm.Common;
 using Autofac.Extensions.DependencyInjection;
-namespace UniOrm.Startup.Web
+
+namespace UniNote
 {
-    public class Startup : UniOrm.Common.Core.IStartUp
+    public class Startup
     {
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
@@ -34,7 +34,7 @@ namespace UniOrm.Startup.Web
             containerBuilder.RegisterModule<AutofacModule>();
 
         }
-        //public ILifetimeScope AutofacContainer { get; private set; }
+    
         public void ConfigureServices(IServiceCollection services)
         {
             Logger.LogInfo("Startup", "ConfigureServices is starting");
@@ -59,6 +59,5 @@ namespace UniOrm.Startup.Web
             app.ConfigureSite(env);
             Logger.LogInfo("Startup", "Configure is end");
         }
-
     }
 }

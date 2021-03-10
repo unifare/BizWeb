@@ -15,10 +15,10 @@ namespace UniOrm.Common
             set { _container = value; }
             get { return _container; }
         }
-        public IContainer  Resovertot
+        public ILifetimeScope Resovertot
         {
-            get;set;
-            }
+            get; set;
+        }
 
     }
 
