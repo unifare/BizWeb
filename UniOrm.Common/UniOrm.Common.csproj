@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Config\System_default.json" />
+    <None Remove="config\System_default.json" />
     <None Remove="Logger.conf" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Config\system_default.json">
+    <Content Include="config\system_default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -9,7 +9,7 @@ namespace UniOrm
 {
     public class UniPage:  PageModel
     {
-        public async Task<IActionResult> OnGetAsync()
+        public IActionResult  OnGetAsync()
         {
             // if (!ModelState.IsValid)
             //{           
