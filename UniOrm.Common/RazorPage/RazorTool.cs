@@ -160,7 +160,12 @@ namespace UniOrm
             var content = fullpath.ReadAsTextFile();
             return content;
         }
-
+        
+        public async Task<string> TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
+        {
+            var content = await APPCommon.RenderRazorKey(templateKey, model, viewBag);
+            return content;
+        }
         //public string DBHtml(string key)
         //{
         //    return DB.UniClient.Queryable<i(APPCommon.GetWTableName(tablename)).Insert(obj);
