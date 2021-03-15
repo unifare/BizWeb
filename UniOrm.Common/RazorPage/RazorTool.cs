@@ -163,7 +163,7 @@ namespace UniOrm
         
         public async Task<string> TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
         {
-            var content = await APPCommon.RenderRazorKey(templateKey, model, viewBag);
+            var content = await APPCommon.RenderRazorKey(templateKey, model, viewBag)?.GetAwaiter().GetResult();
             return content;
         }
         //public string DBHtml(string key)
