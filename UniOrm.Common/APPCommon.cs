@@ -29,6 +29,9 @@ using RazorLight;
 using UniOrm.Common.RazorPage;
 using System.Dynamic;
 using SimpleInjector;
+using Microsoft.AspNetCore.Http;
+using UniOrm.Common.Core;
+
 namespace UniOrm
 {
     public partial class APPCommon
@@ -123,7 +126,24 @@ namespace UniOrm
             }
 
         }
+        public static ResultInfoBase UploadFile(HttpRequest httpRequest, string dirName)
+        {
 
+            var remsg = new ResultInfoBase();
+            dirName = dirName.UrlDecode();
+            if (httpRequest.Form.Files.Count == 0)
+            {
+                remsg.IsOK= false;
+                remsg.Message="未检测到文件"; 
+            }
+            dirName = dirName.ToServerFullPathEnEnsure();
+
+            foreach (var file in httpRequest.Form.Files)
+            {
+                file.UploadSaveSingleFile(dirName);
+            }
+            return  remsg ;
+        }
         public static string GetWTableName(string tableName)
         {
             return AppConfig.UsingDBConfig.DefaultDbPrefixName + tableName;

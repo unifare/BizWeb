@@ -21,6 +21,7 @@ using System.Dynamic;
 using System.Collections;
 using SqlKata;
 using System.Text.RegularExpressions;
+using UniOrm.Common.Core;
 
 namespace UniOrm
 {
@@ -90,6 +91,8 @@ namespace UniOrm
         {
             return APPCommon.AppConfig.GetDicstring(key);
         }
+
+
 
         public string L(string key)
         {
@@ -161,9 +164,9 @@ namespace UniOrm
             return content;
         }
         
-        public async Task<string> TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
+        public  string TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
         {
-            var content = await APPCommon.RenderRazorKey(templateKey, model, viewBag)?.GetAwaiter().GetResult();
+            var content =  APPCommon.RenderRazorKey(templateKey, model, viewBag)?.GetAwaiter().GetResult();
             return content;
         }
         //public string DBHtml(string key)
@@ -411,12 +414,16 @@ namespace UniOrm
             }
         }
 
-        public IFormCollection Form
+        public IFormCollection FormCollection
         {
             get
             {
                 return HttpContext.Request.Form;
             } 
+        }
+        public string Form(string key)
+        { 
+            return FormCollection[key].ToString();
         }
 
         public int Insert(string tablenmae,object inserObject)
@@ -484,15 +491,15 @@ namespace UniOrm
 
         public dynamic FormToOjbect(  ) 
         { 
-            var tablename = Form["_tablename"];
+            var tablename = FormCollection["_tablename"];
              var cols=   DB.UniClient.DbMaintenance.GetColumnInfosByTableName(tablename); 
             dynamic result = new System.Dynamic.ExpandoObject();
             foreach(var cinfo in cols)
             {
-                if(Form.ContainsKey(cinfo.DbColumnName))
+                if(FormCollection.ContainsKey(cinfo.DbColumnName))
                 { 
                 (result as ICollection<KeyValuePair<string, object>>).Add(new KeyValuePair<string, object>(cinfo.DbColumnName,
-                  Form[cinfo.DbColumnName])); 
+                  FormCollection[cinfo.DbColumnName])); 
                 }
             }
             return result;
@@ -503,9 +510,9 @@ namespace UniOrm
             Dictionary<string, object> dic = new Dictionary<string, object>();
             foreach (var cinfo in cols)
             {
-                if (Form.ContainsKey(cinfo.DbColumnName))
+                if (FormCollection.ContainsKey(cinfo.DbColumnName))
                 {
-                    dic.Add(cinfo.DbColumnName, Form[cinfo.DbColumnName]);
+                    dic.Add(cinfo.DbColumnName, FormCollection[cinfo.DbColumnName]);
                 }
             }
             return dic;
@@ -531,7 +538,7 @@ namespace UniOrm
 
         public int InsertForm()
         {
-            var tablename = Form["_tablename"];
+            var tablename = FormCollection["_tablename"];
             var obj = FormToDic(tablename);
             return DB.Kata.Query(APPCommon.GetWTableName(tablename)).Insert(obj);
         }
@@ -624,6 +631,11 @@ namespace UniOrm
         public string GetForm(string key)
         {
             return HttpContext.Request.Form[key];
+        }
+
+        public ResultInfoBase SaveFiles(  string dirName)
+        {
+            return APPCommon.UploadFile(Request, dirName);
         }
 
         public HttpRequest Request
