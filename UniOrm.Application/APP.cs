@@ -22,6 +22,8 @@ using RazorLight;
 using RazorLight.Razor;
 using UniOrm.Common.RazorPage;
 using Autofac;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace UniOrm
 {
@@ -141,7 +143,7 @@ namespace UniOrm
             //}
         }
 
-        public static DefaultUser LoginDefaultUser(string username, string password)
+        public static DefaultUser DoLoginDefaultUser(string username, string password)
         {
             using (var md5 = MD5.Create())
             {
@@ -158,8 +160,8 @@ namespace UniOrm
  
             } 
         }
-      
 
+    
         public static AdminUser LoginAdmin(string username, string password)
         {
             using (var md5 = MD5.Create())

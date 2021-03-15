@@ -22,6 +22,11 @@ using System.Collections;
 using SqlKata;
 using System.Text.RegularExpressions;
 using UniOrm.Common.Core;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using Autofac;
+using UniOrm.Model.DataService;
 
 namespace UniOrm
 {
@@ -425,7 +430,29 @@ namespace UniOrm
         { 
             return FormCollection[key].ToString();
         }
+         
+        public string Method
+        {
+            get
+            {
+                return Request.Method.ToLower();
+            }
+        }
+        public bool IsPost
+        {
+            get
+            {
+                return Method=="post";
+            }
+        }
 
+        public bool IsDelete
+        {
+            get
+            {
+                return Method == "del";
+            }
+        }
         public int Insert(string tablenmae,object inserObject)
         {
           return Kata.Query(tablenmae).Insert(inserObject);
@@ -687,5 +714,31 @@ namespace UniOrm
                 value = string.Empty;
             return value;
         }
+      
+
+        public ResultInfoBase LoginDefaultUser(string userName, string password)
+        {
+            var user =APP. DoLoginDefaultUser(userName, password);
+            // var user = _userService.Login(userName, password);
+            if (user != null)
+            {
+                var authenticationType = UserAuthorizeAttribute.CustomerAuthenticationScheme;
+                var identity = new ClaimsIdentity(authenticationType);
+                identity.AddClaim(new Claim(ClaimTypes.Sid, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "users"));
+                 HttpContext.SignInAsync(authenticationType, new ClaimsPrincipal(identity))
+                    .GetAwaiter().GetResult();
+                return  new ResultInfoBase { IsOK = true, Message = "" };
+
+
+            }
+            else
+            {
+                return new ResultInfoBase { IsOK = false, Message = "" };
+            }
+        }
+
+
     }
 }

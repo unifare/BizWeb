@@ -66,11 +66,16 @@ namespace UniOrm
 
         }
 
+   
+
+
         public static async Task LoadLocalLangs()
         {
             Langs = await DB.UniClient.Queryable<LocalLangs>().ToListAsync();
 
         }
+
+
         public static async Task<LocalLangs> GetLoalLang(string key, string langname = "zh_CN", int lang = 0)
         {
          
@@ -347,7 +352,59 @@ namespace UniOrm
 
         public static string ToSourceCode(AConMvcClass systemHtml)
         {
-            var strinbuilder = systemHtml.UsingNameSpance + "\r\n" + systemHtml.ClassAttrs + "\r\n" +
+            var defaultNamespace = @"using UniOrm;
+using UniOrm.Application;
+using UniOrm.Common;
+using UniOrm.Model;
+using UniOrm.Startup.Web ;
+using System;
+using System.Web;
+using System.IO;
+using System.Text;
+using System.Text.Encodings;
+using System.Text.RegularExpressions;
+using System.Collections.Generic; 
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Reflection;
+using System.Dynamic ;
+using System.Diagnostics ;
+using System.Linq.Expressions;
+using System.Xml;
+using System.Xml.Linq;
+using System.Configuration ;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.Common; 
+using System.Globalization;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Net.WebSockets;
+using System.Drawing;
+using Microsoft.Data.Sqlite;
+using MySql.Data.MySqlClient;
+using Npgsql;
+//using PetaPoco.SqlKata;
+using SqlKata.Compilers;
+using SqlKata.Execution;
+using SqlSugar;
+using CSScriptLib;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Numerics ;
+using Peachpie.AspNetCore.Web;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;";
+            defaultNamespace += systemHtml.UsingNameSpance;
+            var strinbuilder = defaultNamespace + "\r\n" + systemHtml.ClassAttrs + "\r\n" +
                         " public partial class ";
             if (systemHtml.IsSelfDefine == true)
             {
