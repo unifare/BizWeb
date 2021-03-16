@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OniOrm.Common.Web\UniOrm.Common.Web.csproj" />
     <ProjectReference Include="..\UniOrm.DataMigrationiHistrory\UniOrm.DataMigrationiHistrory.csproj" />
     <ProjectReference Include="..\UniOrm.DataService\UniOrm.Model.DataService.csproj" />
   </ItemGroup>

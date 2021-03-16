@@ -21,6 +21,12 @@ using System.Dynamic;
 using System.Collections;
 using SqlKata;
 using System.Text.RegularExpressions;
+using UniOrm.Common.Core;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using Autofac;
+using UniOrm.Model.DataService;
 
 namespace UniOrm
 {
@@ -90,6 +96,8 @@ namespace UniOrm
         {
             return APPCommon.AppConfig.GetDicstring(key);
         }
+
+
 
         public string L(string key)
         {
@@ -161,9 +169,9 @@ namespace UniOrm
             return content;
         }
         
-        public async Task<string> TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
+        public  string TmplHtml(string templateKey, object model = null, ExpandoObject viewBag = null)
         {
-            var content = await APPCommon.RenderRazorKey(templateKey, model, viewBag);
+            var content =  APPCommon.RenderRazorKey(templateKey, model, viewBag)?.GetAwaiter().GetResult();
             return content;
         }
         //public string DBHtml(string key)
@@ -411,14 +419,40 @@ namespace UniOrm
             }
         }
 
-        public IFormCollection Form
+        public IFormCollection FormCollection
         {
             get
             {
                 return HttpContext.Request.Form;
             } 
         }
+        public string Form(string key)
+        { 
+            return FormCollection[key].ToString();
+        }
+         
+        public string Method
+        {
+            get
+            {
+                return Request.Method.ToLower();
+            }
+        }
+        public bool IsPost
+        {
+            get
+            {
+                return Method=="post";
+            }
+        }
 
+        public bool IsDelete
+        {
+            get
+            {
+                return Method == "del";
+            }
+        }
         public int Insert(string tablenmae,object inserObject)
         {
           return Kata.Query(tablenmae).Insert(inserObject);
@@ -484,15 +518,15 @@ namespace UniOrm
 
         public dynamic FormToOjbect(  ) 
         { 
-            var tablename = Form["_tablename"];
+            var tablename = FormCollection["_tablename"];
              var cols=   DB.UniClient.DbMaintenance.GetColumnInfosByTableName(tablename); 
             dynamic result = new System.Dynamic.ExpandoObject();
             foreach(var cinfo in cols)
             {
-                if(Form.ContainsKey(cinfo.DbColumnName))
+                if(FormCollection.ContainsKey(cinfo.DbColumnName))
                 { 
                 (result as ICollection<KeyValuePair<string, object>>).Add(new KeyValuePair<string, object>(cinfo.DbColumnName,
-                  Form[cinfo.DbColumnName])); 
+                  FormCollection[cinfo.DbColumnName])); 
                 }
             }
             return result;
@@ -503,9 +537,9 @@ namespace UniOrm
             Dictionary<string, object> dic = new Dictionary<string, object>();
             foreach (var cinfo in cols)
             {
-                if (Form.ContainsKey(cinfo.DbColumnName))
+                if (FormCollection.ContainsKey(cinfo.DbColumnName))
                 {
-                    dic.Add(cinfo.DbColumnName, Form[cinfo.DbColumnName]);
+                    dic.Add(cinfo.DbColumnName, FormCollection[cinfo.DbColumnName]);
                 }
             }
             return dic;
@@ -531,7 +565,7 @@ namespace UniOrm
 
         public int InsertForm()
         {
-            var tablename = Form["_tablename"];
+            var tablename = FormCollection["_tablename"];
             var obj = FormToDic(tablename);
             return DB.Kata.Query(APPCommon.GetWTableName(tablename)).Insert(obj);
         }
@@ -626,6 +660,11 @@ namespace UniOrm
             return HttpContext.Request.Form[key];
         }
 
+        public ResultInfoBase SaveFiles(  string dirName)
+        {
+            return APPCommon.UploadFile(Request, dirName);
+        }
+
         public HttpRequest Request
         {
             get
@@ -675,5 +714,31 @@ namespace UniOrm
                 value = string.Empty;
             return value;
         }
+      
+
+        public ResultInfoBase LoginDefaultUser(string userName, string password)
+        {
+            var user =APP. DoLoginDefaultUser(userName, password);
+            // var user = _userService.Login(userName, password);
+            if (user != null)
+            {
+                var authenticationType = UserAuthorizeAttribute.CustomerAuthenticationScheme;
+                var identity = new ClaimsIdentity(authenticationType);
+                identity.AddClaim(new Claim(ClaimTypes.Sid, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+                identity.AddClaim(new Claim(ClaimTypes.Role, "users"));
+                 HttpContext.SignInAsync(authenticationType, new ClaimsPrincipal(identity))
+                    .GetAwaiter().GetResult();
+                return  new ResultInfoBase { IsOK = true, Message = "" };
+
+
+            }
+            else
+            {
+                return new ResultInfoBase { IsOK = false, Message = "" };
+            }
+        }
+
+
     }
 }

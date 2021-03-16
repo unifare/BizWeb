@@ -22,7 +22,7 @@ namespace UniOrm.Startup.Web.Controllers
         {
           
         }
-
+        [HttpPost,HttpGet,HttpPut,HttpDelete]
         public async Task<IActionResult> Index()
         {
           

@@ -34,10 +34,10 @@ namespace UniNote
             //return serv;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {  
             Logger.LogInfo("Startup", "Configure is starting");
-            app.ConfigureSite(env);
+            app.ConfigureSite(env, lifetime);
             Logger.LogInfo("Startup", "Configure is end");
         }
     }

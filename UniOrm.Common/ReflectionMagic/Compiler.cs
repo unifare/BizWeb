@@ -1,4 +1,3 @@
-﻿extern alias MSCodeAnalysis;
 using CSScriptLib;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -18,11 +17,11 @@ namespace UniOrm.Startup.Web.DynamicController
         {
             //return CSScript.Evaluator.ReferenceAssembly(Assembly.GetExecutingAssembly()).CompileCode(text,new CompileInfo() { RootClass = "tet", PreferLoadingFromFile=true });
 
-            var references = referencedAssemblies.Select(it => MSCodeAnalysis::Microsoft.CodeAnalysis.MetadataReference
+            var references = referencedAssemblies.Select(it =>  Microsoft.CodeAnalysis.MetadataReference
         .CreateFromFile(it.Location));
-            var options = new CSharpCompilationOptions(MSCodeAnalysis::Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary);
+            var options = new CSharpCompilationOptions( Microsoft.CodeAnalysis.OutputKind.DynamicallyLinkedLibrary);
             var assemblyName = guid;// "_" + Guid.NewGuid().ToString("D");
-            var syntaxTrees = new MSCodeAnalysis::Microsoft.CodeAnalysis.SyntaxTree[] { CSharpSyntaxTree.ParseText(text) };
+            var syntaxTrees = new  Microsoft.CodeAnalysis.SyntaxTree[] { CSharpSyntaxTree.ParseText(text) };
             var compilation = CSharpCompilation.Create(
                assemblyName, syntaxTrees, references, options);
             using var stream = new MemoryStream();

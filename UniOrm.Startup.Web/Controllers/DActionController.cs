@@ -80,7 +80,7 @@ namespace UniOrm.Startup.Web.Controllers
                 systemHtml.Guid = Guid.NewGuid().ToString("D");
             }
 
-            var oldmvc=  DbFactory.Queryable<AConMvcClass>().Where(p =>  p.ClassName.ToLower() == systemHtml.ClassName.ToLower()).FirstAsync();
+            var oldmvc= await DbFactory.Queryable<AConMvcClass>().Where(p =>  p.ClassName.ToLower() == systemHtml.ClassName.ToLower()).FirstAsync();
             if( oldmvc!=null)
             {
                 return Json(new { isok = false, err = $"has the same class {systemHtml.ClassName }"  });
