@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,11 +13,11 @@ namespace UniOrm
     {
 
         private static ApplicationManager _appManager;
-        private IHostBuilder _web;
+        Func<string[], IHostBuilder> hostBuilderFunc;
         private CancellationTokenSource _tokenSource;
         private bool _running;
         private bool _restart;
-         
+        public string[] args;
         private int restartTime = 0;
         public ApplicationManager()
         {
@@ -25,17 +25,7 @@ namespace UniOrm
             _restart = false;
 
         }
-        public IHostBuilder Host
-        {
-            get
-            {
-                return _web;
-            }
-            set
-            {
-                _web = value;
-            }
-        }
+       
 
         public static ApplicationManager Load()
         {
@@ -45,14 +35,21 @@ namespace UniOrm
             return _appManager;
         }
 
-        public void Start(string[] args,Func<string[] , IHostBuilder> hostBuilderFunc )
+        public void StartApp(string[] args, Func<string[], IHostBuilder> hostBuilderFunc)
+        {
+            Start(args, hostBuilderFunc).GetAwaiter().GetResult();
+
+
+        }
+        public async Task Start(string[] args,Func<string[] , IHostBuilder> hostBuilderFunc )
         {
             try
             { 
                 do
                 {
-                    _web = hostBuilderFunc(args);
-                    DoStart();
+                    this.args = args;
+                    this.hostBuilderFunc = hostBuilderFunc ;
+                    await DoStart() ;
                 } while (_restart);
 
             }
@@ -63,9 +60,9 @@ namespace UniOrm
           
 
         }
-        public void DoStart()
+        public async Task DoStart()
         {
-            if(_web==null)
+            if( hostBuilderFunc  == null)
             {
                 throw new Exception("no web builder");
             }
@@ -80,7 +77,7 @@ namespace UniOrm
             _running = true;
             Console.WriteLine("Restarting App; " + (restartTime++));
             // Host.RunConsoleAsync(_tokenSource.Token);
-            _web.Build().RunAsync(_tokenSource.Token).GetAwaiter().GetResult(); 
+            await hostBuilderFunc(args).Build().RunAsync(_tokenSource.Token) ; 
         }
 
         public void Stop()
@@ -89,7 +86,7 @@ namespace UniOrm
                 return;
           
             _tokenSource.Cancel();
-            _web = null;
+            hostBuilderFunc = null;
             _restart = false;
             _running = false;
         }
