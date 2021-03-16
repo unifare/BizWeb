@@ -142,7 +142,7 @@
 }
 
 <div class="tb_container" id="app">
-    <h1>当前目录：{{curentdirPath}}</h1>
+    <h1>当前目录： <input type="text" placeholder="search" v-model="curentdirPath"  ><input type="button" @@click="godir" value="go"/></h1>
     <div>
         <input type="text" placeholder="search" @@input="search" list="cars" class="search">
         <datalist id="cars">
@@ -343,6 +343,7 @@ int main(){
                         }
                     });
                 },
+               
                 testadd() {
                     UE.getEditor('container').setContent("lsdf<sdklfjsld>slkdfjsldkfjsd)");
                 },
@@ -448,6 +449,9 @@ int main(){
                 }
             },
             methods: {
+                godir() {
+                    this.getfiles(this.curentdirPath);
+                },
                 gotoTemplate() {
                     this.curentdirPath = "config/UploadPage";
                     this.getfiles(this.curentdirPath);

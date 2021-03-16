@@ -57,7 +57,7 @@
                             <li v-bind:class="{ selectrow: item.Name==selecttablename }" v-for="(item, index) in returntablelist"
                                 @@click="selecttable(item)"
                                 v-on:dblclick="gettabledata(item.Name)">
-                                <a @@click="ediOldTable(item)">E</a><a @@click="delOldtable(item)">D</a><a @@click="delOldtable(item)">M</a>--{{item.Name}}
+                                <a @@click="ediOldTable(item)">E</a><a @@click="delOldtable(item)">D</a>--{{item.Name}}
                             </li>
                         </ul>
 
@@ -582,8 +582,10 @@
                 },
                 addtable() {
                     var reobj = { TableName: '', IsPrimarykey: true, ColumnDescription: '', IsPrimarykey: true, IsIdentity: true,  DbColumnName: 'Id', DataType: 'int', Length: 4, DefaultValue: null, IsNullable: false, DecimalDigits: null };
+                    this.edittbcolmnDefinits = [];
                     this.edittbcolmnDefinits.push(reobj)
                     this.isshowtbDlg = true;
+                    this.editbname = '';
                     this.currentaction = "addtb";
                 },
                 deltbrow(index) {

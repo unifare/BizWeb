@@ -339,7 +339,8 @@ namespace UniOrm.Startup.Web.Controllers
             {
                 return new JsonResult(new { isok = true, istest = true, leng = 0, data = new List<int>() });
             }
-            var reint = db.DbMaintenance.CreateTable(tablename, keyvalue);
+
+            var reint = db.DbMaintenance.CreateTable(tablename, keyvalue,true);
             return new JsonResult(new { isok = true, istest = false, leng = reint, data = new List<int>() });
         }
 
