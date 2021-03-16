@@ -60,10 +60,10 @@ namespace ADBee
             
         }
 
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
             Logger.LogInfo("Startup", "Configure is starting");
-            app.ConfigureSite(env);
+            app.ConfigureSite(env, lifetime);
             Logger.LogInfo("Startup", "Configure is end");
         }
     }
