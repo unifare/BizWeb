@@ -56,7 +56,7 @@ namespace UniOrm.Startup.Web
             //APP.Builder.RegisterInstance<IResover>(systemResover); 
 
             Logger.LogInfo("Startup", "Configure is starting");
-            app.ConfigureSite(env);
+            app.ConfigureSite(env, lifetime);
             Logger.LogInfo("Startup", "Configure is end");
         }
 
