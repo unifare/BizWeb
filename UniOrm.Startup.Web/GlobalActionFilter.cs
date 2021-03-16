@@ -57,14 +57,19 @@ namespace UniOrm.Startup.Web
             //}
             //else
             //{
+            if (((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor).ControllerName == "FactoryBuilder")
+            {
                 await TypeMaker.Run(context);
                 if (context.Result == null)
                 {
                     await next();
                 }
+            }
+            else
+            {
+                await next();
+            }
 
-           // }
-        
         }
     }
 }

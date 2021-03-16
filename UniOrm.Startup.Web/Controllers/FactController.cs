@@ -337,7 +337,13 @@ namespace UniOrm.Startup.Web.Controllers
             var allFlowSteps = m_codeService.InsertCode<ComposeEntity>(id);
             return allFlowSteps;
         }
-
+        
+       [HttpPost]
+        public bool RestarServer()
+        {
+            ApplicationManager.Load().Restart();
+            return true;
+        }
         [HttpPost]
         public int UpdateCache()
         {

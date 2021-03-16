@@ -41,6 +41,7 @@ namespace UniOrm.Application
             //    IsAutoCloseConnection = true,
             //    InitKeyType = InitKeyType.SystemTable
             //}));
+            builder.RegisterType<AuthorizeHelper>().As<IAuthorizeHelper>();
 
             //var  dataGrounders = OrmAdaptionExten.Init(AConStateStartUp.codeormtype, AConStateStartUp.sysconstring, DbType.Sqlite);
 

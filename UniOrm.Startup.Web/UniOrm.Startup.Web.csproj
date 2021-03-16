@@ -167,5 +167,9 @@
     <ProjectReference Include="..\UniOrm.PHP\UniOrm.PHP.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\sd23nj\Views\User\" />
+  </ItemGroup>
+
  
 </Project>

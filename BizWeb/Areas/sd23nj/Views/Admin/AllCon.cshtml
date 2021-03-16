@@ -53,7 +53,9 @@
 <div id="app">
     <div style="overflow:visible">
 
-        <div><button v-on:click="UpdateCache()">更新缓存</button></div>
+        <div><button v-on:click="UpdateCache()">更新缓存</button>
+             <button v-on:click="RestarServer()">restart server</button>
+        </div>
         <div class="row">
 
             <div class="col-sm-3">
@@ -536,10 +538,6 @@
                                                                     <option value="12">Text</option>
                                                                     <option value="13">RazorText</option>
                                                                     <option value="14">RazorFile</option>
-                                                                    <option value="15">RazorKey</option>
-                                                                    <option value="16">ServerTransfer</option>
-                                                                    <option value="17">Redirector</option>,
-                                                                    ,
                                                                 </select>
                                                             </span>
                                                         </div>
@@ -791,16 +789,21 @@
                             rev = "RazorFile";
                             break;
                         case 15:
-                            rev = "RazorKey";
+                            rev = "TemplateText";
                             break;
-                    
                         case 16:
-                            rev = "ServerTransfer";
+                            rev = "TemplateFile";
                             break;
                         case 17:
-                            rev = "Redirector";
+                            rev = "TemplateRazorText";
                             break;
                         case 18:
+                            rev = "ServerTransfer";
+                            break;
+                        case 12:
+                            rev = "Redirector";
+                            break;
+                        case 19:
                             rev = "UrlRewriter";
                             break;
                         //case 12:
@@ -868,6 +871,23 @@
                         }
                     });
                 },
+                RestarServer: function (){
+                    $.ajax({
+                        type: "post",
+                        url: "/api/Fact/RestarServer/",
+                        contentType: 'application/json',
+                        async: true,
+                        success: function (jsonResult) {
+
+                            if (jsonResult == 0) {
+                                alert("ok");
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                },
                 UpdateCache: function () {
                     if (!confirm("are you sure?")) {
                         return false;
@@ -878,10 +898,7 @@
                         contentType: 'application/json',
                         async: true,
                         success: function (jsonResult) {
-
-                            if (jsonResult == 0) {
-                                alert("ok");
-                            }
+ 
                         },
                         error: function (e) {
                             console.log(e);

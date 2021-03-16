@@ -55,8 +55,7 @@ namespace UniOrm.Startup.Web
         {
             CoreManager.ResgiteCore();
             var fun = CoreManager.Resolver<IFunction>();
-           // var startup= CoreManager.Container.GetInstance(CoreManager.StartupInterface.InterfaceType);
-            UniOrm.ApplicationManager.Load().Start(argsObj, CreateWebHostBuilder);
+            UniOrm.ApplicationManager.Load().StartApp(argsObj, CreateWebHostBuilder);
         }
 
         private static string[] ScanBack(string dlldir)
@@ -216,7 +215,7 @@ namespace UniOrm.Startup.Web
             // _ = services.AddMvc(o =>    _是什么 IMvcBuiler
             services.AddRazorPages(c =>
             {
-                // c.
+                 //c.
             });
             services.Configure<RazorViewEngineOptions>(options =>
             {
@@ -232,7 +231,13 @@ namespace UniOrm.Startup.Web
                     o.Filters.Add<WorkAuthorzation>();
                 }
             })
-            .AddRazorRuntimeCompilation()
+            .AddRazorRuntimeCompilation(options =>
+            {
+                //var libraryPath = Path.GetFullPath(
+               //          Path.Combine(AppDomain.CurrentDomain.BaseDirectory , "UniOrm.Startup.Web"));
+                options.FileProviders.Add(new PhysicalFileProvider(AppDomain.CurrentDomain.BaseDirectory));
+
+            })
             .AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();

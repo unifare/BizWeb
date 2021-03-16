@@ -10,6 +10,7 @@ using UniOrm.Application;
 using UniOrm;
 using UniOrm.Startup.Web;
 using static IdentityModel.OidcConstants;
+using Microsoft.Extensions.Hosting;
 
 namespace UniNote
 {
