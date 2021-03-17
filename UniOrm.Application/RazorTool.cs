@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +27,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Autofac;
 using UniOrm.Model.DataService;
+using UniOrm.Common.Authorize;
 
 namespace UniOrm
 {
@@ -727,8 +728,19 @@ namespace UniOrm
                 identity.AddClaim(new Claim(ClaimTypes.Sid, userName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, userName));
                 identity.AddClaim(new Claim(ClaimTypes.Role, "users"));
-                 HttpContext.SignInAsync(authenticationType, new ClaimsPrincipal(identity))
+                HttpContext.SignInAsync(authenticationType, new ClaimsPrincipal(identity), new AuthenticationProperties
+                {
+                    IsPersistent = true,//持久Cookie
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1),//设置cookie过期时间
+                    AllowRefresh = true,
+                })
                     .GetAwaiter().GetResult();
+                //登陆成功创建权限信息
+                List<UserPermissionItem> permissionList = new List<UserPermissionItem>();
+                permissionList.Add(new UserPermissionItem() { RoleName = "user", ControllerName = "home", ActionName = "authorization" });
+                UserPermissionDictionary.Add(userName, permissionList);
+                string url = HttpContext.Request.Query["ReturnUrl"].ToString();
+                HttpContext.Response.Redirect(url); 
                 return  new ResultInfoBase { IsOK = true, Message = "" };
 
 
