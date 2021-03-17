@@ -40,6 +40,8 @@ using UniOrm.Startup.Web.Views;
 using SimpleInjector;
 using UniOrm.Common.Core;
 using Autofac.Extensions.DependencyInjection;
+using UniOrm.Common.Authorize;
+using System.Security.Claims;
 
 namespace UniOrm.Startup.Web
 {
@@ -311,6 +313,22 @@ namespace UniOrm.Startup.Web
 
         private static void SetupIdentity(IServiceCollection services, AppConfig appConfig, string signingkey, string backendfoldername, string AuthorizeCookiesName, string OdicCookiesName, string identityserver4url, string Identityserver4ApiResouceKey, string idsr4_ClientId, string idsr4_ClientSecret, string OauthClientConfig_scopes, bool IsUsingIdentityserverClient, bool IsUsingIdentityserver4, bool IsUsingLocalIndentity ,string idsr4_ReponseType)
         {
+            var permissionRequirement = new UserPermissionRequirement(
+            "user",
+    deniedAction: "/home/denied",
+    loginPath: "/home/login",
+    claimType: ClaimTypes.Role,
+    TimeSpan.FromHours(12));
+
+            // 授权
+            services.AddAuthorization(options =>
+            { 
+                options.AddPolicy("MyPolicy", policy =>
+                {
+                    policy.Requirements.Add(permissionRequirement);
+                });
+            });
+
             if (IsUsingLocalIndentity)
             {
               var s=  services.AddAuthentication(
@@ -318,20 +336,100 @@ namespace UniOrm.Startup.Web
                     {
                         if (IsUsingIdentityserverClient == false || IsUsingIdentityserver4 == false)
                         {
-                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                         }
                     }
                 )
-                 .AddCookie(UserAuthorizeAttribute.CustomerAuthenticationScheme, option =>
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+                      {
+                          options.LoginPath = new PathString("/account/login");
+                          options.AccessDeniedPath = new PathString("/Error/Forbidden"); 
+                          options.LogoutPath = "/Account/Logout";//指定登出的路径
+                          
+                          options.ExpireTimeSpan = TimeSpan.FromDays(30);//指定Cookie的过期时间
+                          options.SlidingExpiration = true;//当Cookie过期时间已达一半时，是否重置为ExpireTimeSpan
+
+                          options.Events = new CookieAuthenticationEvents//可用于拦截和重写Cookie身份验证
+                          {
+                              //OnValidatePrincipal = Filter.LastChangedValidator.ValidateAsync
+                          };
+                          options.Events.OnRedirectToLogin = z =>//api接口判断
+                          {
+                              if (z.HttpContext.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+                              {
+                                  z.HttpContext.Response.Redirect("/api/Login/UnAuth");//未授权错误信息的接口地址，返回json
+                              }
+                              else
+                              {
+                                  z.HttpContext.Response.Redirect(z.RedirectUri);//其它安装默认处理
+                              }
+                              return Task.CompletedTask;
+                          };
+                          options.Cookie.Name = "AuthCookie";
+                          //options.Cookie.Domain = "contoso.com";
+                          options.Cookie.Path = "/";
+                          options.Cookie.HttpOnly = true;
+                          options.Cookie.SameSite = SameSiteMode.Lax; 
+                      }) 
+                .AddCookie(UserAuthorizeAttribute.CustomerAuthenticationScheme, options =>
                  {
-                     option.LoginPath = new PathString("/account/login");
-                     option.AccessDeniedPath = new PathString("/Error/Forbidden");
+                     options.LoginPath = new PathString("/account/login");
+                     options.AccessDeniedPath = new PathString("/Error/Forbidden");
+                     options.ExpireTimeSpan = TimeSpan.FromDays(30);//指定Cookie的过期时间
+                     options.SlidingExpiration = true;//当Cookie过期时间已达一半时，是否重置为ExpireTimeSpan
+
+                     options.Events = new CookieAuthenticationEvents//可用于拦截和重写Cookie身份验证
+                     {
+                         //OnValidatePrincipal = Filter.LastChangedValidator.ValidateAsync
+                     };
+                     options.Events.OnRedirectToLogin = z =>//api接口判断
+                     {
+                         if (z.HttpContext.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+                         {
+                             z.HttpContext.Response.Redirect("/api/Login/UnAuth");//未授权错误信息的接口地址，返回json
+                         }
+                         else
+                         {
+                             z.HttpContext.Response.Redirect(z.RedirectUri);//其它安装默认处理
+                         }
+                         return Task.CompletedTask;
+                     };
+                     options.Cookie.Name = "UserAuthCookie";
+                     //options.Cookie.Domain = "contoso.com";
+                     options.Cookie.Path = "/";
+                     options.Cookie.HttpOnly = true;
+                     options.Cookie.SameSite = SameSiteMode.Lax;
                  })
-                .AddCookie(AdminAuthorizeAttribute.CustomerAuthenticationScheme, option =>
+                .AddCookie(AdminAuthorizeAttribute.CustomerAuthenticationScheme, options =>
                 {
-                    option.LoginPath = new PathString("/" + backendfoldername + "/Admin/Signin");
-                    option.AccessDeniedPath = new PathString("/Error/Forbidden");
+                    options.LoginPath = new PathString("/" + backendfoldername + "/Admin/Signin");
+                    options.AccessDeniedPath = new PathString("/Error/Forbidden");
+                    options.ExpireTimeSpan = TimeSpan.FromDays(30);//指定Cookie的过期时间
+                    options.SlidingExpiration = true;//当Cookie过期时间已达一半时，是否重置为ExpireTimeSpan
+
+                    options.Events = new CookieAuthenticationEvents//可用于拦截和重写Cookie身份验证
+                    {
+                        //OnValidatePrincipal = Filter.LastChangedValidator.ValidateAsync
+                    };
+                    options.Events.OnRedirectToLogin = z =>//api接口判断
+                    {
+                        if (z.HttpContext.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+                        {
+                            z.HttpContext.Response.Redirect("/api/Login/UnAuth");//未授权错误信息的接口地址，返回json
+                        }
+                        else
+                        {
+                            z.HttpContext.Response.Redirect(z.RedirectUri);//其它安装默认处理
+                        }
+                        return Task.CompletedTask;
+                    };
+                    options.Cookie.Name = "AdminAuthCookie";
+                    //options.Cookie.Domain = "contoso.com";
+                    options.Cookie.Path = "/";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SameSite = SameSiteMode.Lax;
                 });
                
                 s.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -345,6 +443,7 @@ namespace UniOrm.Startup.Web
                     }
                     else
                     {
+                         
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
@@ -366,7 +465,7 @@ namespace UniOrm.Startup.Web
             }
             if (IsUsingIdentityserver4 && !IsUsingLocalIndentity)
             {
-                services.AddMvcCore().AddAuthorization();
+                services.AddMvcCore() ;
                 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                    {
@@ -424,6 +523,7 @@ namespace UniOrm.Startup.Web
                  ;
 
             }
+     
 
 
         }
