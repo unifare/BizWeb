@@ -184,8 +184,11 @@ namespace UniOrm.Startup.Web.Controllers
             var newtype = TypeCreator.NewClassBulder(tablename);
             foreach (var col in colsinfo)
             {
-                col.PropertyType = db.DBTypeStringToCShapType(col);
-                newtype.AddProperityName(col.DbColumnName, col.PropertyType, col.IsNullable, null);
+                if (!col.IsIdentity)
+                {
+                    col.PropertyType = db.DBTypeStringToCShapType(col);
+                    newtype.AddProperityName(col.DbColumnName, col.PropertyType, col.IsNullable, null);
+                }
             }
             var dbobjecttype = CSScript.Evaluator.CompileCode(newtype.ToString()).GetType("css_root+" + tablename);
             var setting = new JsonSerializerSettings();
